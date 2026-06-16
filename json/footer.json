@@ -1,0 +1,25 @@
+{
+    "footer_data": {
+        "contact_info": {
+            "email": {
+                "label": "Contact Us",
+                "address": "info@yourdomain.com",
+                "url": "mailto:info@yourdomain.com"
+            },
+            "phone": {
+                "label": "Call Support",
+                "number": "(555) 123-4567",
+                "url": "tel:+15551234567"
+            },
+            "address": {
+                "text": "123 Main St, Flora, IL 62839",
+                "map_url": "https://www.google.com/maps/dir/?api=1&destination=123+Main+St+Flora+IL"
+            }
+        },
+        "social_links": [
+            { "name": "Facebook", "url": "#" },
+            { "name": "Instagram", "url": "#" }
+        ],
+        "copyright": "© 2026 S&K Ventures. All rights reserved."
+    }
+}
