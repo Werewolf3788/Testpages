@@ -1,0 +1,19 @@
+{
+    "maps": {
+        "flora": {
+            "name": "Flora, IL",
+            "src": "./assets/images/map_of_flora_il.jpg",
+            "alt": "Community map of Flora, IL"
+        },
+        "clay_city": {
+            "name": "Clay City, IL",
+            "src": "./assets/images/map_of_clay_city.jpeg",
+            "alt": "Community map of Clay City, IL"
+        },
+        "louisville": {
+            "name": "Louisville, IL",
+            "src": "./assets/images/map_of_louisville_il.jpg",
+            "alt": "Community map of Louisville, IL"
+        }
+    }
+}
