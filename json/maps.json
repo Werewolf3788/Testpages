@@ -1,30 +1,36 @@
 {
-    "maps": {
-        "flora": {
-            "name": "Flora, IL",
-            "src": "https://ourflora.com/wp-content/uploads/2025/02/R.jpg",
-            "alt": "Community map of Flora, IL"
-        },
-        "clay_city": {
-            "name": "Clay City, IL",
-            "src": "https://townmapsusa.com/images/maps/map_of_clay_city_il.jpg",
-            "alt": "Community map of Clay City, IL"
-        },
-        "clay_city": {
-            "name": "Xenia, IL",
-            "src": "https://townmapsusa.com/images/maps/map_of_xenia_il.jpg",
-            "alt": "Community map of Xenia, IL"
-        },
-        "clay_city": {
-            "name": "Sailor Springs, IL",
-            "src": "https://townmapsusa.com/images/maps/map_of_sailor_springs_il.jpg",
-            "alt": "Community map of Sailor Springs, IL"
-        },
-        
-        "louisville": {
-            "name": "Louisville, IL",
-            "src": "https://townmapsusa.com/images/maps/map_of_louisville_il.jpg",
-            "alt": "Community map of Louisville, IL"
-        }
-    }
+	"maps": {
+		"flora": {
+			"name": "Flora, IL",
+			"src": "https://ourflora.com/wp-content/uploads/2025/02/R.jpg",
+			"alt": "Community map of Flora, IL",
+			"url": "https://ourflora.com"
+		},
+		"clay_city": {
+			"name": "Clay City, IL",
+			"src": "https://townmapsusa.com/images/maps/map_of_clay_city_il.jpg",
+			"alt": "Community map of Clay City, IL",
+			"url": "https://werewolf3788.github.io/Testpages/clay-city.html"
+		},
+		"xenia": {
+			"name": "Xenia, IL",
+			"src": "https://townmapsusa.com/images/maps/map_of_xenia_il.jpg",
+			"alt": "Community map of Xenia, IL",
+			"url": "https://werewolf3788.github.io/Testpages/xenia.html"
+		},
+		"sailor_springs": {
+			"name": "Sailor Springs, IL",
+			"src": "https://townmapsusa.com/images/maps/map_of_sailor_springs_il.jpg",
+			"alt": "Community map of Sailor Springs, IL",
+			"url": "https://werewolf3788.github.io/Testpages/sailor-springs.html"
+		},
+		"louisville": {
+			"name": "Louisville, IL",
+			"src": "https://townmapsusa.com/images/maps/map_of_louisville_il.jpg",
+			"alt": "Community map of Louisville, IL",
+			"url": "https://werewolf3788.github.io/Testpages/louisville.html"
+		}
+	}
 }
+/* NO STRIPPING, NO COMPRESSING, DON'T CHANGE WHAT I SPECIFICALLY DIDN'T SAY TO CHANGE */
+/* NYT Timestamp: 2026-06-16 08:34:42 */
