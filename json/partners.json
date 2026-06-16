@@ -2,19 +2,31 @@
   {
     "name": "Wabash Communications",
     "websiteUrl": "https://wabash.net",
-    "image": "https://staging.supportmylocalcommunity.com/wp-content/uploads/2025/12/pexels-photo-15823361-1.jpeg",
+    "image": "https://skventuresigns.com/images/wabash.png",
     "county": "Clay"
   },
   {
-    "name": "Casey's General Store",
-    "websiteUrl": "https://www.caseys.com",
-    "image": "https://raw.githubusercontent.com/skventuresigns-design/smlc/main/gas-prices/image/Casey's.png",
+    "name": "Frontier College",
+    "websiteUrl": "https://www.iecc.edu/fcc",
+    "image": "https://skventuresigns.com/images/Frontier-College.png",
+    "county": "Clay"
+  },
+  {
+    "name": "Hometown Appliance",
+    "websiteUrl": "https://www.hometownappliance.com/",
+    "image": "https://skventuresigns.com/images/Hometown-Appliance.png",
+    "county": "Clay"
+  },
+  {
+    "name": "SMLC",
+    "websiteUrl": "https://www.supportmylocalcommunity.com",
+    "image": "https://raw.githubusercontent.com/skventuresigns-design/media/main/smlc-web.png",
     "county": "Clay"
   },
   {
     "name": "S&K Ventures",
     "websiteUrl": "https://www.skventuresigns.com",
-    "image": "https://staging.supportmylocalcommunity.com/wp-content/uploads/2025/12/SMLC-logo-scaled-e1767473737771.png",
+    "image": "https://ourflora.com/wp-content/uploads/2025/12/Screenshot-2025-05-31-205146.png",
     "county": "Clay"
   }
 ]
