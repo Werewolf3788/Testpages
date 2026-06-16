@@ -6,8 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Louisville, IL - SMLC Digital Town Square</title>
 	<link rel="pingback" href="https://staging.supportmylocalcommunity.com/xmlrpc.php" />
-	
-	<link rel="stylesheet" href="./css/style.css?v=2.0" />
+	<link rel="stylesheet" href="style.css?v=1.7" />
 
 	<script async src="https://www.googletagmanager.com/gtag/js?id=G-H6Q756MVE8"></script>
 	<script async src="https://www.googletagmanager.com/gtag/js?id=G-L376P3NPY4"></script>
@@ -15,45 +14,20 @@
 		window.dataLayer = window.dataLayer || [];
 		function gtag(){dataLayer.push(arguments);}
 		gtag('js', new Date());
-		
-		gtag('config', 'G-H6Q756MVE8', { 
-			'cookie_flags': 'SameSite=None;Secure',
-			'page_title': 'SMLC Louisville Regional Town Square Dashboard Monitor'
-		});
-		gtag('config', 'G-L376P3NPY4', { 
-			'cookie_flags': 'SameSite=None;Secure',
-			'page_title': 'Watermark Engine Core Tracking Layer'
-		});
-
-		function trackUtmParameters() {
-			const urlParams = new URLSearchParams(window.location.search);
-			const utmSource = urlParams.get('utm_source');
-			if (utmSource) {
-				gtag('event', 'utm_campaign_delivery', {
-					'campaign_source': utmSource,
-					'campaign_medium': urlParams.get('utm_medium') || 'none',
-					'campaign_name': urlParams.get('utm_campaign') || 'none'
-				});
-			}
-		}
-		window.addEventListener('DOMContentLoaded', trackUtmParameters);
+		gtag('config', 'G-H6Q756MVE8', { 'cookie_flags': 'SameSite=None;Secure', 'page_title': 'SMLC Louisville Regional Town Square Dashboard Monitor' });
+		gtag('config', 'G-L376P3NPY4', { 'cookie_flags': 'SameSite=None;Secure', 'page_title': 'Watermark Engine Core Tracking Layer' });
 	</script>
 </head>
 <body data-town="louisville">
 
-	<div id="global-header-container" class="site-brand-header"></div>
-
 	<header class="menu-bar">
 		<div class="menu-inner">
+			<a href="https://staging.supportmylocalcommunity.com/" target="main-content-window" class="town-title">
+				<img src="https://staging.supportmylocalcommunity.com/wp-content/uploads/2025/12/SMLC-logo-scaled-e1767473737771.png" alt="SMLC logo" />
+			</a>
 			<nav>
 				<ul id="dynamic-menu-links" class="menu-links">
-					<li><a href="https://staging.supportmylocalcommunity.com/" target="main-content-window">Home</a></li>
-					<li><a href="https://staging.supportmylocalcommunity.com/clay-city/" target="main-content-window">Clay City</a></li>
-					<li><a href="https://ourflora.com" target="main-content-window">Flora</a></li>
-					<li><a href="https://staging.supportmylocalcommunity.com/louisville/" target="main-content-window" class="active">Louisville</a></li>
-					<li><a href="https://staging.supportmylocalcommunity.com/sailor-springs/" target="main-content-window">Sailor Springs</a></li>
-					<li><a href="https://staging.supportmylocalcommunity.com/xenia/" target="main-content-window">Xenia</a></li>
-				</ul>
+					</ul>
 			</nav>
 		</div>
 	</header>
@@ -68,6 +42,8 @@
 				<div class="river-marquee">ON THE LITTLE WABASH RIVER</div>
 			</div>
 		</section>
+
+		<div class="feature-placement" data-slot-index="0"></div>
 
 		<section class="spotlight-ticker-bar">
 			<div class="ticker-inner">
@@ -97,61 +73,49 @@
 					<div class="clipping-footer">Clay City • Flora • Louisville • Sailor Springs • Xenia</div>
 				</div>
 
-				<div class="bulletin-widget-card" style="margin-top: 24px;">
-					<div class="widget-header-strip">
-						<span class="bulletin-badge-tag">Community Bulletin</span>
-						<p id="month-label" class="widget-sublabel-date">Dispatches</p>
+				<div class="bulletin-widget">
+					<div class="widget-header">
+						<span class="bulletin-badge">Live Feed Schedules</span>
+						<p id="month-label" class="widget-sublabel">Dispatches</p>
 					</div>
-					<div class="clock-display-panel">
+					<div class="clock-display">
 						<span>CST Clock:</span>
 						<span id="chicago-clock">--:-- --</span>
 					</div>
-					<div id="divi-event-list" class="scrollable-feed-viewport">
-						<div class="feed-loading-placeholder">Connecting wire...</div>
+					<div id="divi-event-list" class="scrollable-event-feed">
+						<div class="feed-loading">Connecting wire...</div>
 					</div>
 				</div>
 			</aside>
 
 			<main class="content-center-column">
-				
 				<section class="athletics-widget-card">
-					<div class="card-header-row">
-						<div class="header-title-group">
-							<span class="icon-spacer">🏀</span>
-							<h2>Scorestream Panther Athletics</h2>
-						</div>
+					<div class="card-header">
+						<div class="header-title-group"><span class="icon-spacer">🏀</span><h2>Scorestream Athletics</h2></div>
 						<span class="live-ticker-badge">● Live Ticker</span>
 					</div>
-					<div class="scorestream-viewport-frame">
+					<div class="scorestream-viewport">
 						<div class="scorestream-widget-container" data-ss_widget_type="horzScoreboard" data-user-widget-id="68988"></div>
-						<script async="async" type="text/javascript" src="https://scorestream.com/apiJsCdn/widgets/embed.js"></script>
+						<script async src="https://scorestream.com/apiJsCdn/widgets/embed.js"></script>
 					</div>
 				</section>
 
-				<section class="newspaper-card-box" style="margin-top: 32px;">
-					<div class="newspaper-header-border">
-						<div class="header-title-group">
-							<span class="icon-spacer">📢</span>
-							<h2>Louisville Local Dispatches</h2>
-						</div>
-						<span class="newsroom-source-tag">SMLC Newsroom</span>
+				<section class="clipping-card-container">
+					<div class="clipping-header">
+						<div class="header-title-group"><span class="icon-spacer">📢</span><h3>Louisville Local Dispatches</h3></div>
+						<small>SMLC Newsroom</small>
 					</div>
-					<div id="json-news-container" class="newspaper-feed-wrapper">
-						<div class="feed-loading-placeholder">Reconstructing archives...</div>
+					<div id="json-news-container">
+						<div class="feed-loading">Reconstructing archives...</div>
 					</div>
 				</section>
 
-				<section class="wire-feed-card" style="margin-top: 32px;">
-					<div class="card-header-row">
-						<div class="header-title-group">
-							<span class="icon-spacer">📰</span>
-							<h2>Louisville News Wire Feed</h2>
-						</div>
+				<section class="wire-feed-card">
+					<div class="card-header">
+						<div class="header-title-group"><span class="icon-spacer">📰</span><h2>News Wire Feed</h2></div>
 						<span class="feed-source-label">Google Alerts RSS</span>
 					</div>
-					<div id="rss-feed-container" class="scrollable-feed-viewport max-h-400">
-						<div class="feed-loading-placeholder">Querying feed...</div>
-					</div>
+					<div id="rss-feed-container" class="scrollable-wire-feed"></div>
 				</section>
 			</main>
 
@@ -180,86 +144,75 @@
 					</div>
 				</div>
 
-				<div class="showcase-widget" style="margin-top: 24px;">
+				<div class="showcase-widget">
 					<h3 class="sidebar-widget-title">Local Showcase</h3>
 					<div class="showcase-card-body">
-						<div id="partner-image-frame" class="showcase-media-canvas">
-							<img id="partner-image-right" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Showcase Content Graphic">
-							<div id="partner-loading" class="loading-spinner-overlay">
-								<span class="spinner-ring"></span>
-							</div>
+						<div class="showcase-media-canvas">
+							<img id="partner-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Graphic Display">
 						</div>
-						<a id="partner-link-right" href="#" target="main-content-window" class="showcase-action-link">
-							Connecting Partner...
-						</a>
+						<a id="partner-link" class="showcase-action-link">Connecting...</a>
 					</div>
 				</div>
 
-				<div class="regional-map-widget" style="margin-top: 24px;">
-					<h3 class="sidebar-widget-title">Town Directory & Maps</h3>
-					<div class="map-card-body">
-						<div id="dynamic-map-container" class="map-loading-frame">
-							<div class="feed-loading-placeholder">Loading local directional maps...</div>
-						</div>
-					</div>
-				</div>
-
-				<div class="legacy-history-widget" style="margin-top: 24px;">
+				<div class="legacy-history-widget">
 					<h3 class="sidebar-widget-title">Town Legacy History</h3>
-					<div id="history-json-container" class="scrollable-feed-viewport max-h-300">
-						<div class="feed-loading-placeholder">Parsing records...</div>
-					</div>
+					<div id="history-json-container" class="scrollable-history-feed"></div>
 				</div>
 			</aside>
 		</div>
 
-		<div class="footer-row-banner-container" style="margin-top: 40px;">
+		<div class="footer-row-banner-container">
 			<section class="showcase-widget">
-				<h3 class="sidebar-widget-title text-center" style="border:none;">Featured Area Partnerships</h3>
-				<div class="partners-horizontal-strip" id="bottom-partners-strip">
+				<h3 class="sidebar-widget-title" style="color:#ffffff; text-align:center;">Featured Area Partnerships</h3>
+				<div class="partners-horizontal-strip">
+					<div class="showcase-card-body">
+						<div class="showcase-media-canvas"><img id="bottom-card-img-0" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Showcase Frame"></div>
+						<a id="bottom-card-link-0" class="showcase-action-link">Syncing...</a>
 					</div>
-			</section>
-		</div>
-
-		<div class="footer-row-banner-container" style="margin-top: 40px;">
-			<section class="showcase-widget">
-				<h3 class="sidebar-widget-title text-center" style="border:none;">Louisville Community Gallery</h3>
-				<div class="partners-horizontal-strip" id="louisville-images-gallery">
+					<div class="showcase-card-body">
+						<div class="showcase-media-canvas"><img id="bottom-card-img-1" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Showcase Frame"></div>
+						<a id="bottom-card-link-1" class="showcase-action-link">Syncing...</a>
 					</div>
+					<div class="showcase-card-body">
+						<div class="showcase-media-canvas"><img id="bottom-card-img-2" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Showcase Frame"></div>
+						<a id="bottom-card-link-2" class="showcase-action-link">Syncing...</a>
+					</div>
+					<div class="showcase-card-body">
+						<div class="showcase-media-canvas"><img id="bottom-card-img-3" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Showcase Frame"></div>
+						<a id="bottom-card-link-3" class="showcase-action-link">Syncing...</a>
+					</div>
+					<div class="showcase-card-body">
+						<div class="showcase-media-canvas"><img id="bottom-card-img-4" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Showcase Frame"></div>
+						<a id="bottom-card-link-4" class="showcase-action-link">Syncing...</a>
+					</div>
+				</div>
 			</section>
 		</div>
 	</div>
 
-	<div id="portal-lightbox" class="lightbox-overlay-mask">
+	<div id="portal-lightbox">
 		<div class="lightbox-modal-window">
 			<div class="lightbox-header-bar">
-				<div class="lightbox-meta-group">
-					<span id="lightbox-label">SMLC Dynamic Reader</span>
-					<span id="lightbox-meta">Wire Sync Info</span>
-				</div>
+				<div class="lightbox-meta-group"><span id="lightbox-label"></span><span id="lightbox-meta"></span></div>
 				<button onclick="closePortalLightbox()" class="lightbox-close-btn">&times;</button>
 			</div>
 			<div class="lightbox-body-scroll-frame">
-				<div id="lightbox-media-box" class="lightbox-image-wrapper">
-					<img id="lightbox-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Expanded Content Display Layer">
-				</div>
-				<h3 id="lightbox-title">Title</h3>
-				<div class="lightbox-divider-line"></div>
-				<p id="lightbox-story">Story Body</p>
-			</div>
-			<div class="lightbox-footer-bar">
-				<span>SUPPORT MY LOCAL COMMUNITY NETWORK © 2026</span>
-				<a id="lightbox-external-link" href="#" target="main-content-window">Visit Original Source Context &rarr;</a>
+				<div id="lightbox-media-box" class="lightbox-image-wrapper"><img id="lightbox-img" src="" alt="Popup Asset View"></div>
+				<h3 id="lightbox-title"></h3><div class="lightbox-divider-line"></div><p id="lightbox-story"></p>
 			</div>
 		</div>
 	</div>
 
-	<footer id="global-footer-container" class="site-global-footer"></footer>
-
-	<button id="back-to-top-anchor" onclick="window.scrollTo({top: 0, behavior: 'smooth'});" title="Return to Top Grid Matrix">&uarr;</button>
+	<footer class="site-global-footer">
+		<div class="footer-inner-content">
+			<img src="https://staging.supportmylocalcommunity.com/wp-content/uploads/2025/12/SMLC-logo-scaled-e1767473737771.png" alt="SMLC logo" />
+			<p class="footer-copyright-text">All Content, Writings and Documents © 2026 - <span>Support My Local Community</span></p>
+			<p class="footer-firm-link">All Rights Reserved - <a href="https://www.skventuresigns.com" target="_blank">S&K Ventures</a></p>
+		</div>
+	</footer>
 
 	<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
-	<script src="./js/main.js?v=1.7"></script>
+	<script src="louisville.js?v=1.7"></script>
 </body>
 </html>
