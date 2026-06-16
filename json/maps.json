@@ -2,17 +2,28 @@
     "maps": {
         "flora": {
             "name": "Flora, IL",
-            "src": "./assets/images/map_of_flora_il.jpg",
+            "src": "https://ourflora.com/wp-content/uploads/2025/02/R.jpg",
             "alt": "Community map of Flora, IL"
         },
         "clay_city": {
             "name": "Clay City, IL",
-            "src": "./assets/images/map_of_clay_city.jpeg",
+            "src": "https://townmapsusa.com/images/maps/map_of_clay_city_il.jpg",
             "alt": "Community map of Clay City, IL"
         },
+        "clay_city": {
+            "name": "Xenia, IL",
+            "src": "https://townmapsusa.com/images/maps/map_of_xenia_il.jpg",
+            "alt": "Community map of Xenia, IL"
+        },
+        "clay_city": {
+            "name": "Sailor Springs, IL",
+            "src": "https://townmapsusa.com/images/maps/map_of_sailor_springs_il.jpg",
+            "alt": "Community map of Sailor Springs, IL"
+        },
+        
         "louisville": {
             "name": "Louisville, IL",
-            "src": "./assets/images/map_of_louisville_il.jpg",
+            "src": "https://townmapsusa.com/images/maps/map_of_louisville_il.jpg",
             "alt": "Community map of Louisville, IL"
         }
     }
