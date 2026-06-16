@@ -3,120 +3,313 @@
    ========================================================================== */
 
 :root {
-    --container-width: 100%; 
-    --bar-height: fluid;
-    --font-town: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    --font-size-header: 30px;
-    --font-size-body: 14px;
-    --bg-primary: #000000; 
-    --bg-surface: #121212; 
-    --bg-panel-darkest: #080808;
-    --text-primary: #ffffff;
-    --text-muted: #a3a3a3;
-    --menu-bg-default: #ffffff;
-    --menu-text-default: #0C0B82;
-    --menu-border-default: #0C0B82;
+	/* --- Master Sizing & Layout Constants --- */
+	--container-width: 80%; /* Rigorous master widescreen limitation boundary */
+	--bar-height: fluid; /* Fluid footer line profile standard implementation */
+	
+	/* --- Unified Branding Color Tokens --- */
+	--louis-red: #EB1C24;
+	--louis-black: #000000;
+	--louis-gold: #FFC10E;
+	--panel-dark: #121212;
+	--panel-darkest: #080808;
+	--bg-primary: #1F1F1F; /* Requested Widescreen Background Profile Hex */
+	
+	/* --- Typography Constants --- */
+	--font-town: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	--font-size-header: 30px;
+	--font-size-body: 14px;
 }
 
-/* --- DYNAMIC PALETTES --- */
-body[data-town="louisville"] { --town-accent: #EB1C24; --town-secondary: #000000; --town-detail: #FFC10E; }
+/* --- DYNAMIC TOWN REGIONAL PALETTES ACCENTS --- */
+body[data-town="louisville"] { --town-accent: var(--louis-red); --town-secondary: var(--louis-black); --town-detail: var(--louis-gold); }
 body[data-town="flora"] { --town-accent: #FE4F00; --town-secondary: #0C0B82; --town-detail: #FE4F00; }
 body[data-town="claycity"] { --town-accent: #0C30F0; --town-secondary: #D2D2D2; --town-detail: #FFFFFF; }
 body[data-town="xenia"] { --town-accent: #c2410c; --town-secondary: #334155; --town-detail: #f1f5f9; }
 body[data-town="sailorsprings"] { --town-accent: #0f766e; --town-secondary: #2dd4bf; --town-detail: #ccfbf1; }
 
+/* Global Configuration Resets */
 body {
-    font-family: var(--font-town); font-size: var(--font-size-body);
-    background-color: var(--bg-primary); color: var(--text-primary); margin: 0; padding: 0;
+	font-family: var(--font-town);
+	font-size: var(--font-size-body);
+	background-color: var(--bg-primary);
+	color: #ffffff;
+	margin: 0;
+	padding: 0;
+	-webkit-font-smoothing: antialiased;
 }
 
-.main-container { width: 100%; max-width: 100%; margin: 0 auto; padding: 32px 0; box-sizing: border-box; }
+/* Scrollbar Clean Panel Optimization Rules */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #000000; }
+::-webkit-scrollbar-thumb { background: var(--louis-red); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--louis-gold); }
 
-/* Three-Column Wireframe Realignment Matrix */
+/* --- MASTER CONTAINER WRAPPER LAYOUTS --- */
+.main-container {
+	width: var(--container-width);
+	max-width: var(--container-width);
+	margin: 0 auto;
+	padding: 32px 0;
+	box-sizing: border-box;
+}
+
+/* Three-Column Wireframe Grid Realignment Matrix */
 .portal-grid-layout {
-    display: grid; grid-template-cols: 1fr; gap: 32px; align-items: start; width: 100%; padding: 0 32px; box-sizing: border-box;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 32px;
+	width: 100%;
+	box-sizing: border-box;
 }
+
+/* Desktop Grid Rules Sizing Profiles - Fixed Columns Typo Rule */
 @media (min-width: 1024px) {
-    .portal-grid-layout { grid-template-cols: repeat(12, minmax(0, 1fr)); }
-    .sidebar-left { grid-column: span 3; display: flex; flex-direction: column; gap: 24px; }
-    .content-center-column { grid-column: span 6; display: flex; flex-direction: column; gap: 32px; }
-    .sidebar-right { grid-column: span 3; display: flex; flex-direction: column; gap: 24px; }
+	.portal-grid-layout {
+		display: grid;
+		grid-template-columns: repeat(12, minmax(0, 1fr));
+		align-items: start;
+	}
+	.sidebar-left { grid-column: span 3; display: flex; flex-direction: column; gap: 24px; }
+	.content-center-column { grid-column: span 6; display: flex; flex-direction: column; gap: 32px; }
+	.sidebar-right { grid-column: span 3; display: flex; flex-direction: column; gap: 24px; }
+}
+
+/* Wrap Protection Overrides */
+p, a, h1, h2, h3, span, div {
+	word-break: keep-all;
+	overflow-wrap: break-word;
 }
 
 /* ==========================================================================
-   VINTAGE NEWSPAPER BULLETIN CALLOUT CONTAINER
+   DYNAMIC TIME-BASED HEADER LOGO MATRIX (Centered Ribbon State)
+   ========================================================================== */
+.site-brand-header {
+	width: 100%;
+	background-color: #0C71C3; /* Locked to your exact requested blue color shade */
+	padding: 24px 0 12px 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	transition: background-color 0.4s ease-in-out;
+}
+.site-brand-header a {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: var(--container-width);
+	text-decoration: none;
+	cursor: pointer;
+}
+.site-brand-header img {
+	width: 100%;
+	max-width: 900px;
+	height: auto;
+	display: block;
+	box-sizing: border-box;
+}
+@media (prefers-color-scheme: dark) {
+	.site-brand-header {
+		background-color: #404040; /* Shift backdrop directly to charcoal gray during night system hours */
+	}
+}
+
+/* ==========================================================================
+   GLUED NAVIGATION STRIP BAR RULES (Fixed Solid High-Contrast View)
+   ========================================================================== */
+.menu-bar {
+	width: 100%;
+	background-color: #ffffff !important; /* Forces solid crisp background container layer */
+	border-bottom: 2px solid var(--town-accent);
+	padding: 16px 0;
+	position: -webkit-sticky;
+	position: sticky;
+	top: 0;
+	z-index: 999;
+	box-shadow: 0 10px 15px rgba(0,0,0,0.8);
+}
+.menu-inner {
+	width: var(--container-width);
+	margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+}
+@media (min-width: 768px) { .menu-inner { flex-direction: row; } }
+.menu-links { display: flex; flex-wrap: wrap; list-style: none; gap: 16px; margin: 0; padding: 0; justify-content: center; }
+.menu-links a {
+	color: #0C0B82 !important; /* Hardcoded solid crisp high-contrast navy navigation headers text link views */
+	text-decoration: none;
+	font-size: 14px;
+	font-weight: 700;
+	padding: 8px 12px;
+	text-transform: uppercase;
+	transition: color 0.2s ease;
+}
+.menu-links a:hover { color: var(--louis-red) !important; }
+.menu-links a.active {
+	color: var(--louis-red) !important;
+	border: 1px solid var(--louis-red);
+	background-color: rgba(235,28,36,0.1);
+	border-radius: 8px;
+}
+
+/* ==========================================================================
+   TOWN PROFILE BANNER RENDERING
+   ========================================================================== */
+.town-hero-banner {
+	width: 100%;
+	padding: 48px 0;
+	background: linear-gradient(to bottom right, #000000, var(--panel-darkest), var(--town-accent));
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-bottom: 4px solid var(--town-detail);
+	border-radius: 12px;
+	text-align: center;
+	box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+	box-sizing: border-box;
+	margin-bottom: 24px;
+}
+.seat-badge {
+	display: inline-block;
+	padding: 4px 16px;
+	background-color: var(--town-detail);
+	color: #000000;
+	font-weight: 900;
+	text-transform: uppercase;
+	font-size: 12px;
+	letter-spacing: 1px;
+	border-radius: 4px;
+	margin-bottom: 12px;
+	box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+.town-hero-banner h1 {
+	font-size: 54px;
+	font-weight: 900;
+	text-transform: uppercase;
+	margin: 0;
+	color: #ffffff;
+}
+.town-established-meta { font-size: 12px; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; color: #ffffff; margin: 8px 0 0 0; }
+.river-marquee {
+	margin-top: 16px; font-size: 12px; font-family: monospace; font-weight: 700; color: #d4d4d4;
+	background-color: rgba(0, 0, 0, 0.5); padding: 6px 16px; border-radius: 9999px;
+	border: 1px solid #262626; width: max-content; margin-left: auto; margin-right: auto;
+}
+
+/* ==========================================================================
+   SPOTLIGHT TICKER WIRE INTERFACE
+   ========================================================================== */
+.spotlight-ticker-bar {
+	width: 100%; background-color: #0a0a0a; padding: 12px 0; border: 1px solid #262626; border-radius: 12px; font-size: 12px; font-family: monospace; box-sizing: border-box; margin-bottom: 32px;
+}
+.ticker-inner { width: 100%; padding: 0 24px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; }
+.ticker-status { display: flex; align-items: center; gap: 8px; }
+.pulse-indicator { width: 8px; height: 8px; border-radius: 50%; background-color: var(--town-accent); animation: tickerPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+@keyframes tickerPulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
+.ticker-label { color: #a3a3a3; font-weight: 700; text-transform: uppercase; }
+#ticker-link { color: var(--town-detail); font-weight: 700; text-decoration: none; }
+.ticker-verification { font-size: 10px; color: #737373; text-transform: uppercase; font-weight: 700; }
+
+/* ==========================================================================
+   VINTAGE NEWSPAPER BULLETIN CALLOUT CARD
    ========================================================================== */
 .clay-county-news-box.event-clipping {
-    box-sizing: border-box; width: 100%; margin: 0 auto; padding: 25px;
-    border: 2px solid #222; background-color: #fffdf5 !important;
-    box-shadow: 6px 6px 0px #222; font-family: "Times New Roman", Times, serif; position: relative;
+	box-sizing: border-box; width: 100%; margin: 0 auto; padding: 25px;
+	border: 2px solid #222; background-color: #fffdf5 !important;
+	box-shadow: 6px 6px 0px #222; font-family: "Times New Roman", Times, serif; position: relative;
 }
 .clipping-tag {
-    position: absolute; top: -12px; left: 15px; background: #222; color: #fff;
-    font-size: 10px; padding: 3px 10px; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; z-index: 10;
+	position: absolute; top: -12px; left: 15px; background: #222; color: #fff;
+	font-size: 10px; padding: 3px 10px; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; z-index: 10;
 }
 .event-clipping-header { text-align: center; border-top: 4px double #222; border-bottom: 2px solid #222; padding: 15px 0; margin-bottom: 20px; margin-top: 5px; }
 .event-clipping-header h3 {
-    font-family: "Times New Roman", Times, serif !important; font-weight: 900 !important;
-    text-transform: uppercase; letter-spacing: 1px; margin: 0 !important; color: #d9534f !important; font-size: 26px !important; line-height: 1.1 !important;
+	font-family: "Times New Roman", Times, serif !important; font-weight: 900 !important;
+	text-transform: uppercase; letter-spacing: 1px; margin: 0 !important; color: #d9534f !important; font-size: 26px !important; line-height: 1.1 !important;
 }
 .event-clipping-text { font-size: 16px; line-height: 1.5; color: #222 !important; text-align: center; margin-bottom: 20px; font-style: italic; }
 .event-clipping-btn {
-    display: block; text-align: center; background-color: #222; color: #fff !important; padding: 14px;
-    text-transform: uppercase; font-weight: bold; letter-spacing: 2px; text-decoration: none; font-size: 14px; border: 1px solid #222; transition: all 0.3s;
+	display: block; text-align: center; background-color: #222; color: #fff !important; padding: 14px;
+	text-transform: uppercase; font-weight: bold; letter-spacing: 2px; text-decoration: none; font-size: 14px; border: 1px solid #222; transition: all 0.3s;
 }
 .event-clipping-btn:hover { background-color: #d9534f; border-color: #d9534f; color: #fff !important; }
 .clipping-footer { display: block; text-align: center; font-size: 10px; color: #666 !important; margin-top: 15px; text-transform: uppercase; letter-spacing: 1px; }
 
-/* ==========================================================================
-   NAVIGATION, CARDS & CONDITIONAL LAYOUT RULES
-   ========================================================================== */
-.menu-bar { width: 100%; background-color: var(--menu-bg-default); border-bottom: 2px solid var(--town-accent); padding: 16px 0; position: sticky; top: 0; z-index: 50; box-shadow: 0 10px 15px rgba(0,0,0,0.8); }
-.menu-inner { width: 100%; padding: 0 32px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 16px; box-sizing: border-box; }
-@media (min-width: 768px) { .menu-inner { flex-direction: row; } }
-.menu-links { display: flex; flex-wrap: wrap; list-style: none; gap: 16px; margin: 0; padding: 0; }
-.menu-links a { color: var(--menu-text-default) !important; text-decoration: none; font-size: 14px; font-weight: 600; padding: 8px 12px; }
-.menu-links a.active { color: var(--town-detail) !important; border: 1px solid var(--town-detail); background-color: rgba(235,28,36,0.1); border-radius: 8px; }
-.menu-bar:hover { background-color: var(--town-secondary) !important; border-bottom-color: var(--town-detail); }
-.menu-bar:hover .menu-links a { color: #fff !important; }
-
-/* Business Card Ad Presentation */
-.showcase-card-body { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; }
-.showcase-media-canvas {
-    width: 100%; max-width: 280px; aspect-ratio: 3.5 / 2; background-color: #0a0a0a; border-radius: 6px;
-    border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; cursor: zoom-in;
-}
-.showcase-media-canvas img { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.3s ease; }
-.showcase-action-link { display: block; font-size: 13px; font-weight: 800; color: #fff !important; text-transform: uppercase; text-decoration: none; cursor: pointer; }
-.showcase-action-link:hover { color: var(--town-detail) !important; text-decoration: underline !important; }
-
-/* Fuel Index Monitor Linkages */
-.fuel-monitor-widget { cursor: pointer; }
-body:not([data-town="flora"]):not([data-town="xenia"]):not([data-town="louisville"]):not([data-town="claycity"]) .fuel-monitor-widget { display: none !important; }
-body:not([data-town="claycity"]):not([data-town="flora"]):not([data-town="louisville"]) .athletics-widget-card { display: none !important; }
+/* User's Original Calendar Section Restored */
+.news-clipping-wrapper { background-color: #fffdf5; box-shadow: 6px 6px 0px rgba(0,0,0,0.6); border: 1px solid #222; font-family: 'Times New Roman', Times, serif; color: #222; padding: 20px; box-sizing: border-box; width:100%; }
+.clipping-masthead { text-align: center; border-bottom: 4px double #222; padding-bottom: 10px; margin-bottom: 15px; }
+.black-tag { background: #000; color: #fff; text-transform: uppercase; font-size: 20px; font-weight: bold; padding: 5px 15px; }
+.divi-event-item { border-bottom: 1px dashed #777; padding: 15px 0; text-align: left; }
+.divi-event-date { color: #cc0000; font-weight: bold; font-size: 13px; text-transform: uppercase; }
+.divi-event-title { font-size: 18px; font-weight: bold; margin: 5px 0; color: #000 !important; }
+.event-info-text { font-size: 14px; color: #333 !important; }
+.right-now-badge { background-color: #cc0000; color: #fff; font-size: 10px; font-weight: bold; padding: 2px 6px; text-transform: uppercase; margin-left: 8px; animation: pulse-red 2s infinite; }
 
 /* ==========================================================================
-   ULTRA-WIDE FOOTER ROW BANNER COMPONENT
+   WIDGETS PANELS STRUCTURES
    ========================================================================== */
-.footer-row-banner-container {
-    width: 100%; padding: 0 32px; box-sizing: border-box; margin-top: 32px;
+.bulletin-widget-card, .athletics-widget-card, .wire-feed-card, .fuel-monitor-widget, .showcase-widget, .legacy-history-widget, .regional-map-widget {
+	background: #0d0d0d; border: 1px solid var(--town-detail); border-radius: 8px; padding: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.8); box-sizing: border-box;
 }
-.partners-horizontal-strip {
-    display: grid; grid-template-cols: 1fr; gap: 20px; width: 100%;
-}
-@media (min-width: 640px) { .partners-horizontal-strip { grid-template-cols: repeat(2, 1fr); } }
-@media (min-width: 1024px) { .partners-horizontal-strip { grid-template-cols: repeat(5, 1fr); } }
+.bulletin-widget-card, .wire-feed-card { border-color: var(--town-accent); }
+.card-header, .sidebar-widget-title { border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 15px; color: #fff; font-size: 14px; font-weight: bold; text-transform: uppercase; }
+.sidebar-widget-title { color: var(--town-detail); }
 
-.partners-horizontal-strip .showcase-media-canvas { max-width: 100%; }
+/* Newspapers Center Column elements */
+.clipping-card-container { background-color: #fbf9f3 !important; border-left: 6px solid #111; padding: 24px; border-radius: 8px; color: #111 !important; font-family: serif; }
+.clipping-card-container h3 { color: #000000 !important; margin: 0 0 10px 0; }
+.newspaper-card { border-bottom: 1px solid #ccc; padding-bottom: 15px; margin-bottom: 15px; text-align: left; }
+.newspaper-card h3 { color: #000000 !important; font-size: 20px; font-weight: 900; }
+.newspaper-card p { color: #222222 !important; font-size: 14px; }
 
-/* --- LIGHTBOX MODAL & OTHER CARDS BACKGROUND --- */
-.town-hero-banner { width: calc(100% - 64px); margin: 0 auto 24px auto; padding: 48px 0; background: linear-gradient(to bottom right, #000000, var(--bg-panel-darkest), var(--town-accent)); display: flex; align-items: center; justify-content: center; border-bottom: 4px solid var(--town-detail); border-radius: 12px; text-align: center; }
-.town-hero-banner h1 { font-size: 60px; font-weight: 900; text-transform: uppercase; margin: 0; -webkit-text-stroke: 1px #fff; }
-.clipping-card-container { background-color: #fbf9f3 !important; border-left: 6px solid #111; padding: 24px; border-radius: 12px; }
-.clipping-card-container h3, .clipping-card-container p { color: #111 !important; font-family: serif; }
+/* Fuel Prices index grid */
+.fuel-pricing-grid { display: flex; justify-content: space-between; margin-top: 10px; }
+.price-box { background: #000; padding: 10px; border: 1px solid #333; border-radius: 4px; text-align: center; flex: 1; margin: 0 5px; }
+.price-type-label { display: block; font-size: 10px; color: #888; }
+.price-value-regular { color: #0f0; font-size: 18px; font-weight: bold; }
+.price-value-diesel { color: var(--town-detail); font-size: 18px; font-weight: bold; }
+
+/* Business Card canvas wrappers constraints */
+.showcase-media-canvas { width: 100%; aspect-ratio: 3.5 / 2; background-color: #000000; overflow: hidden; border: 1px solid #333; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; }
+.showcase-media-canvas img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ==========================================================================
+   ULTRA-WIDE HORIZONTAL ROW STRIPS
+   ========================================================================== */
+.footer-row-banner-container { width: 100%; box-sizing: border-box; margin-top: 32px; }
+.partners-horizontal-strip { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 10px; width: 100%; }
+.partners-horizontal-strip .showcase-card-body { flex: 1; min-width: 200px; }
+
+/* Map & Directory selector linkages layout rows */
+.directory-click-row { padding: 5px 0; display: block; border-bottom: 1px solid #333; }
+
+/* Network Core Footer Styles */
+.site-global-footer { background-color: #000000; border-top: 4px solid var(--town-accent); padding: 40px 0; text-align: center; margin-top: 50px; width: 100%; }
+footer img { display: none !important; }
+
+/* ==========================================================================
+   LIGHTBOX AND INTERACTION OVERLAYS SYSTEM
+   ========================================================================== */
 #portal-lightbox { position: fixed; inset: 0; background-color: rgba(0,0,0,0.95); backdrop-filter: blur(4px); z-index: 9999; opacity: 0; pointer-events: none; display: flex; align-items: center; justify-content: center; transition: all 0.3s; }
 #portal-lightbox.active-show { opacity: 1; pointer-events: auto; }
 .lightbox-modal-window { background-color: #171717; border: 2px solid var(--town-detail); max-width: 48rem; width: 100%; border-radius: 16px; display: flex; flex-direction: column; max-height: 90vh; overflow: hidden; }
-.lightbox-image-wrapper.show-media { display: flex; justify-content: center; padding: 10px; }
-.lightbox-image-wrapper.show-media img { max-height: 50vh; border-radius: 8px; }
-.lightbox-close-btn { background: #262626; color: #fff; border: none; padding: 8px 16px; cursor: pointer; border-radius: 50%; font-weight: bold; }
+
+/* Visibility filters protection boundaries */
+body:not([data-town="flora"]):not([data-town="xenia"]):not([data-town="louisville"]):not([data-town="claycity"]) .fuel-monitor-widget { display: none !important; }
+body:not([data-town="claycity"]):not([data-town="flora"]):not([data-town="louisville"]) .athletics-widget-card { display: none !important; }
+
+/* Widescreen text forced overrides standard values */
+#divi-event-list p, #divi-event-list span, #divi-event-list div,
+#json-news-container p, #json-news-container span, #json-news-container div,
+#rss-feed-container p, #rss-feed-container div,
+#history-json-container p, #history-json-container div {
+	font-size: 16px !important; line-height: 1.6 !important;
+}
+iframe { max-width: 100% !important; width: 100% !important; height: 100% !important; border: none !important; }
+
+/* NO STRIPPING, NO COMPRESSING, DON'T CHANGE WHAT I DIDN'T SAY TO CHANGE */
+/* NYT Timestamp: 2026-06-16 05:07:32 */
