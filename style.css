@@ -15,6 +15,8 @@
     /* --- Theme Core Defaults (Light Mode Base) --- */
     --bg-primary: #ffffff;
     --bg-surface: #f8f9fa;
+    --bg-panel: #121212;
+    --bg-panel-dark: #080808;
     --text-primary: #111111;
     --text-muted: #555555;
     
@@ -141,6 +143,8 @@ body {
     color: var(--text-primary);
     margin: 0;
     padding: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -148,18 +152,7 @@ body {
 .main-container {
     width: var(--container-width);
     margin: 0 auto;
-    display: flex;
-    flex-wrap: wrap; /* Liquid flow wrapping preventing elements crushing */
-    gap: 20px;
-    padding: 20px 0;
-}
-
-/* Universal Heading Specifications */
-h1.town-title {
-    font-size: var(--font-size-header);
-    font-weight: 700;
-    margin: 10px 0;
-    text-shadow: var(--text-shadow-setup, none);
+    padding: 32px 0;
 }
 
 /* Text Word Wrap Security Protocol */
@@ -175,6 +168,23 @@ img {
     display: block;
 }
 
+/* Dynamic Multi-Column Grid System layout */
+.portal-grid-layout {
+    display: grid;
+    grid-template-cols: 1fr;
+    gap: 32px;
+    align-items: start;
+}
+
+@media (min-width: 1024px) {
+    .portal-grid-layout {
+        grid-template-cols: repeat(12, minmax(0, 1fr));
+    }
+    .sidebar-left { grid-column: span 3; }
+    .content-center-column { grid-column: span 6; }
+    .sidebar-right { grid-column: span 3; }
+}
+
 /* ==========================================================================
    UNIVERSAL NAVIGATION BAR (MENU) & HOVER ENGINE
    ========================================================================== */
@@ -182,50 +192,79 @@ img {
 .menu-bar {
     width: 100%;
     background-color: var(--menu-bg-default);
-    border-bottom: 4px solid var(--menu-border-default);
-    padding: 0;
-    margin: 0;
+    border-bottom: 2px solid var(--menu-border-default);
+    padding: 16px 0;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.8);
     transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .menu-inner {
-    width: var(--container-width);
-    margin: 0 auto;
+    width: 100%;
+    max-width: 100%;
+    padding-left: 32px;
+    padding-right: 32px;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    min-height: var(--bar-height);
-    padding: 10px 0;
+    gap: 16px;
+}
+
+@media (min-width: 768px) {
+    .menu-inner {
+        flex-direction: row;
+        gap: 16px;
+    }
 }
 
 .menu-links {
     display: flex;
     flex-wrap: wrap;
-    gap: 15px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
+    justify-content: center;
+    gap: 8px;
+}
+
+@media (min-width: 768px) {
+    .menu-links {
+        gap: 16px;
+    }
 }
 
 .menu-links a {
-    color: var(--menu-text-default) !important; /* Forces global solid Royal Blue text base */
+    color: var(--menu-text-default) !important;
     text-decoration: none;
+    font-size: 14px;
     font-weight: 600;
     padding: 8px 12px;
     position: relative;
-    transition: color 0.2s ease, background-color 0.2s ease;
+    transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
 }
 
-/* Menu header/title text defaults to royal blue matching links */
+.menu-links a:hover {
+    color: var(--town-detail, #eab308) !important;
+}
+
+/* Menu header/title text defaults matching links */
 .menu-bar .town-title {
     color: var(--menu-text-default) !important;
     text-decoration: none;
     transition: color 0.2s ease;
 }
 
+.menu-bar .town-title img {
+    height: 40px;
+    width: auto;
+}
+
 /* --- THE ACTIVE PAGE TRACKING HIGHLIGHT --- */
 .menu-links a.active {
-    border-bottom: 3px solid #0C0B82; /* Clean Royal Blue underline when resting */
+    color: var(--town-detail, #eab308) !important;
+    border: 1px solid var(--town-detail, #0C0B82);
+    background-color: rgba(220, 38, 38, 0.1);
+    border-radius: 8px;
 }
 
 /* --- THE HOVER TRICK: Town accent colors ONLY manifest upon hover state --- */
@@ -241,29 +280,28 @@ img {
 /* Universal Rule: When hovering the menu, text shifts cleanly for high-visibility */
 .menu-bar:hover .menu-links a,
 .menu-bar:hover .town-title {
-    color: #ffffff !important; /* Sharp contrast change on dark/vibrant town backgrounds */
+    color: #ffffff !important;
     text-shadow: none;
 }
 
-/* Adjust active underline color on hover block states */
-.menu-bar:hover .menu-links a.active {
-    border-bottom-color: #ffffff; /* Turns white on hover for clean visual lockup */
+.menu-bar:hover .menu-links a:hover {
+    color: var(--town-detail, #facc15) !important;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
 }
 
 /* --- LIGHT TOWN HOVER CONTRAST OVERRIDES --- */
-/* Clay City uses a White/Light Gray accent. White text would vanish! Force blue text on hover. */
 body[data-town="claycity"] .menu-bar:hover {
     background-color: #ffffff !important;
 }
 body[data-town="claycity"] .menu-bar:hover .menu-links a,
 body[data-town="claycity"] .menu-bar:hover .town-title {
-    color: #0C30F0 !important; /* Force vivid blue text for massive contrast on white background */
+    color: #0C30F0 !important;
 }
 body[data-town="claycity"] .menu-bar:hover .menu-links a.active {
-    border-bottom-color: #0C30F0; /* Keeps underline vivid blue on white background hover */
+    border-bottom-color: #0C30F0;
 }
 
-/* Bible Grove uses soft cream accents. Keep text dark gray on hover. */
 body[data-town="biblegrove"] .menu-bar:hover .menu-links a,
 body[data-town="biblegrove"] .menu-bar:hover .town-title {
     color: #111111 !important;
@@ -272,13 +310,453 @@ body[data-town="biblegrove"] .menu-bar:hover .menu-links a.active {
     border-bottom-color: #111111;
 }
 
-/* Soft highlight boxes when individual links are focused during a menu hover */
-.menu-bar:hover .menu-links a:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-    border-radius: 4px;
-}
 body[data-town="claycity"] .menu-bar:hover .menu-links a:hover {
-    background-color: rgba(12, 48, 240, 0.1); /* Blue tint overlay hover for light mode menu safety */
+    background-color: rgba(12, 48, 240, 0.1);
+}
+
+/* ==========================================================================
+   TOWN HERO BANNER GRAPHIC SYSTEM
+   ========================================================================== */
+.town-hero-banner {
+    width: 100%;
+    padding: 48px 0;
+    background: linear-gradient(to bottom right, #000000, var(--bg-panel-dark), var(--town-accent));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 4px solid var(--town-detail);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    margin-bottom: 24px;
+}
+
+.banner-content {
+    text-center: center;
+    padding-left: 16px;
+    padding-right: 16px;
+    text-align: center;
+}
+
+.seat-badge {
+    display: inline-block;
+    padding: 4px 16px;
+    background-color: var(--town-detail);
+    color: #000000;
+    font-weight: 900;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-radius: 4px;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.banner-content h1.town-title {
+    font-size: 36px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.025em;
+    color: #ffffff;
+}
+
+@media (min-width: 768px) {
+    .banner-content h1.town-title {
+        font-size: 60px;
+    }
+}
+
+.town-established-meta {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    margin-top: 8px;
+    color: #ffffff;
+}
+
+.river-marquee {
+    margin-top: 16px;
+    font-size: 12px;
+    font-family: monospace;
+    font-weight: 700;
+    color: #d4d4d4;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 6px 16px;
+    border-radius: 9999px;
+    max-width: max-content;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid #262626;
+}
+
+/* ==========================================================================
+   SPOTLIGHT TICKER COMPONENT
+   ========================================================================== */
+.spotlight-ticker-bar {
+    width: 100%;
+    background-color: #0a0a0a;
+    padding: 12px 0;
+    border: 1px solid #262626;
+    border-radius: 12px;
+    margin-bottom: 32px;
+    font-size: 12px;
+    font-family: monospace;
+}
+
+.ticker-inner {
+    width: 100%;
+    padding-left: 24px;
+    padding-right: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ticker-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.pulse-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--town-accent);
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .5; }
+}
+
+.ticker-label {
+    color: #a3a3a3;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+#ticker-link {
+    color: var(--town-detail);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+#ticker-link:hover {
+    text-decoration: underline;
+}
+
+.ticker-verification {
+    font-size: 10px;
+    color: #737373;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+/* ==========================================================================
+   WIDGETS & SIDEBAR INTERACTION CARDS
+   ========================================================================== */
+.bulletin-widget, .athletics-widget-card, .wire-feed-card, .fuel-monitor-widget, .showcase-widget, .legacy-history-widget {
+    background: linear-gradient(to bottom, var(--bg-panel), #000000);
+    border: 2px solid rgba(254, 79, 0, 0.3); /* Default protective border fallback style */
+    border-radius: 12px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    padding: 20px;
+}
+
+body[data-town="louisville"] .bulletin-widget,
+body[data-town="louisville"] .fuel-monitor-widget,
+body[data-town="louisville"] .legacy-history-widget {
+    border-color: rgba(220, 38, 38, 0.3);
+}
+
+body[data-town="louisville"] .bulletin-widget,
+body[data-town="louisville"] .showcase-widget {
+    border-color: rgba(250, 204, 21, 0.3);
+}
+
+.widget-header {
+    border-bottom: 2px solid var(--town-accent);
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.bulletin-badge {
+    padding: 4px 12px;
+    background-color: var(--town-accent);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-radius: 4px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.widget-sublabel {
+    font-size: 10px;
+    font-family: monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--town-detail);
+    margin-top: 8px;
+}
+
+.clock-display {
+    font-size: 11px;
+    font-family: monospace;
+    color: #a3a3a3;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #262626;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#chicago-clock {
+    color: var(--town-detail);
+    font-weight: 700;
+}
+
+.scrollable-event-feed, .scrollable-wire-feed, .scrollable-history-feed {
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.scrollable-event-feed { max-h: 700px; }
+.scrollable-wire-feed { max-h: 400px; }
+.scrollable-history-feed { max-h: 300px; }
+
+.feed-loading {
+    text-align: center;
+    padding: 24px 0;
+    font-size: 12px;
+    font-style: italic;
+    color: #737373;
+}
+
+/* Athletics Scorestream Viewport Frame Elements */
+.athletics-widget-card {
+    background: var(--bg-panel);
+    border: 2px solid #262626;
+    padding: 16px;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    border-bottom: 1px solid #171717;
+    padding-bottom: 8px;
+}
+
+.header-title-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.icon-spacer {
+    font-size: 16px;
+}
+
+.athletics-widget-card h2, .wire-feed-card h2 {
+    font-size: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #ffffff;
+    margin: 0;
+}
+
+.live-ticker-badge {
+    font-size: 10px;
+    font-family: monospace;
+    color: var(--town-detail);
+    font-weight: 700;
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.scorestream-viewport {
+    width: 100%;
+    height: 125px;
+    min-height: 125px;
+    background-color: transparent;
+    border-radius: 4px;
+    padding: 4px;
+}
+
+.feed-source-label {
+    font-size: 10px;
+    font-family: monospace;
+    color: #737373;
+}
+
+/* Fuel Index Components style map */
+.sidebar-widget-title {
+    font-size: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--town-detail);
+    border-bottom: 1px solid #262626;
+    padding-bottom: 8px;
+    margin-top: 0;
+    margin-bottom: 12px;
+}
+
+.showcase-widget .sidebar-widget-title, .legacy-history-widget .sidebar-widget-title {
+    color: #ffffff;
+}
+
+.fuel-card-body {
+    background-color: #000000;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #262626;
+}
+
+.fuel-station-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.station-logo-frame {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    background-color: #ffffff;
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.station-logo-frame img {
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.station-meta-title {
+    font-size: 10px;
+    font-weight: 700;
+    color: #ffffff;
+    font-family: monospace;
+    line-height: 1;
+}
+
+.fuel-pricing-grid {
+    display: grid;
+    grid-template-cols: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    text-align: center;
+    font-family: monospace;
+}
+
+.price-box {
+    background-color: #0a0a0a;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #171717;
+}
+
+.price-type-label {
+    display: block;
+    font-size: 8px;
+    color: #737373;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.price-box span[id] {
+    font-size: 14px;
+    font-weight: 900;
+}
+
+.price-value-regular { color: #34d399; }
+.price-value-diesel { color: var(--town-detail); }
+
+.sync-timestamp-label {
+    font-size: 9px;
+    color: #737373;
+    font-family: monospace;
+    margin-top: 12px;
+    text-align: right;
+}
+
+/* Local Showcase items placement framework styling */
+.showcase-card-body {
+    text-align: center;
+}
+
+.showcase-media-canvas {
+    width: 100%;
+    height: 128px;
+    background-color: #0a0a0a;
+    border-radius: 4px;
+    border: 1px solid #171717;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+    overflow: hidden;
+    position: relative;
+    cursor: zoom-in;
+}
+
+.showcase-media-canvas img {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.showcase-spinner-layer {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.spinner-icon {
+    border-width: 2px;
+    border-style: solid;
+    border-color: var(--town-detail) transparent transparent transparent;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.showcase-action-link {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 12px;
+    font-weight: 900;
+    color: #ffffff;
+    text-transform: uppercase;
+    tracking-style: 0.025em;
+    margin-top: 4px;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.showcase-action-link:hover {
+    color: var(--town-detail);
+    text-decoration: underline;
 }
 
 /* ==========================================================================
@@ -286,15 +764,23 @@ body[data-town="claycity"] .menu-bar:hover .menu-links a:hover {
    ========================================================================== */
 
 /* Bypasses all theme background rules to stay framed as a physical paper object */
-.clipping-card-container, 
-[class*="dispatch"], 
-[class*="newsroom"] {
+.clipping-card-container {
     background-color: #fbf9f3 !important; /* Authentic vintage paper off-white */
     border: 1px solid #dfdad0 !important;
     border-left: 6px solid #111111 !important; /* Thick ink-black accent spine line */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
-    padding: 25px !important;
-    border-radius: 4px;
+    padding: 24px !important;
+    border-radius: 12px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.clipping-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 2px solid #111111;
+    padding-bottom: 12px;
+    margin-bottom: 24px;
 }
 
 /* Force headings and content strings inside the card to dark ink typography */
@@ -302,10 +788,7 @@ body[data-town="claycity"] .menu-bar:hover .menu-links a:hover {
 .clipping-card-container h2,
 .clipping-card-container h3,
 .clipping-card-container p,
-.clipping-card-container span,
-[class*="dispatch"] h3,
-[class*="dispatch"] p,
-[class*="dispatch"] span {
+.clipping-card-container span {
     color: #111111 !important; /* Hardcoded solid ink black for crisp reading contrast */
     font-family: 'Georgia', Times, serif; /* Editorial serif formatting */
     text-shadow: none !important; /* Instantly strip out all dark mode text shadows */
@@ -313,33 +796,37 @@ body[data-town="claycity"] .menu-bar:hover .menu-links a:hover {
 }
 
 /* Headline titles inside dispatches (e.g., WRECK IN SALEM) */
-[class*="dispatch"] h3, 
 .clipping-card-container h3 {
-    font-weight: 800;
+    font-size: 16px;
+    font-weight: 900;
     text-transform: uppercase;
-    letter-spacing: -0.5px;
-    border-bottom: 2px solid #111111;
-    padding-bottom: 5px;
-    margin-bottom: 15px;
+    letter-spacing: 0.05em;
+    margin: 0;
 }
 
 /* Publication data fields (Dates, SMLC Newsroom stamps) */
-.clipping-card-container small,
-[class*="dispatch"] span[class*="date"],
-[class*="dispatch"] span[class*="newsroom"] {
-    color: #444444 !important; /* Muted slate for timeline details */
-    font-family: var(--font-town) !important; /* Returns smoothly to global typography standard */
-    font-weight: 700 !important;
-    text-transform: uppercase;
+.clipping-card-container small {
+    font-size: 10px;
+    font-family: monospace;
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 2px 8px;
+    border-radius: 4px;
+    color: #111111 !important;
+    font-weight: 700;
 }
 
 /* Outbound links / click triggers on the canvas */
-.clipping-card-container a,
-[class*="dispatch"] a,
-[class*="click-clipping"] {
+.clipping-card-container a {
     color: #dc2626 !important; /* Sharp energetic action color */
     font-weight: 700 !important;
     text-decoration: underline !important;
+}
+
+/* Container space sizing rules mapping archives dynamic arrays */
+#json-news-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
 }
 
 /* ==========================================================================
@@ -529,6 +1016,241 @@ body[data-town="claycity"] .year-badge {
 }
 
 /* ==========================================================================
+   LIGHTBOX MODAL FRAMEWORK SYSTEM
+   ========================================================================== */
+#portal-lightbox {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(4px);
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+/* Class hook when open state is active */
+#portal-lightbox.active-show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.lightbox-modal-window {
+    background-color: #171717;
+    border: 2px solid var(--town-detail);
+    max-width: 48rem;
+    width: 100%;
+    border-radius: 16px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    transform: scale(0.95);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh;
+}
+
+#portal-lightbox.active-show .lightbox-modal-window {
+    transform: scale(1);
+}
+
+.lightbox-header-bar {
+    background-color: #000000;
+    padding: 16px;
+    border-bottom: 1px solid #262626;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.lightbox-meta-group {
+    display: flex;
+    flex-direction: column;
+}
+
+#lightbox-label {
+    font-size: 10px;
+    font-family: monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--town-detail);
+    font-weight: 700;
+}
+
+#lightbox-meta {
+    font-size: 11px;
+    font-family: monospace;
+    color: #a3a3a3;
+    margin-top: 2px;
+}
+
+.lightbox-close-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #262626;
+    color: #ffffff;
+    border: none;
+    font-family: monospace;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+.lightbox-close-btn:hover {
+    background-color: var(--town-accent);
+}
+
+.lightbox-body-scroll-frame {
+    padding: 24px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.lightbox-image-wrapper {
+    width: 100%;
+    display: none;
+    justify-content: center;
+    margin-bottom: 16px;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #262626;
+}
+
+.lightbox-image-wrapper.show-media {
+    display: flex;
+}
+
+.lightbox-image-wrapper img {
+    border-radius: 8px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+#lightbox-title {
+    font-size: 20px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.025em;
+    line-height: 1.25;
+    color: #ffffff;
+    margin: 0;
+}
+
+.lightbox-divider-line {
+    border-top: 1px dashed #404040;
+    margin: 8px 0;
+}
+
+#lightbox-story {
+    font-size: 14px;
+    color: #e5e5e5;
+    line-height: 1.625;
+    white-space: pre-line;
+    font-family: serif;
+    text-align: justify;
+    padding: 0 4px;
+}
+
+.lightbox-footer-bar {
+    background-color: #000000;
+    padding: 16px;
+    border-top: 1px solid #262626;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    font-size: 10px;
+    font-family: monospace;
+    color: #737373;
+}
+
+@media (min-width: 640px) {
+    .lightbox-footer-bar {
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 8px;
+    }
+}
+
+#lightbox-external-link {
+    color: var(--town-detail);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+#lightbox-external-link:hover {
+    text-decoration: underline;
+}
+
+/* ==========================================================================
+   GLOBAL SITE FOOTER COMPONENT STYLE MAP
+   ========================================================================== */
+.site-global-footer {
+    background-color: #000000;
+    border-top: 4px solid var(--town-accent);
+    padding: 48px 0;
+    margin-top: 48px;
+}
+
+.footer-inner-content {
+    width: 100%;
+    padding-left: 32px;
+    padding-right: 32px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.footer-inner-content img {
+    height: 40px;
+    width: auto;
+    opacity: 0.75;
+    margin-bottom: 8px;
+}
+
+.footer-copyright-text {
+    font-size: 12px;
+    font-weight: 600;
+    color: #a3a3a3;
+    margin: 0;
+}
+
+.footer-copyright-text span {
+    color: #ffffff;
+}
+
+.footer-firm-link {
+    font-size: 11px;
+    color: #737373;
+    margin: 0;
+}
+
+.footer-firm-link a {
+    color: var(--town-detail);
+    text-decoration: none;
+    font-weight: 700;
+    display: inline;
+}
+
+.footer-firm-link a:hover {
+    text-decoration: underline;
+}
+
+/* ==========================================================================
    COMPACT MEDIA NO-STRIP OVERLAYS (STREAM ELEMENTS COMPATIBLE)
    ========================================================================== */
 .overlay-frame-canvas {
@@ -540,4 +1262,4 @@ body[data-town="claycity"] .year-badge {
 }
 
 /* NO STRIPPING, NO COMPRESSING, DON'T CHANGE WHAT I DIDN'T SAY TO CHANGE */
-/* NYT Timestamp: 2026-06-16 02:24:00 */
+/* NYT Timestamp: 2026-06-16 02:38:00 */
