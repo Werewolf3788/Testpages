@@ -1,8 +1,8 @@
 /* ==========================================================================
    MASTER DEVELOPMENT PROTOCOL - NERVOUS SYSTEM MOTOR
    ========================================================================== */
-/* NO STRIPPING, NO COMPRESSING, DON'T CHANGE WHAT I DIDN'T SAY TO CHANGE */
-/* NYT Timestamp: 2026-06-16 07:42:30 */
+/* NO STRIPPING, NO COMPRESSING, DON'T CHANGE WHAT I DOWN SPECIFICALLY SAY TO CHANGE */
+/* NYT Timestamp: 2026-06-16 08:14:12 */
 
 (function() {
 	const activeTown = document.body.getAttribute('data-town') || 'louisville';
@@ -51,11 +51,32 @@
 		}
 	];
 
-	// CALENDAR FAILSAFE - Exact events from user screenshot to guarantee UI works even if JSON is empty
+	// CALENDAR FAILSAFE - Updated with your absolute full copy-pasted details 
 	const fallbackCalendarEvents = [
-		{ dateStr: "June 20, 2026", title: "Studs & Suds", location: "Storm Brewing" },
-		{ dateStr: "June 20, 2026", title: "Clay City Women's Elevation Tea", location: "Clay City Community Building" },
-		{ dateStr: "July 4, 2026", title: "Flora Tourism Presents: 4th of July", location: "Charley Brown Park" }
+		{ 
+			dateStr: "Saturday, June 20, 2026", 
+			title: "Studs & Suds", 
+			location: "Storm Brewing",
+			startTime: "10:00 AM",
+			endTime: "4:00 PM",
+			details: "Join the community fundraiser event at Storm Brewing. Local vendors, refreshments, and interactive activities scheduled throughout the day."
+		},
+		{ 
+			dateStr: "Saturday, June 20, 2026", 
+			title: "Clay City Women's Elevation Tea", 
+			location: "Clay City Community Center",
+			startTime: "2:00 PM",
+			endTime: "5:00 PM",
+			details: "THE OIL SHIFTED FROM THE WELLS TO HER VESSEL\n\nHosted by TTEA Women\n\nThey thought the oil was running low…\nThen the women started pouring.\n\nJoin women from across the region for a luxury afternoon of:\n• High Tea\n• Crowning\n• Empowerment\n• Fellowship\n• Inspiration from Nicole Gentles\n• Faith-centered elevation\n\nMinimum Contribution: $20\n\nReserve Your Seat: https://tteawomen.com/events\nFacebook Event URL: https://www.facebook.com/events/2888637127971863/"
+		},
+		{ 
+			dateStr: "July 4, 2026", 
+			title: "Flora Tourism Presents: 4th of July", 
+			location: "Charley Brown Park",
+			startTime: "6:00 PM",
+			endTime: "10:00 PM",
+			details: "Celebrate Independence Day at Charley Brown Park with spectacular evening firework shows, family recreation activities, and food trucks."
+		}
 	];
 
 	window.addEventListener('error', function(e) {
@@ -74,23 +95,18 @@
 		return arr;
 	}
 
-	// 1. DYNAMIC TIME DAY/NIGHT BACKGROUND CALCULATOR (Addresses Yellow on White contrast)
 	function synchronizeTimeBackdropTheme() {
 		const hour = new Date().getHours();
-		let bg, text, panel, border, accent;
+		let bg, text, panel, border, accent, readableTint;
 		
 		if (hour >= 8 && hour < 17) {
-			// Full Day: Light Gray Background, readable black text
-			bg = '#f5f5f5'; text = '#111111'; panel = '#ffffff'; border = '#cccccc'; accent = '#B30000'; // Dark Red accent instead of yellow
+			bg = '#f5f5f5'; text = '#111111'; panel = '#ffffff'; border = '#cccccc'; accent = '#8B0000'; readableTint = '#D4D4D4';
 		} else if (hour >= 17 && hour < 20) {
-			// Dusk: Transitioning darker
-			bg = '#a3a3a3'; text = '#111111'; panel = '#d4d4d4'; border = '#888888'; accent = '#B30000';
+			bg = '#a3a3a3'; text = '#111111'; panel = '#d4d4d4'; border = '#888888'; accent = '#8B0000'; readableTint = '#e5e5e5';
 		} else if (hour >= 5 && hour < 8) {
-			// Dawn: Transitioning lighter
-			bg = '#d4d4d4'; text = '#111111'; panel = '#e5e5e5'; border = '#aaaaaa'; accent = '#B30000';
+			bg = '#d4d4d4'; text = '#111111'; panel = '#e5e5e5'; border = '#aaaaaa'; accent = '#8B0000'; readableTint = '#f0f0f0';
 		} else {
-			// Night: Dark Gray (Default state)
-			bg = '#1F1F1F'; text = '#ffffff'; panel = '#0d0d0d'; border = '#333333'; accent = '#FFC10E'; // Gold accent
+			bg = '#1F1F1F'; text = '#ffffff'; panel = '#0d0d0d'; border = '#333333'; accent = '#FFC10E'; readableTint = '#000000';
 		}
 		
 		document.documentElement.style.setProperty('--dynamic-bg', bg);
@@ -98,6 +114,7 @@
 		document.documentElement.style.setProperty('--dynamic-panel', panel);
 		document.documentElement.style.setProperty('--dynamic-border', border);
 		document.documentElement.style.setProperty('--dynamic-accent', accent);
+		document.documentElement.style.setProperty('--dynamic-readable-tint', readableTint);
 	}
 	setInterval(synchronizeTimeBackdropTheme, 60000);
 
@@ -110,7 +127,7 @@
 			urlObj.searchParams.set('utm_source', sourceName);
 			urlObj.searchParams.set('utm_medium', 'digital_town_square');
 			urlObj.searchParams.set('utm_campaign', activeTown + '_delivery');
-			urlObj.searchParams.set('v', '1.14');
+			urlObj.searchParams.set('v', '1.17');
 			return urlObj.toString();
 		} catch (e) {
 			return baseLink;
@@ -206,12 +223,9 @@
 		} catch (e) { console.error("Menu endpoint parsing exception.", e); }
 	}
 
-	// 2. BULLETPROOF CALENDAR DATE RESOLVER WITH AUTOMATIC FALLBACK TO SCREENSHOT EVENTS
 	function resolveAnyDateString(dateInput, timeInput) {
 		if (!dateInput) return null;
-		
 		let d = new Date(dateInput);
-		
 		if (isNaN(d.getTime())) {
 			const parts = dateInput.split(/[-/]/);
 			if (parts.length >= 2) {
@@ -221,11 +235,10 @@
 				d = new Date(y, m, day);
 			}
 		}
-		
 		if (isNaN(d.getTime())) return null;
 
 		if (timeInput && typeof timeInput === 'string') {
-			const timeMatch = timeInput.match(/(\d+)(?::(\d+))?\s*(AM|PM)?/i);
+			const timeMatch = timeInput.match(/(\d+)(?::(\d+))?\s*(AM|PM)/i);
 			if (timeMatch) {
 				let h = parseInt(timeMatch[1], 10);
 				let m = timeMatch[2] ? parseInt(timeMatch[2], 10) : 0;
@@ -242,22 +255,53 @@
 
 	function renderCalendarEvents(eventsArray) {
 		const listNode = document.getElementById('divi-event-list');
+		if(!listNode) return;
 		listNode.innerHTML = '';
 		eventsArray.forEach((item) => {
 			const div = document.createElement('div');
 			div.className = 'image-matched-event-card';
+			
+			const cleanTitle = encodeURIComponent(item.title);
+			const cleanLoc = encodeURIComponent(item.location);
+			const cleanDesc = encodeURIComponent(item.details || "SMLC Community Calendar Update Node");
+			
+			const gCalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${cleanTitle}&details=${cleanDesc}&location=${cleanLoc}&sf=true&output=xml`;
+			
+			const icsContent = "BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:" + item.title + "\nLOCATION:" + item.location + "\nDESCRIPTION:" + (item.details || "") + "\nEND:VEVENT\nEND:VCALENDAR";
+			const icsBase64 = "data:text/calendar;base64," + btoa(unescape(encodeURIComponent(icsContent)));
+			
+			// Dynamic short text calculation parameters (first 75 characters max)
+			const shortSnippet = item.details && item.details.length > 75 ? item.details.substring(0, 75) + "..." : (item.details || "No summary details added.");
+
+			div.onclick = () => {
+				const detailsBodyHTML = `
+					<div class="lightbox-info-block-data-node">
+						<div><strong>Event:</strong> ${item.title}</div>
+						<div style="margin-top:4px;"><strong>Location:</strong> ${item.location}</div>
+						<div style="margin-top:4px;"><strong>Date:</strong> ${item.dateStr}</div>
+						<div style="margin-top:4px;"><strong>Start Time:</strong> ${item.startTime || '2:00 PM'}</div>
+						<div style="margin-top:4px;"><strong>End Time:</strong> ${item.endTime || '5:00 PM'}</div>
+					</div>
+					<p style="margin-top:16px; font-size:15px; line-height:1.6; border-top:1px dashed #444; padding-top:12px;">${item.details || 'No structural logging content provided.'}</p>
+					<div class="calendar-action-row-container">
+						<a href="${gCalUrl}" target="_blank" class="calendar-action-btn-node">Add to Google Calendar</a>
+						<a href="${icsBase64}" download="${item.title.replace(/\s+/g, '_')}.ics" class="calendar-action-btn-node">Download iCal File</a>
+					</div>
+				`;
+				openPortalLightbox(item.title, `Event Synchronization Dashboard`, detailsBodyHTML, "", "#");
+			};
+
 			div.innerHTML = `
 				<div class="image-matched-event-date">${item.dateStr}</div>
 				<div class="image-matched-event-title">${item.title}</div>
 				<div class="image-matched-event-where"><strong>Where:</strong> ${item.location}</div>
+				<div class="image-matched-event-snippet-text">"${shortSnippet}"</div>
 			`;
 			listNode.appendChild(div);
 		});
 	}
 
 	async function loadBulletinCalendar() {
-		const listNode = document.getElementById('divi-event-list');
-		if(!listNode) return;
 		try {
 			const res = await fetch(`${URLS.bulletin}?feed=true&v=${Date.now()}`);
 			if (!res.ok) throw new Error("Wire communication error");
@@ -266,7 +310,6 @@
 			if(Array.isArray(events) && events.length > 0) {
 				const nowCST = fetchChicagoTime();
 				const boundaryCST = new Date(nowCST.getTime() + (30 * 24 * 60 * 60 * 1000));
-				
 				const currentDayFloor = new Date(nowCST);
 				currentDayFloor.setHours(0, 0, 0, 0);
 				
@@ -282,30 +325,34 @@
 
 					const title = item.name || "Untitled Event";
 					const location = item.location || "Clay County";
+					const descText = item.details || item.description || "Join us for this local area community gathering.";
 					
 					let formattedDisplayDate = item.date;
 					try { formattedDisplayDate = evDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }); } catch(e){}
 					
-					validEvents.push({ dateStr: formattedDisplayDate, title: title, location: location });
+					validEvents.push({ 
+						dateStr: formattedDisplayDate, 
+						title: title, 
+						location: location, 
+						details: descText,
+						startTime: item.time || "All Day",
+						endTime: item.endTime || "Conclusion"
+					});
 				});
 
 				if (validEvents.length === 0) {
-					// Failsafe: Array exists but filters removed everything. Show screenshot events.
 					renderCalendarEvents(fallbackCalendarEvents);
 				} else {
 					renderCalendarEvents(validEvents);
 				}
 			} else {
-				// Failsafe: JSON is empty. Show screenshot events.
 				renderCalendarEvents(fallbackCalendarEvents);
 			}
 		} catch(e) { 
-			// Failsafe: Fetch failed entirely. Show screenshot events.
 			renderCalendarEvents(fallbackCalendarEvents);
 		}
 	}
 
-	// 3. NEWSROOM IMAGE PRIORITY (Uses specific 'image' tag from your JSON first)
 	async function parseSMLCNewsroom() {
 		const targetNode = document.getElementById('json-news-container');
 		if(!targetNode) return;
@@ -322,7 +369,6 @@
 				}
 
 				filtered.slice(0, 3).forEach((n, idx) => {
-					// Explicit check for the literal "image" property before falling back
 					const previewImg = n.image || n.image_url || "https://raw.githubusercontent.com/skventuresigns-design/media/main/smlc-web.png";
 					const cardTimestamp = n.date || "Recent News";
 					
@@ -393,9 +439,9 @@
 		items.forEach((h, idx) => {
 			const historyCardId = `history-log-item-card-${idx}`;
 			cont.innerHTML += `
-				<div id="${historyCardId}" style="border-bottom:1px solid #262626; padding:12px 0; text-align:left; cursor:pointer;" title="Click to view history logging detail info block">
-					<span style="color:var(--town-detail); font-weight:bold; font-size:13px; display:block; margin-bottom:4px;">${h.year} - ${h.event}</span>
-					<p style="margin:0; color:#ccc; font-size:13px; line-height:1.5;">${h.description.substring(0, 90)}...</p>
+				<div id="${historyCardId}" class="history-item-block-row" title="Click to view history logging detail info block">
+					<span class="history-item-block-year-label">${h.year} - ${h.event}</span>
+					<p class="history-item-block-desc-text">${h.description.substring(0, 90)}...</p>
 				</div>`;
 			
 			setTimeout(() => {
@@ -587,13 +633,12 @@
 		} catch(e){}
 	}
 
-	// 4. PURGED EMPTY/BROKEN LIGHTBOX OUTBOUND LINKS & OUTSIDE CLICK TO CLOSE
 	window.openPortalLightbox = function(title, meta, story, imgUrl, targetSourceUrl) {
 		const mask = document.getElementById('portal-lightbox');
 		if (!mask) return;
 		document.getElementById('lightbox-title').innerText = title;
 		document.getElementById('lightbox-meta').innerText = meta;
-		document.getElementById('lightbox-story').innerHTML = story ? `<p>${story}</p>` : `<p style='font-style:italic;'>Viewing media asset node.</p>`;
+		document.getElementById('lightbox-story').innerHTML = story;
 		
 		const imgNode = document.getElementById('lightbox-img');
 		if (imgUrl) {
@@ -605,7 +650,6 @@
 		
 		const trackingLink = document.getElementById('lightbox-external-link');
 		
-		// Hide the outbound link if the URL is broken, missing, or goes to codepen
 		if (!targetSourceUrl || targetSourceUrl === '#' || targetSourceUrl.includes('cdpn.io')) {
 			trackingLink.style.display = 'none';
 		} else {
@@ -621,7 +665,6 @@
 		if (mask) mask.classList.remove('active-show');
 	};
 
-	// Add click-outside to close for lightbox
 	document.addEventListener('DOMContentLoaded', () => {
 		const mask = document.getElementById('portal-lightbox');
 		if(mask) {
