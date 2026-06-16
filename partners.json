@@ -1,1 +1,20 @@
-
+[
+  {
+    "name": "Wabash Communications",
+    "websiteUrl": "https://wabash.net",
+    "image": "https://staging.supportmylocalcommunity.com/wp-content/uploads/2025/12/pexels-photo-15823361-1.jpeg",
+    "county": "Clay"
+  },
+  {
+    "name": "Casey's General Store",
+    "websiteUrl": "https://www.caseys.com",
+    "image": "https://raw.githubusercontent.com/skventuresigns-design/smlc/main/gas-prices/image/Casey's.png",
+    "county": "Clay"
+  },
+  {
+    "name": "S&K Ventures",
+    "websiteUrl": "https://www.skventuresigns.com",
+    "image": "https://staging.supportmylocalcommunity.com/wp-content/uploads/2025/12/SMLC-logo-scaled-e1767473737771.png",
+    "county": "Clay"
+  }
+]
