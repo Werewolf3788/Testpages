@@ -12,9 +12,9 @@
                 },
                 {
                     "id": "landmark_02",
-                    "name": "Clock Tower",
-                    "url": "./assets/images/clock_tower.jpg",
-                    "alt": "Central town clock tower"
+                    "name": "North Clay High School",
+                    "url": "https://i.ebayimg.com/images/g/qigAAOSwAjpkAqRk/s-l400.jpg",
+                    "alt": "North Clay High School Postcard"
                 }
             ]
         },
@@ -23,9 +23,9 @@
             "images": [
                 {
                     "id": "park_01",
-                    "name": "Central Park",
-                    "url": "./assets/images/central_park.jpg",
-                    "alt": "Green space with benches"
+                    "name": "Louisville Sports Mascot",
+                    "url": "https://pbs.twimg.com/profile_images/1152299246151974916/OaQlVtJk_400x400.jpg",
+                    "alt": "Louisville Sports Mascot"
                 },
                 {
                     "id": "park_02",
