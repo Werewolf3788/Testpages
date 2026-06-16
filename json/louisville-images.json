@@ -29,9 +29,9 @@
                 },
                 {
                     "id": "park_02",
-                    "name": "Louisville Population",
-                    "url": "http://www.billburmaster.com/rmsandw/illinois/us/us45clayil.html",
-                    "alt": "Louisville Population"
+                    "name": "Louisville Storm Warning",
+                    "url": "https://preview.redd.it/is-this-a-tornado-louisville-il-3-15-26-20-25-v0-djddjz5a2bpg1.jpeg?auto=webp&s=4174736c3a6b5dd77b3ba3d05b7b1364ab566450",
+                    "alt": "Louisville Storem"
                 }
             ]
         },
@@ -40,9 +40,9 @@
             "images": [
                 {
                     "id": "biz_01",
-                    "name": "Main Street Cafe",
-                    "url": "./assets/images/cafe.jpg",
-                    "alt": "Cozy cafe front"
+                    "name": "City sign",
+                    "url": "https://www.billburmaster.com/rmsandw/illinois/images/louisvilleilwel.jpg",
+                    "alt": "City sign"
                 }
             ]
         }
