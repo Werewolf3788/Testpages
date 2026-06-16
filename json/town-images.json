@@ -1,0 +1,112 @@
+{
+  "network_towns": {
+    "Flora": {
+      "town_display_name": "Flora",
+      "categories": [
+        {
+          "category": "Landmarks",
+          "images": [
+            {
+              "id": "flora_landmark_01",
+              "name": "Charlie Brown Park",
+              "url": "./images/Charlie-Brown-Park.jpg",
+              "alt": "Charlie Brown Park"
+            },
+            {
+              "id": "flora_landmark_02",
+              "name": "B&O Railroad",
+              "url": "./images/Flora-railroad.png",
+              "alt": "B&O Railroad"
+            }
+          ]
+        },
+        {
+          "category": "Parks",
+          "images": [
+            {
+              "id": "flora_park_01",
+              "name": "Flora Sports Mascot",
+              "url": "./images/Flora.jpeg",
+              "alt": "Flora Sports Mascot"
+            },
+            {
+              "id": "flora_park_02",
+              "name": "Hanging Rock Auto Repair",
+              "url": "./images/Hanging Rock.jpg",
+              "alt": "Hanging Rock"
+            }
+          ]
+        },
+        {
+          "category": "Local Business",
+          "images": [
+            {
+              "id": "flora_biz_01",
+              "name": "Grandma's Kitchen",
+              "url": "images/Grandma_s Kitchen.jpg",
+              "alt": "Spotlight Business"
+            }
+          ]
+        }
+      ]
+    },
+    "Louisville": {
+      "town_display_name": "Louisville",
+      "categories": [
+        {
+          "category": "Landmarks",
+          "images": [
+            {
+              "id": "louisville_landmark_01",
+              "name": "Court House",
+              "url": "https://live.staticflickr.com/4117/4861670451_669d9e52e9_b.jpg",
+              "alt": "Historic town Government building"
+            },
+            {
+              "id": "louisville_landmark_02",
+              "name": "North Clay High School",
+              "url": "https://i.ebayimg.com/images/g/qigAAOSwAjpkAqRk/s-l400.jpg",
+              "alt": "North Clay High School Postcard"
+            }
+          ]
+        },
+        {
+          "category": "Parks",
+          "images": [
+            {
+              "id": "louisville_park_01",
+              "name": "Louisville Sports Mascot",
+              "url": "https://pbs.twimg.com/profile_images/1152299246151974916/OaQlVtJk_400x400.jpg",
+              "alt": "Louisville Sports Mascot"
+            },
+            {
+              "id": "louisville_park_02",
+              "name": "Louisville Storm Warning",
+              "url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSb2EnnCY5Oudk2m2OKJ4MhPk5ocndOW06I2SiqwvGo-c8DjP0TeQ-rGZZ7&s=10",
+              "alt": "Louisville Storem"
+            }
+          ]
+        },
+        {
+          "category": "Local Business",
+          "images": [
+            {
+              "id": "louisville_biz_01",
+              "name": "City sign",
+              "url": "https://www.billburmaster.com/rmsandw/illinois/images/louisvilleilwel.jpg",
+              "alt": "City sign"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "global_assets": [
+    {
+      "id": "global_biz_spotlight",
+      "name": "Network Wide Business Spotlight",
+      "url": "images/global-spotlight-banner.jpg",
+      "alt": "Featured Local Business Network Spotlight"
+    }
+  ]
+}
