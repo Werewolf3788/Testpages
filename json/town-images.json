@@ -119,10 +119,10 @@
   "global_assets": [
     {
       "id": "global_biz_spotlight",
-      "name": "Network Wide Business Spotlight",
-      "url": "images/global-spotlight-banner.jpg",
+      "name": "Grandma's Kitchen",
+      "url": "./images/Grandma_s Kitchen.jpg",
       "alt": "Featured Local Business Network Spotlight",
-      "source_url": "https://skventures.org"
+      "source_url": "https://www.facebook.com/p/Grandmas-kitchen-Flora-il-61586069549969/"
     }
   ]
 }
