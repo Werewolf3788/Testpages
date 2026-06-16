@@ -6,9 +6,9 @@
             "images": [
                 {
                     "id": "landmark_01",
-                    "name": "Town Hall",
-                    "url": "./assets/images/town_hall.jpg",
-                    "alt": "Historic town hall building"
+                    "name": "Court House",
+                    "url": "https://live.staticflickr.com/4117/4861670451_669d9e52e9_b.jpg",
+                    "alt": "Historic town Government building"
                 },
                 {
                     "id": "landmark_02",
@@ -29,9 +29,9 @@
                 },
                 {
                     "id": "park_02",
-                    "name": "Riverside Walk",
-                    "url": "./assets/images/riverside.jpg",
-                    "alt": "Path along the river"
+                    "name": "Louisville Population",
+                    "url": "http://www.billburmaster.com/rmsandw/illinois/us/us45clayil.html",
+                    "alt": "Louisville Population"
                 }
             ]
         },
