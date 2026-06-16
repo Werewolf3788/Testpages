@@ -1,0 +1,15 @@
+{
+    "site_metadata": {
+        "title": "Flora Community Portal",
+        "last_updated": "2026-06-16"
+    },
+    "global_assets": {
+        "header_image": {
+            "id": "global_header_01",
+            "url": "./assets/images/header_banner.jpg",
+            "alt": "Flora community banner",
+            "link": "/"
+        },
+        "favicon": "./assets/images/favicon.ico"
+    }
+}
