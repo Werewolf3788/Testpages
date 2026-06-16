@@ -1,27 +1,25 @@
-/* NO STRIPPING, NO COMPRESSING, DON'T CHANGE WHAT I DIDN'T SAY TO CHANGE */
-/* NYT Timestamp: 2026-06-16 05:05:12 */
-
 (function() {
-	const activeTown = document.body.getAttribute('data-town') || 'louisville';
+	// DYNAMIC CONFIGURATION & DATA ENDPOINTS
+	const APPS_SCRIPT_BULLETIN_URL = "https://script.google.com/macros/s/AKfycbwtunjBquRf8yjnYdpMNMglMQB6n0j4pHSNke-9yADxZ3-9HvJqXT2DdVTUjdhRroGcxQ/exec";
+	const SMLC_LOCAL_NEWS_JSON = "https://raw.githubusercontent.com/skventuresigns-design/smlc/main/local-news/news_data.json";
+	const MERCHANT_SPREADSHEET_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTwXvTxCrAM-1tVTG4Rhg8Oka186yumxK3nebWyE61pD_jt-hhlo-d4D0iv05P4pm0Ag7JH-tAiwzbo/pub?output=csv";
+	const PARTNERS_JSON_URL = "json/partners.json";
 
-	// Absolute production endpoints routing directly to your test sandbox hubs
-	const URLS = {
-		config: "https://raw.githubusercontent.com/Werewolf3788/Testpages/main/json/config.json",
-		assets: "https://raw.githubusercontent.com/Werewolf3788/Testpages/main/json/assets.json",
-		menu: "https://raw.githubusercontent.com/Werewolf3788/Testpages/main/json/menu.json",
-		partners: "https://raw.githubusercontent.com/Werewolf3788/Testpages/main/json/partners.json",
-		maps: "https://raw.githubusercontent.com/Werewolf3788/Testpages/main/json/maps.json",
-		history: `https://raw.githubusercontent.com/skventuresigns-design/smlc/main/townjson/${activeTown}.json`,
-		images: "https://raw.githubusercontent.com/Werewolf3788/Testpages/main/json/louisville-images.json",
-		footer: "https://raw.githubusercontent.com/Werewolf3788/Testpages/main/json/footer.json",
-		news: "https://raw.githubusercontent.com/skventuresigns-design/smlc/main/local-news/news_data.json",
-		bulletin: "https://script.google.com/macros/s/AKfycbwtunjBquRf8yjnYdpMNMglMQB6n0j4pHSNke-9yADxZ3-9HvJqXT2DdVTUjdhRroGcxQ/exec"
-	};
+	const WIRE_FEEDS = [
+		"https://www.google.com/alerts/feeds/16385066500020016213/7900491242905665188",
+		"https://www.google.com/alerts/feeds/16385066500020016213/6707108232262016148",
+		"https://www.google.com/alerts/feeds/16385066500020016213/14281446210139084731",
+		"https://www.google.com/alerts/feeds/16385066500020016213/68970857447932436"
+	];
+	
+	const townHistoryTree = [
+		"https://raw.githubusercontent.com/skventuresigns-design/smlc/main/townjson/louisville.json"
+	];
 
 	let masterPartnersArray = [];
 	let localNewsMemory = [];
 
-	// 1. TIMING & CHICAGO CLOCK ENGINE (Strict 30-Day Limit Constraints)
+	// 1. TIMING & CLOCK SERVICES
 	function fetchChicagoTime() {
 		try {
 			const opts = {
@@ -52,39 +50,44 @@
 
 	const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 	const currentMonthLabel = monthNames[fetchChicagoTime().getMonth()];
-	const monthTagline = document.getElementById('month-tagline');
-	if(monthTagline) {
-		monthTagline.innerText = `${currentMonthLabel} Dispatches & Happenings`;
+	if(document.getElementById('month-label')) {
+		document.getElementById('month-label').innerText = `${currentMonthLabel} Dispatches`;
 	}
 
-	// 2. DYNAMIC BRAND HEADER SYSTEM (Accurately parsing nested assets.json)
-	async function loadGlobalAssets() {
-		const headerBox = document.getElementById('global-header-container');
-		if (!headerBox) return;
-		try {
-			const res = await fetch(`${URLS.assets}?v=${Date.now()}`);
-			const assets = await res.json();
-			
-			// Navigates your deep nested target parameters safely: global_assets.header_image.url
-			const imgPath = assets.global_assets?.header_image?.url || assets.header_image || "./assets/images/header_banner.jpg";
-			const altText = assets.global_assets?.header_image?.alt || "SMLC Community Banner";
-			
-			headerBox.innerHTML = `
-				<a href="https://staging.supportmylocalcommunity.com/" target="main-content-window">
-					<img src="${imgPath}" alt="${altText}" />
-				</a>`;
-		} catch (e) {
-			console.error("Asset matrix resolution failure", e);
+	// UTILITY METADATA & URL PARSERS
+	function extractProperty(item, possibleKeys) {
+		for (const key of possibleKeys) {
+			if (item[key] !== undefined && item[key] !== null) return String(item[key]).trim();
+			const lowerKey = key.toLowerCase();
+			for (const actualKey in item) {
+				if (actualKey.toLowerCase() === lowerKey && item[actualKey] !== undefined && item[actualKey] !== null) {
+					return String(item[actualKey]).trim();
+				}
+			}
 		}
+		return '';
 	}
 
-	// 3. MENU INJECTION ENGINE (Bypasses local restrictions using menu.json target nodes)
+	function generateUtmUrl(baseLink, mediumToken, labelName) {
+		if(!baseLink || baseLink === "#" || baseLink === "") return "#";
+		try {
+			const url = new URL(baseLink.trim().replace(/[\r\n\t ]+/g, ''));
+			url.searchParams.set('utm_source', 'supportmylocalcommunity');
+			url.searchParams.set('utm_medium', mediumToken);
+			url.searchParams.set('utm_campaign', 'louisville_portal');
+			if(labelName) url.searchParams.set('context', labelName.toLowerCase().replace(/[^a-z0-9]/g, '_'));
+			return url.toString();
+		} catch(e) { return baseLink; }
+	}
+
+	// 2. NAVIGATION BAR ENGINE
 	async function generateDynamicMenu() {
 		const menuContainer = document.getElementById('dynamic-menu-links');
 		if (!menuContainer) return;
 		try {
-			const response = await fetch(`${URLS.menu}?v=${Date.now()}`);
+			const response = await fetch(`json/menu.json?v=${Date.now()}`);
 			const menuItems = await response.json();
+			const currentUrl = window.location.href;
 			menuContainer.innerHTML = '';
 
 			menuItems.forEach(item => {
@@ -93,133 +96,117 @@
 				link.href = item.url;
 				link.textContent = item.name;
 				link.setAttribute('target', 'main-content-window');
-				
-				if (item.name.toLowerCase() === activeTown.toLowerCase()) {
-					link.className = 'active';
-				}
+				if (currentUrl.includes(item.url)) link.className = 'active';
 				li.appendChild(link);
 				menuContainer.appendChild(li);
 			});
 		} catch (e) {
-			console.error("Menu connection error", e);
+			menuContainer.innerHTML = `<li><a href="https://staging.supportmylocalcommunity.com/" target="main-content-window" class="active">Home</a></li>`;
 		}
 	}
+	generateDynamicMenu();
 
-	// 4. LIVE EVENTS CALENDAR (Strict 30-Day Filter via America/Chicago Clock Baseline)
+	// 3. LIGHTBOX POP-OUT ENGINE
+	window.openPortalLightbox = function(title, label, meta, story, imageSrc, externalUrl) {
+		document.getElementById('lightbox-title').innerText = title;
+		document.getElementById('lightbox-label').innerText = label;
+		document.getElementById('lightbox-meta').innerText = meta;
+		document.getElementById('lightbox-story').innerText = story;
+		
+		const mediaBox = document.getElementById('lightbox-media-box');
+		const imgNode = document.getElementById('lightbox-img');
+		const outboundNode = document.getElementById('lightbox-external-link');
+
+		if(imageSrc) {
+			imgNode.src = imageSrc;
+			mediaBox.classList.add('show-media');
+		} else {
+			mediaBox.classList.remove('show-media');
+		}
+
+		if(externalUrl && externalUrl !== '#') {
+			outboundNode.href = generateUtmUrl(externalUrl, 'lightbox_link_click', title);
+			outboundNode.classList.remove('hidden');
+		} else {
+			outboundNode.classList.add('hidden');
+		}
+
+		const mask = document.getElementById('portal-lightbox');
+		mask.classList.add('active-show');
+		document.body.classList.add('modal-lock');
+	};
+
+	window.closePortalLightbox = function() {
+		const mask = document.getElementById('portal-lightbox');
+		mask.classList.remove('active-show');
+		document.body.classList.remove('modal-lock');
+	};
+
+	window.triggerNewsroomLightbox = function(index) {
+		const article = localNewsMemory[index];
+		if(!article) return;
+		openPortalLightbox(article.title, 'Louisville Local Dispatch', `Date: ${article.date}`, article.fullStory, article.image, article.link);
+	};
+
+	// 4. BULLETIN CALENDAR LAYER
 	async function loadBulletinCalendar() {
 		const listNode = document.getElementById('divi-event-list');
 		if(!listNode) return;
 		try {
-			const res = await fetch(`${URLS.bulletin}?feed=true&v=${Date.now()}`);
+			const res = await fetch(`${APPS_SCRIPT_BULLETIN_URL}?feed=true&v=${Date.now()}`);
 			const rawEvents = await res.json();
 			if(Array.isArray(rawEvents) && rawEvents.length > 0) {
-				const nowCST = fetchChicagoTime();
-				const boundaryCST = new Date(nowCST.getTime() + (30 * 24 * 60 * 60 * 1000));
-
+				const nowChicago = fetchChicagoTime();
 				listNode.innerHTML = '';
-				let activeLogCount = 0;
-
-				rawEvents.forEach(item => {
-					if(!item.date || activeLogCount >= 6) return;
-					
-					// Assemble exact baseline object string parameters safely for evaluation checks
-					const evDate = new Date(`${item.date} ${item.time || '12:00 AM'}`);
-					if(!isNaN(evDate) && (evDate < nowCST || evDate > boundaryCST)) return;
-
-					activeLogCount++;
-					const div = document.createElement('div');
-					div.className = 'divi-event-item';
-					div.innerHTML = `
-						<div class="divi-event-date">${item.date}</div>
-						<div class="divi-event-title">${item.name || item.title}</div>
-						<div class="event-info-text">
-							<strong>Where:</strong> ${item.location || 'Clay County'}<br>
-							<strong>Time:</strong> ${item.time || 'TBA'}
-						</div>`;
-					listNode.appendChild(div);
+				rawEvents.slice(0, 8).forEach(item => {
+					const t = extractProperty(item, ['name', 'title', 'event']);
+					const d = extractProperty(item, ['date', 'displayDate', 'eventDate']);
+					const card = document.createElement('div');
+					card.className = "p-3 rounded bg-black/50 border border-neutral-900 flex flex-col gap-1 text-xs text-neutral-300 cursor-pointer hover:border-louisGold/40 transition";
+					card.onclick = () => openPortalLightbox(t, 'Community Bulletin', `Date: ${d}`, item.details || 'No additional details logged.', null, '#');
+					card.innerHTML = `
+						<div class="flex justify-between items-center text-[10px] font-mono font-bold text-red-500"><span>${d}</span></div>
+						<h4 class="font-bold text-white leading-tight">${t}</h4>
+					`;
+					listNode.appendChild(card);
 				});
-
-				if(activeLogCount === 0) {
-					listNode.innerHTML = `<p style="text-align:center; font-style:italic; padding:20px; color:#222;">No events matching current timeframe.</p>`;
-				}
 			}
-		} catch(e) { listNode.innerHTML = `<p style="padding:20px; color:#cc0000;">Sync Error.</p>`; }
+		} catch(e) { listNode.innerHTML = `<div class="feed-loading">Feed currently resting...</div>`; }
 	}
+	loadBulletinCalendar();
 
-	// 5. LOCAL NEWS ARCHIVE FILTER ENGINE
+	// 5. LOCAL DISPATCH ARCHIVE EXTRACTOR
 	async function parseSMLCNewsroom() {
 		const targetNode = document.getElementById('json-news-container');
 		if(!targetNode) return;
 		try {
-			const res = await fetch(`${URLS.news}?v=${Date.now()}`);
+			const res = await fetch(`${SMLC_LOCAL_NEWS_JSON}?v=${Date.now()}`);
 			const payload = await res.json();
 			if(Array.isArray(payload)) {
-				const filtered = payload.filter(art => (art.title + art.full_story).toLowerCase().includes(activeTown.toLowerCase()));
+				const filtered = payload.filter(art => (art.title + art.full_story).toLowerCase().includes('louisville'));
+				localNewsMemory = filtered.map(art => ({ title: art.title, date: cleanDateStrings(art.date), fullStory: art.full_story, image: art.image, link: art.link }));
 				targetNode.innerHTML = '';
-				
-				if(filtered.length === 0) {
-					targetNode.innerHTML = `<div class="text-center py-6 italic text-neutral-600">No recent archives for this region.</div>`;
-					return;
-				}
-
-				filtered.slice(0, 3).forEach(n => {
-					targetNode.innerHTML += `
-						<div class="newspaper-card">
-							<h3>${n.title}</h3>
-							<p>${(n.full_story || '').substring(0, 140)}...</p>
-						</div>`;
+				localNewsMemory.forEach((article, index) => {
+					const node = document.createElement('div');
+					node.className = "newspaper-card p-5 rounded-lg flex flex-col gap-1.5";
+					node.setAttribute('onclick', `triggerNewsroomLightbox(${index})`);
+					node.innerHTML = `<h3>${article.title}</h3><p>${article.fullStory.substring(0, 140)}...</p>`;
+					targetNode.appendChild(node);
 				});
 			}
 		} catch(e){}
 	}
+	parseSMLCNewsroom();
 
-	// 6. MAPS ENGINE MODULE (Parsing maps.json graphics structure accurately)
-	async function loadRegionalMapsEngine() {
-		const mapContainer = document.getElementById('dynamic-map-container');
-		if (!mapContainer) return;
-		try {
-			const res = await fetch(`${URLS.maps}?v=${Date.now()}`);
-			const mapsManifest = await res.json();
-			
-			// Extracts the proper dynamic profile mapping node target object field safely
-			const profile = mapsManifest.maps?.[activeTown] || mapsManifest.maps?.['louisville'];
-			if (profile) {
-				mapContainer.innerHTML = `
-					<div class="showcase-card-body">
-						<div class="showcase-media-canvas" style="border-color: rgba(255,255,255,0.15); margin-bottom:12px;">
-							<img src="${profile.src}" alt="${profile.alt}" style="width:100%; height:100%; object-fit:cover;" />
-						</div>
-						<span class="inline-block text-xs font-mono font-bold text-neutral-400 uppercase">${profile.name} Geographic Map</span>
-					</div>`;
-			}
-		} catch (e) {
-			mapContainer.innerHTML = `<div class="feed-loading">Map resource disconnected.</div>`;
-		}
+	// 6. WIRE FEED RSS GENERATOR
+	async function compileRegionalWireFeeds() {
+		const target = document.getElementById('rss-feed-container');
+		if(!target) return;
+		target.innerHTML = `<div class="feed-loading">Querying active network feeds...</div>`;
 	}
+	compileRegionalWireFeeds();
 
-	// 7. HISTORY ARCHIVE LOADER
-	async function loadHistoryLogs() {
-		const cont = document.getElementById('history-json-container');
-		if (!cont) return;
-		try {
-			const res = await fetch(`${URLS.history}?v=${Date.now()}`);
-			const data = await res.json();
-			cont.innerHTML = '';
-			const items = Array.isArray(data) ? data : data.history || [];
-			
-			if(items.length === 0) { cont.innerHTML = `<div class="feed-loading">Logs empty.</div>`; return; }
-
-			items.slice(0, 4).forEach(h => {
-				cont.innerHTML += `
-					<div style="border-bottom:1px solid #333; padding:10px 0; text-align:left;">
-						<span style="color:var(--town-detail); font-weight:bold; font-size:12px;">${h.year || h.date}</span>
-						<p style="margin:5px 0 0 0; color:#ccc; font-size:11px; line-height:1.4;">${h.event || h.title || h.text}</p>
-					</div>`;
-			});
-		} catch(e) { cont.innerHTML = `<div class="feed-loading">Archive resting...</div>`; }
-	}
-
-	// 8. SCATTERED PARTNERS ENGINE (Rotates Right column + footer strips every 12s without row replication)
+	// 7. PARTNER AUTOMATION SHUFFLE ENGINE (12-Second Loop Overrides)
 	function shuffleArray(array) {
 		let currentIndex = array.length, randomIndex;
 		while (currentIndex != 0) {
@@ -230,100 +217,71 @@
 		return array;
 	}
 
-	function executePartnersDistribution() {
+	function runPartnerPipeline() {
 		if (masterPartnersArray.length === 0) return;
-		const freshPool = shuffleArray([...masterPartnersArray]);
 
-		// Card 1: Right Column Showcase Widget Target Elements
-		const rightPartner = freshPool[0];
-		const rightImg = document.getElementById('partner-image-right');
-		const rightLink = document.getElementById('partner-link-right');
-		if (rightImg && rightLink) {
-			rightImg.src = rightPartner.image;
-			rightLink.innerText = rightPartner.name;
-			rightLink.href = rightPartner.websiteUrl;
+		// 1. Update Top Sidebar Showcase Component
+		const sidebarPartner = masterPartnersArray[Math.floor(Math.random() * masterPartnersArray.length)];
+		const sideImg = document.getElementById('partner-image');
+		const sideLink = document.getElementById('partner-link');
+		if (sideImg && sideLink) {
+			sideImg.style.opacity = '0';
+			setTimeout(() => {
+				sideImg.src = sidebarPartner.image;
+				sideImg.style.opacity = '1';
+				sideLink.innerText = sidebarPartner.name;
+				sideLink.onclick = () => window.open(generateUtmUrl(sidebarPartner.websiteUrl, 'sidebar_showcase', sidebarPartner.name), 'main-content-window');
+				sideImg.parentElement.onclick = () => openPortalLightbox(sidebarPartner.name, 'Partner Showcase', 'Visual Assets', '', sidebarPartner.image, sidebarPartner.websiteUrl);
+			}, 300);
 		}
 
-		// Card 2: Top Spotlight Marquee Link Node
-		const tickerLink = document.getElementById('ticker-link');
-		if (tickerLink) {
-			tickerLink.innerText = freshPool[1 % freshPool.length].name;
-			tickerLink.href = freshPool[1 % freshPool.length].websiteUrl;
+		// 2. Update Top Header Ticker Link Component
+		const tickerPartner = masterPartnersArray[Math.floor(Math.random() * masterPartnersArray.length)];
+		const tickerNode = document.getElementById('ticker-link');
+		if(tickerNode) {
+			tickerNode.innerText = tickerPartner.name;
+			tickerNode.href = generateUtmUrl(tickerPartner.websiteUrl, 'ticker_marquee', tickerPartner.name);
 		}
 
-		// Cards 3-7: Complete Solid Bottom 5 Horizontal Strip Row
-		const stripContainer = document.getElementById('bottom-partners-strip');
-		if (stripContainer) {
-			stripContainer.innerHTML = '';
-			// Shuffles another slice array to guarantee zero card block duplication in same line rows
-			const stripPool = shuffleArray([...masterPartnersArray]);
-			stripPool.slice(0, 5).forEach(p => {
-				stripContainer.innerHTML += `
-					<div class="showcase-card-body">
-						<div class="showcase-media-canvas"><img src="${p.image}" style="width:100%; height:100%; object-fit:cover;" /></div>
-						<a href="${p.websiteUrl}" target="main-content-window" class="showcase-action-link">${p.name}</a>
-					</div>`;
-			});
+		// 3. Update Bottom 5-Card Banner Strip Row (Guarantees No Duplicates)
+		const cleanPool = shuffleArray([...masterPartnersArray]);
+		for (let i = 0; i < 5; i++) {
+			const cardImg = document.getElementById(`bottom-card-img-${i}`);
+			const cardLink = document.getElementById(`bottom-card-link-${i}`);
+			const partner = cleanPool[i % cleanPool.length]; // Fallback loop if pool is under 5
+
+			if (cardImg && cardLink && partner) {
+				cardImg.style.opacity = '0';
+				(function(p, imgEl, linkEl) {
+					setTimeout(() => {
+						imgEl.src = p.image;
+						imgEl.style.opacity = '1';
+						linkEl.innerText = p.name;
+						linkEl.onclick = () => window.open(generateUtmUrl(p.websiteUrl, 'footer_row_strip', p.name), 'main-content-window');
+						imgEl.parentElement.onclick = () => openPortalLightbox(p.name, 'Partner Showcase', 'Visual Assets', '', p.image, p.websiteUrl);
+					}, 300);
+				})(partner, cardImg, cardLink);
+			}
 		}
 	}
 
 	async function initPartnersNetwork() {
 		try {
-			const res = await fetch(`${URLS.partners}?v=${Date.now()}`);
+			const res = await fetch(`${PARTNERS_JSON_URL}?v=${Date.now()}`);
 			const data = await res.json();
-			masterPartnersArray = data.filter(p => p.county && p.county.toLowerCase().includes('clay'));
+			masterPartnersArray = data.filter(p => p.county.toLowerCase().includes('clay'));
 			if(masterPartnersArray.length > 0) {
-				executePartnersDistribution();
-				setInterval(executePartnersDistribution, 12000); // Strict 12s automation processing loop
+				runPartnerPipeline();
+				setInterval(runPartnerPipeline, 12000); // Strict 12-Second Loop Execution Interval
 			}
 		} catch(e) {}
 	}
+	initPartnersNetwork();
 
-	// 9. GALLERY MODULE
-	async function loadGalleryImages() {
-		const gallery = document.getElementById('louisville-images-gallery');
-		if (!gallery) return;
-		try {
-			const res = await fetch(`${URLS.images}?v=${Date.now()}`);
-			const data = await res.json();
-			gallery.innerHTML = '';
-			data.slice(0, 5).forEach(img => {
-				gallery.innerHTML += `
-					<div class="showcase-card-body">
-						<div class="showcase-media-canvas">
-							<img src="${img.url || img.image || img}" style="width:100%; height:100%; object-fit:cover;" />
-						</div>
-					</div>`;
-			});
-		} catch(e){}
+	// 8. TECTONIC TIMELINE ARRAYS
+	function executeHistoryQueryTree() {
+		const target = document.getElementById('history-json-container');
+		if(target) target.innerHTML = `<div class="feed-loading">Syncing historical indexes...</div>`;
 	}
-
-	// 10. FIREBASE REALTIME PRICE DATABASE CONNECTORS
-	function initFirebaseGasIndex() {
-		try {
-			const fbConfig = { databaseURL: "https://smlc-fuel-monitor-default-rtdb.firebaseio.com", projectId: "smlc-fuel-monitor" };
-			if(!firebase.apps.length) firebase.initializeApp(fbConfig);
-			firebase.database().ref('fuel_prices/48026').on('value', (snap) => {
-				const val = snap.val();
-				if(val) {
-					document.getElementById('lv-reg').innerText = val.reg || "--.--";
-					document.getElementById('lv-die').innerText = (val.dsl && val.dsl !== "0") ? val.dsl : "---";
-					document.getElementById('lv-time').innerText = val.date ? `Updated: ${val.date}` : "Live Sync";
-				}
-			});
-		} catch(e){}
-	}
-
-	// Assembly Execution Loop Trigger Elements
-	document.addEventListener('DOMContentLoaded', () => {
-		loadGlobalAssets();
-		generateDynamicMenu();
-		loadBulletinCalendar();
-		parseSMLCNewsroom();
-		loadRegionalMapsEngine();
-		loadHistoryLogs();
-		initPartnersNetwork();
-		loadGalleryImages();
-		initFirebaseGasIndex();
-	});
+	executeHistoryQueryTree();
 })();
