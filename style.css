@@ -3,554 +3,120 @@
    ========================================================================== */
 
 :root {
-    /* --- Master Layout Framework --- */
     --container-width: 100%; 
-    --bar-height: fluid; /* Version 4.23 Fluid Footer/Bar Height Standard */
-    
-    /* --- Typography Authority (Default Fallback Settings) --- */
+    --bar-height: fluid;
     --font-town: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     --font-size-header: 30px;
     --font-size-body: 14px;
-    
-    /* --- Theme Core Defaults --- */
     --bg-primary: #000000; 
-    --bg-surface: #121212; /* panelDark base mapping */
+    --bg-surface: #121212; 
     --bg-panel-darkest: #080808;
     --text-primary: #ffffff;
     --text-muted: #a3a3a3;
-    
-    /* --- Navigation Bar Base Standard --- */
     --menu-bg-default: #ffffff;
     --menu-text-default: #0C0B82;
     --menu-border-default: #0C0B82;
 }
 
-/* ==========================================================================
-   DYNAMIC REGIONAL ACCENT COLOR PALETTES
-   ========================================================================== */
-
-/* 1. Louisville (Red, Black, Gold Accent) */
-body[data-town="louisville"] {
-    --town-accent: #EB1C24;      /* louisRed */
-    --town-secondary: #000000;   /* louisBlack */
-    --town-detail: #FFC10E;      /* louisGold */
-}
-
-/* 2. Flora (Flame Orange & Royal Blue) */
-body[data-town="flora"] {
-    --town-accent: #FE4F00;      /* Flame Orange */
-    --town-secondary: #0C0B82;   /* Royal Blue */
-    --town-detail: #FE4F00;
-}
-
-/* 3. Clay City (Vivid Blue, Gray, White) */
-body[data-town="claycity"] {
-    --town-accent: #0C30F0;      /* Vivid Blue */
-    --town-secondary: #D2D2D2;   /* Light Gray */
-    --town-detail: #FFFFFF;      /* White */
-}
-
-/* 4. Xenia (Warm Rust & Slate Blue) */
-body[data-town="xenia"] {
-    --town-accent: #c2410c;
-    --town-secondary: #334155;
-    --town-detail: #f1f5f9;
-}
-
-/* 5. Sailor Springs (Deep Teal & Seafoam Green) */
-body[data-town="sailorsprings"] {
-    --town-accent: #0f766e;
-    --town-secondary: #2dd4bf;
-    --town-detail: #ccfbf1;
-}
-
-/* 6. Ingraham (Forest Green & Golden Wheat) */
-body[data-town="ingraham"] {
-    --town-accent: #15803d;
-    --town-secondary: #eab308;
-    --town-detail: #fef08a;
-}
-
-/* 7. Bible Grove (Rich Mahogany & Cream) */
-body[data-town="biblegrove"] {
-    --town-accent: #7c2d12;
-    --town-secondary: #fed7aa;
-    --town-detail: #ffedd5;
-}
-
-/* 8. Hoosier (Crimson Red & Iron Gray) */
-body[data-town="hoosier"] {
-    --town-accent: #991b1b;
-    --town-secondary: #4b5563;
-    --town-detail: #e5e7eb;
-}
-
-/* 9. Kenner (Olive Drab & Autumn Copper) */
-body[data-town="kenner"] {
-    --town-accent: #3f6212;
-    --town-secondary: #b45309;
-    --town-detail: #fef3c7;
-}
-
-/* 10. Oskaloosa (Charcoal Black & Soft Clay) */
-body[data-town="oskaloosa"] {
-    --town-accent: #262626;
-    --town-secondary: #ca8a04;
-    --town-detail: #f5f5f5;
-}
-
-/* 11. Camp Travis (Navy Base & Sand Khaki) */
-body[data-town="camptravis"] {
-    --town-accent: #1e3a8a;
-    --town-secondary: #854d0e;
-    --town-detail: #dbeafe;
-}
-
-/* 12. Hord (Plum Purple & Sunset Amber) */
-body[data-town="hord"] {
-    --town-accent: #6b21a8;
-    --town-secondary: #f97316;
-    --town-detail: #f3e8ff;
-}
-
-/* ==========================================================================
-   GLOBAL STRUCTURE & THREE-COLUMN MATRIX
-   ========================================================================== */
+/* --- DYNAMIC PALETTES --- */
+body[data-town="louisville"] { --town-accent: #EB1C24; --town-secondary: #000000; --town-detail: #FFC10E; }
+body[data-town="flora"] { --town-accent: #FE4F00; --town-secondary: #0C0B82; --town-detail: #FE4F00; }
+body[data-town="claycity"] { --town-accent: #0C30F0; --town-secondary: #D2D2D2; --town-detail: #FFFFFF; }
+body[data-town="xenia"] { --town-accent: #c2410c; --town-secondary: #334155; --town-detail: #f1f5f9; }
+body[data-town="sailorsprings"] { --town-accent: #0f766e; --town-secondary: #2dd4bf; --town-detail: #ccfbf1; }
 
 body {
-    font-family: var(--font-town);
-    font-size: var(--font-size-body);
-    background-color: var(--bg-primary);
-    color: var(--text-primary);
-    margin: 0;
-    padding: 0;
-    -webkit-font-smoothing: antialiased;
+    font-family: var(--font-town); font-size: var(--font-size-body);
+    background-color: var(--bg-primary); color: var(--text-primary); margin: 0; padding: 0;
 }
 
-.main-container {
-    width: 100%;
-    max-width: 100%;
-    margin: 0 auto;
-    padding-top: 32px;
-    padding-bottom: 32px;
-    box-sizing: border-box;
-}
+.main-container { width: 100%; max-width: 100%; margin: 0 auto; padding: 32px 0; box-sizing: border-box; }
 
-/* Hardcoded 3-Column Wireframe Alignment: Left=Calendar, Middle=News, Right=Gas/History */
+/* Three-Column Wireframe Realignment Matrix */
 .portal-grid-layout {
-    display: grid;
-    grid-template-cols: 1fr;
-    gap: 32px;
-    align-items: start;
-    width: 100%;
-    padding-left: 32px;
-    padding-right: 32px;
-    box-sizing: border-box;
+    display: grid; grid-template-cols: 1fr; gap: 32px; align-items: start; width: 100%; padding: 0 32px; box-sizing: border-box;
 }
-
 @media (min-width: 1024px) {
-    .portal-grid-layout {
-        grid-template-cols: repeat(12, minmax(0, 1fr));
-    }
-    .sidebar-left { grid-column: span 3; }
+    .portal-grid-layout { grid-template-cols: repeat(12, minmax(0, 1fr)); }
+    .sidebar-left { grid-column: span 3; display: flex; flex-direction: column; gap: 24px; }
     .content-center-column { grid-column: span 6; display: flex; flex-direction: column; gap: 32px; }
     .sidebar-right { grid-column: span 3; display: flex; flex-direction: column; gap: 24px; }
 }
 
-p, a, h1, h2, h3, span {
-    word-break: keep-all;
-    overflow-wrap: break-word;
+/* ==========================================================================
+   VINTAGE NEWSPAPER BULLETIN CALLOUT CONTAINER
+   ========================================================================== */
+.clay-county-news-box.event-clipping {
+    box-sizing: border-box; width: 100%; margin: 0 auto; padding: 25px;
+    border: 2px solid #222; background-color: #fffdf5 !important;
+    box-shadow: 6px 6px 0px #222; font-family: "Times New Roman", Times, serif; position: relative;
 }
+.clipping-tag {
+    position: absolute; top: -12px; left: 15px; background: #222; color: #fff;
+    font-size: 10px; padding: 3px 10px; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; z-index: 10;
+}
+.event-clipping-header { text-align: center; border-top: 4px double #222; border-bottom: 2px solid #222; padding: 15px 0; margin-bottom: 20px; margin-top: 5px; }
+.event-clipping-header h3 {
+    font-family: "Times New Roman", Times, serif !important; font-weight: 900 !important;
+    text-transform: uppercase; letter-spacing: 1px; margin: 0 !important; color: #d9534f !important; font-size: 26px !important; line-height: 1.1 !important;
+}
+.event-clipping-text { font-size: 16px; line-height: 1.5; color: #222 !important; text-align: center; margin-bottom: 20px; font-style: italic; }
+.event-clipping-btn {
+    display: block; text-align: center; background-color: #222; color: #fff !important; padding: 14px;
+    text-transform: uppercase; font-weight: bold; letter-spacing: 2px; text-decoration: none; font-size: 14px; border: 1px solid #222; transition: all 0.3s;
+}
+.event-clipping-btn:hover { background-color: #d9534f; border-color: #d9534f; color: #fff !important; }
+.clipping-footer { display: block; text-align: center; font-size: 10px; color: #666 !important; margin-top: 15px; text-transform: uppercase; letter-spacing: 1px; }
 
 /* ==========================================================================
-   UNIVERSAL NAVIGATION BAR (MENU) & HOVER ENGINE
+   NAVIGATION, CARDS & CONDITIONAL LAYOUT RULES
    ========================================================================== */
+.menu-bar { width: 100%; background-color: var(--menu-bg-default); border-bottom: 2px solid var(--town-accent); padding: 16px 0; position: sticky; top: 0; z-index: 50; box-shadow: 0 10px 15px rgba(0,0,0,0.8); }
+.menu-inner { width: 100%; padding: 0 32px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 16px; box-sizing: border-box; }
+@media (min-width: 768px) { .menu-inner { flex-direction: row; } }
+.menu-links { display: flex; flex-wrap: wrap; list-style: none; gap: 16px; margin: 0; padding: 0; }
+.menu-links a { color: var(--menu-text-default) !important; text-decoration: none; font-size: 14px; font-weight: 600; padding: 8px 12px; }
+.menu-links a.active { color: var(--town-detail) !important; border: 1px solid var(--town-detail); background-color: rgba(235,28,36,0.1); border-radius: 8px; }
+.menu-bar:hover { background-color: var(--town-secondary) !important; border-bottom-color: var(--town-detail); }
+.menu-bar:hover .menu-links a { color: #fff !important; }
 
-.menu-bar {
-    width: 100%;
-    background-color: var(--menu-bg-default);
-    border-bottom: 2px solid var(--town-accent, var(--menu-border-default));
-    padding: 16px 0;
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.8);
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-}
-
-.menu-inner {
-    width: 100%;
-    padding-left: 32px;
-    padding-right: 32px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    box-sizing: border-box;
-}
-
-@media (min-width: 768px) {
-    .menu-inner { flex-direction: row; gap: 16px; }
-}
-
-.menu-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
-@media (min-width: 768px) { .menu-links { gap: 16px; } }
-
-.menu-links a {
-    color: var(--menu-text-default) !important;
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 600;
-    padding: 8px 12px;
-    transition: color 0.2s ease, background-color 0.2s ease;
-}
-
-.menu-links a:hover { color: var(--town-detail) !important; }
-.menu-bar .town-title img { height: 40px; width: auto; }
-
-.menu-links a.active {
-    color: var(--town-detail) !important;
-    border: 1px solid var(--town-detail);
-    background-color: rgba(235, 28, 36, 0.1);
-    border-radius: 8px;
-}
-
-.menu-bar:hover {
-    background-color: var(--town-secondary) !important;
-    border-bottom-color: var(--town-detail);
-}
-
-.menu-bar:hover .menu-links a,
-.menu-bar:hover .town-title { color: #ffffff !important; }
-.menu-bar:hover .menu-links a:hover {
-    color: var(--town-detail) !important;
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-}
-
-/* ==========================================================================
-   TOWN HERO BANNER GRAPHIC SYSTEM
-   ========================================================================== */
-.town-hero-banner {
-    width: calc(100% - 64px);
-    margin: 0 auto 24px auto;
-    padding: 48px 0;
-    background: linear-gradient(to bottom right, #000000, var(--bg-panel-darkest), var(--town-accent));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-bottom: 4px solid var(--town-detail);
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.25);
-    border-radius: 12px;
-    box-sizing: border-box;
-}
-
-.banner-content { text-align: center; padding: 0 16px; }
-.seat-badge {
-    display: inline-block;
-    padding: 4px 16px;
-    background-color: var(--town-detail);
-    color: #000000;
-    font-weight: 900;
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    border-radius: 4px;
-    margin-bottom: 12px;
-}
-
-.banner-content h1.town-title {
-    font-size: 36px;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: -0.025em;
-    color: #ffffff;
-    margin: 0;
-    -webkit-text-stroke: 1px #ffffff;
-}
-
-@media (min-width: 768px) { .banner-content h1.town-title { font-size: 60px; } }
-.town-established-meta { font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; margin: 8px 0 0 0; color: var(--town-detail); }
-.river-marquee {
-    margin-top: 16px; font-size: 12px; font-family: monospace; font-weight: 700; color: #d4d4d4;
-    background-color: rgba(0, 0, 0, 0.5); padding: 6px 16px; border-radius: 9999px;
-    max-width: max-content; margin-left: auto; margin-right: auto; border: 1px solid #262626;
-}
-
-/* ==========================================================================
-   SPOTLIGHT TICKER COMPONENT
-   ========================================================================== */
-.spotlight-ticker-bar {
-    width: calc(100% - 64px);
-    margin: 0 auto 32px auto;
-    background-color: #0a0a0a;
-    padding: 12px 0;
-    border: 1px solid #262626;
-    border-radius: 12px;
-    font-size: 12px;
-    font-family: monospace;
-    box-sizing: border-box;
-}
-
-.ticker-inner {
-    width: 100%; padding: 0 24px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box;
-}
-
-.ticker-status { display: flex; align-items: center; gap: 8px; }
-.pulse-indicator {
-    width: 8px; height: 8px; border-radius: 50%; background-color: var(--town-accent);
-    animation: tickerPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-@keyframes tickerPulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
-.ticker-label { color: #a3a3a3; font-weight: 700; text-transform: uppercase; }
-#ticker-link { color: var(--town-detail); font-weight: 700; text-decoration: none; }
-#ticker-link:hover { text-decoration: underline; }
-.ticker-verification { font-size: 10px; color: #737373; text-transform: uppercase; font-weight: 700; }
-
-/* ==========================================================================
-   WIDGETS & SIDEBAR INTERACTION CARDS
-   ========================================================================== */
-.bulletin-widget, .athletics-widget-card, .wire-feed-card, .fuel-monitor-widget, .showcase-widget, .legacy-history-widget {
-    background: linear-gradient(to bottom, var(--bg-surface), #000000);
-    border: 2px solid rgba(255, 193, 14, 0.3); 
-    border-radius: 12px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    padding: 20px;
-    box-sizing: border-box;
-}
-
-.bulletin-widget, .fuel-monitor-widget, .wire-feed-card {
-    border-color: rgba(235, 28, 36, 0.3); 
-}
-
-.widget-header { border-bottom: 2px solid var(--town-accent); padding-bottom: 12px; margin-bottom: 16px; text-align: center; }
-.bulletin-badge {
-    padding: 4px 12px; background-color: var(--town-accent); color: #ffffff;
-    font-size: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.05em; border-radius: 4px;
-}
-.widget-sublabel { font-size: 10px; font-family: monospace; text-transform: uppercase; letter-spacing: 0.1em; color: var(--town-detail); margin: 8px 0 0 0; }
-.clock-display {
-    font-size: 11px; font-family: monospace; color: #a3a3a3; background-color: rgba(0, 0, 0, 0.6);
-    padding: 8px; border-radius: 4px; border: 1px solid #262626; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center;
-}
-#chicago-clock { color: var(--town-detail); font-weight: 700; }
-
-.scrollable-event-feed, .scrollable-wire-feed, .scrollable-history-feed { overflow-y: auto; padding-right: 4px; }
-.scrollable-event-feed { max-h: 700px; }
-.scrollable-wire-feed { max-h: 400px; }
-.scrollable-history-feed { max-h: 300px; }
-
-.feed-loading { text-align: center; padding: 24px 0; font-size: 12px; font-style: italic; color: #737373; }
-
-.athletics-widget-card, .wire-feed-card { background-color: var(--bg-surface); border: 2px solid #262626; padding: 16px; }
-.card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px solid #171717; padding-bottom: 8px; }
-.header-title-group { display: flex; align-items: center; gap: 8px; }
-.icon-spacer { font-size: 16px; }
-
-.athletics-widget-card h2, .wire-feed-card h2 { font-size: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.05em; color: #ffffff; margin: 0; }
-.live-ticker-badge { font-size: 10px; font-family: monospace; color: var(--town-detail); font-weight: 700; }
-.scorestream-viewport { width: 100%; height: 125px; min-height: 125px; background-color: transparent; border-radius: 4px; padding: 4px; }
-.feed-source-label { font-size: 10px; font-family: monospace; color: #737373; }
-
-/* --- ATHLETICS CONDITIONAL LOGIC CONTROL GUARD --- */
-/* Completely hides the sports card block on any town that is NOT Clay City, Flora, or Louisville */
-body:not([data-town="claycity"]):not([data-town="flora"]):not([data-town="louisville"]) .athletics-widget-card {
-    display: none !important;
-}
-
-.sidebar-widget-title { font-size: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.05em; color: var(--town-detail); border-bottom: 1px solid #262626; padding-bottom: 8px; margin: 0 0 12px 0; }
-.showcase-widget .sidebar-widget-title, .legacy-history-widget .sidebar-widget-title { color: #ffffff; }
-
-/* ==========================================================================
-   FUEL INDEX MONITOR INTEGRATION (DYNAMIC STATION MAPS)
-   ========================================================================== */
-.fuel-monitor-widget {
-    cursor: pointer; /* Entire element implies an executable reference map link */
-}
-
-/* Links panel wrapper block cleanly into update-gas interface using target selectors */
-.fuel-monitor-widget::after {
-    content: "Modify Live Index ↗";
-    display: block;
-    text-align: right;
-    font-size: 9px;
-    font-family: monospace;
-    color: var(--town-detail);
-    margin-top: 8px;
-    opacity: 0.6;
-    transition: opacity 0.2s ease;
-}
-.fuel-monitor-widget:hover::after { opacity: 1; }
-
-.fuel-card-body { background-color: #000000; padding: 12px; border-radius: 8px; border: 1px solid #262626; }
-.fuel-station-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
-.station-logo-frame { width: 24px; height: 24px; border-radius: 4px; background-color: #ffffff; padding: 2px; display: flex; align-items: center; justify-content: center; box-sizing: border-box; }
-.station-logo-frame img { max-height: 100%; object-fit: contain; }
-.station-meta-title { font-size: 10px; font-weight: 700; color: #ffffff; font-family: monospace; line-height: 1; }
-
-.fuel-pricing-grid { display: grid; grid-template-cols: repeat(2, minmax(0, 1fr)); gap: 8px; text-align: center; font-family: monospace; }
-.price-box { background-color: #0a0a0a; padding: 8px; border-radius: 4px; border: 1px solid #171717; }
-.price-type-label { display: block; font-size: 8px; color: #737373; font-weight: 700; margin-bottom: 4px; }
-.price-box span[id] { font-size: 14px; font-weight: 900; }
-.price-value-regular { color: #34d399; }
-.price-value-diesel { color: var(--town-detail); }
-.sync-timestamp-label { font-size: 9px; color: #737373; font-family: monospace; margin-top: 12px; text-align: right; }
-
-/* --- GAS CARD CONDITIONAL EXCLUSION CONTROL --- */
-/* Only permits the Fuel Index display block on Flora, Xenia, Louisville, & Clay City */
-body:not([data-town="flora"]):not([data-town="xenia"]):not([data-town="louisville"]):not([data-town="claycity"]) .fuel-monitor-widget {
-    display: none !important;
-}
-
-/* Flora has 4 specialized layout stations tracking components setup */
-body[data-town="flora"] .fuel-pricing-grid {
-    grid-template-cols: repeat(2, minmax(0, 1fr));
-    grid-template-rows: repeat(2, auto);
-}
-
-/* ==========================================================================
-   LOCAL PARTNERSHIP SHOWCASE - BUSINESS CARD ARCHITECTURE
-   ========================================================================== */
-.showcase-card-body {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-}
-
-/* Enforces a perfect physical business card look ($3.5 \times 2$) */
+/* Business Card Ad Presentation */
+.showcase-card-body { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; }
 .showcase-media-canvas {
-    width: 100%;
-    max-width: 280px;
-    aspect-ratio: 3.5 / 2; /* Standard Business Card Proportions */
-    background-color: #0a0a0a;
-    border-radius: 6px;
-    border: 1px solid rgba(255,255,255,0.1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    position: relative;
-    cursor: zoom-in; /* Explains pop-out image behavior interaction */
-    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-    transition: transform 0.2s ease, border-color 0.2s ease;
+    width: 100%; max-width: 280px; aspect-ratio: 3.5 / 2; background-color: #0a0a0a; border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; cursor: zoom-in;
 }
+.showcase-media-canvas img { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.3s ease; }
+.showcase-action-link { display: block; font-size: 13px; font-weight: 800; color: #fff !important; text-transform: uppercase; text-decoration: none; cursor: pointer; }
+.showcase-action-link:hover { color: var(--town-detail) !important; text-decoration: underline !important; }
 
-.showcase-media-canvas:hover {
-    transform: translateY(-2px);
-    border-color: var(--town-detail);
-}
-
-.showcase-media-canvas img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Crops image cleanly inside card constraints */
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.showcase-spinner-layer { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background-color: rgba(0, 0, 0, 0.8); }
-.spinner-icon { border: 2px solid var(--town-detail); border-top-color: transparent; border-radius: 50%; width: 16px; height: 16px; animation: showcaseSpin 1s linear infinite; }
-@keyframes showcaseSpin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-/* The Dedicated Text Click Link Rule Component */
-.showcase-action-link {
-    display: block;
-    font-size: 13px;
-    font-weight: 800;
-    color: #ffffff !important;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    text-decoration: none;
-    line-height: 1.3;
-    transition: color 0.2s ease;
-    cursor: pointer;
-}
-
-.showcase-action-link:hover {
-    color: var(--town-detail) !important;
-    text-decoration: underline !important;
-}
+/* Fuel Index Monitor Linkages */
+.fuel-monitor-widget { cursor: pointer; }
+body:not([data-town="flora"]):not([data-town="xenia"]):not([data-town="louisville"]):not([data-town="claycity"]) .fuel-monitor-widget { display: none !important; }
+body:not([data-town="claycity"]):not([data-town="flora"]):not([data-town="louisville"]) .athletics-widget-card { display: none !important; }
 
 /* ==========================================================================
-   PERMANENT NEWS DISPATCH / NEWSPAPER CLIPPING OVERRIDES
+   ULTRA-WIDE FOOTER ROW BANNER COMPONENT
    ========================================================================== */
-.clipping-card-container {
-    background-color: #fbf9f3 !important;
-    border: 1px solid #dfdad0 !important;
-    border-left: 6px solid #111111 !important;
-    padding: 24px !important;
-    border-radius: 12px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
-    box-sizing: border-box;
+.footer-row-banner-container {
+    width: 100%; padding: 0 32px; box-sizing: border-box; margin-top: 32px;
 }
-
-.clipping-header { display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #111111; padding-bottom: 12px; margin-bottom: 24px; }
-.clipping-card-container h1, .clipping-card-container h2, .clipping-card-container h3, .clipping-card-container p, .clipping-card-container span { color: #111111 !important; font-family: 'Georgia', Times, serif; text-shadow: none !important; opacity: 1 !important; }
-.clipping-card-container h3 { font-size: 16px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.05em; margin: 0; }
-.clipping-card-container small { font-size: 10px; font-family: monospace; background-color: rgba(0, 0, 0, 0.1); padding: 2px 8px; border-radius: 4px; color: #111111 !important; font-weight: 700; }
-.clipping-card-container a { color: #dc2626 !important; font-weight: 700 !important; text-decoration: underline !important; }
-#json-news-container { display: flex; flex-direction: column; gap: 24px; }
-
-/* ==========================================================================
-   LIGHTBOX MODAL FRAMEWORK SYSTEM
-   ========================================================================== */
-#portal-lightbox {
-    position: fixed;
-    inset: 0;
-    background-color: rgba(0, 0, 0, 0.95);
-    backdrop-filter: blur(4px);
-    z-index: 9999;
-    opacity: 0;
-    pointer-events: none;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 16px;
-    box-sizing: border-box;
+.partners-horizontal-strip {
+    display: grid; grid-template-cols: 1fr; gap: 20px; width: 100%;
 }
+@media (min-width: 640px) { .partners-horizontal-strip { grid-template-cols: repeat(2, 1fr); } }
+@media (min-width: 1024px) { .partners-horizontal-strip { grid-template-cols: repeat(5, 1fr); } }
 
+.partners-horizontal-strip .showcase-media-canvas { max-width: 100%; }
+
+/* --- LIGHTBOX MODAL & OTHER CARDS BACKGROUND --- */
+.town-hero-banner { width: calc(100% - 64px); margin: 0 auto 24px auto; padding: 48px 0; background: linear-gradient(to bottom right, #000000, var(--bg-panel-darkest), var(--town-accent)); display: flex; align-items: center; justify-content: center; border-bottom: 4px solid var(--town-detail); border-radius: 12px; text-align: center; }
+.town-hero-banner h1 { font-size: 60px; font-weight: 900; text-transform: uppercase; margin: 0; -webkit-text-stroke: 1px #fff; }
+.clipping-card-container { background-color: #fbf9f3 !important; border-left: 6px solid #111; padding: 24px; border-radius: 12px; }
+.clipping-card-container h3, .clipping-card-container p { color: #111 !important; font-family: serif; }
+#portal-lightbox { position: fixed; inset: 0; background-color: rgba(0,0,0,0.95); backdrop-filter: blur(4px); z-index: 9999; opacity: 0; pointer-events: none; display: flex; align-items: center; justify-content: center; transition: all 0.3s; }
 #portal-lightbox.active-show { opacity: 1; pointer-events: auto; }
-.lightbox-modal-window { background-color: #171717; border: 2px solid var(--town-detail); max-width: 48rem; width: 100%; border-radius: 16px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); overflow: hidden; transform: scale(0.95); transition: all 0.3s ease; display: flex; flex-direction: column; max-height: 90vh; }
-#portal-lightbox.active-show .lightbox-modal-window { transform: scale(1); }
-.lightbox-header-bar { background-color: #000000; padding: 16px; border-bottom: 1px solid #262626; display: flex; justify-content: space-between; align-items: center; }
-.lightbox-meta-group { display: flex; flex-direction: column; }
-#lightbox-label { font-size: 10px; font-family: monospace; text-transform: uppercase; letter-spacing: 0.1em; color: var(--town-detail); font-weight: 700; }
-#lightbox-meta { font-size: 11px; font-family: monospace; color: #a3a3a3; margin-top: 2px; }
-.lightbox-close-btn { width: 32px; height: 32px; border-radius: 50%; background-color: #262626; color: #ffffff; border: none; font-family: monospace; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-.lightbox-close-btn:hover { background-color: var(--town-accent); }
-.lightbox-body-scroll-frame { padding: 24px; overflow-y: auto; display: flex; flex-direction: column; }
-.lightbox-image-wrapper { width: 100%; display: none; justify-content: center; margin-bottom: 16px; background-color: rgba(0, 0, 0, 0.4); padding: 8px; border-radius: 8px; border: 1px solid #262626; box-sizing: border-box; }
-.lightbox-image-wrapper.show-media { display: flex; }
-.lightbox-image-wrapper img { border-radius: 8px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
-#lightbox-title { font-size: 20px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.025em; line-height: 1.25; color: #ffffff; margin: 0; }
-.lightbox-divider-line { border-top: 1px dashed #404040; margin: 8px 0; }
-#lightbox-story { font-size: 14px; color: #e5e5e5; line-height: 1.625; white-space: pre-line; font-family: serif; text-align: justify; padding: 0 4px; }
-
-.lightbox-footer-bar { background-color: #000000; padding: 16px; border-top: 1px solid #262626; display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 10px; font-family: monospace; color: #737373; }
-@media (min-width: 640px) { .lightbox-footer-bar { flex-direction: row; justify-content: space-between; gap: 8px; } }
-#lightbox-external-link { color: var(--town-detail); text-decoration: none; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
-#lightbox-external-link:hover { text-decoration: underline; }
-
-/* ==========================================================================
-   GLOBAL SITE FOOTER COMPONENT
-   ========================================================================== */
-.site-global-footer { background-color: #000000; border-top: 4px solid var(--town-accent); padding: 48px 0; margin-top: 48px; }
-.footer-inner-content { width: 100%; padding: 0 32px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 12px; box-sizing: border-box; }
-.footer-inner-content img { height: 40px; width: auto; opacity: 0.75; margin-bottom: 8px; }
-.footer-copyright-text { font-size: 12px; font-weight: 600; color: #a3a3a3; margin: 0; }
-.footer-copyright-text span { color: #ffffff; }
-.footer-firm-link { font-size: 11px; color: #737373; margin: 0; }
-.footer-firm-link a { color: var(--town-detail); text-decoration: none; font-weight: 700; display: inline; }
-.footer-firm-link a:hover { text-decoration: underline; }
-
-/* ==========================================================================
-   COMPACT MEDIA NO-STRIP OVERLAYS (STREAM ELEMENTS COMPATIBLE)
-   ========================================================================== */
-.overlay-frame-canvas { width: 1920px; height: 1080px; position: relative; background: transparent; overflow: hidden; }
-
-/* NO STRIPPING, NO COMPRESSING, DON'T CHANGE WHAT I DIDN'T SAY TO CHANGE */
-/* NYT Timestamp: 2026-06-16 03:01:10 */
+.lightbox-modal-window { background-color: #171717; border: 2px solid var(--town-detail); max-width: 48rem; width: 100%; border-radius: 16px; display: flex; flex-direction: column; max-height: 90vh; overflow: hidden; }
+.lightbox-image-wrapper.show-media { display: flex; justify-content: center; padding: 10px; }
+.lightbox-image-wrapper.show-media img { max-height: 50vh; border-radius: 8px; }
+.lightbox-close-btn { background: #262626; color: #fff; border: none; padding: 8px 16px; cursor: pointer; border-radius: 50%; font-weight: bold; }
