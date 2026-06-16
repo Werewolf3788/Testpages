@@ -3,22 +3,28 @@
         "contact_info": {
             "email": {
                 "label": "Contact Us",
-                "address": "info@yourdomain.com",
-                "url": "mailto:info@yourdomain.com"
+                "address": "Scott.Robinson@skventuresigns.com",
+                "url": "mailto:Scott.Robinson@skventuresigns.com"
             },
-            "phone": {
-                "label": "Call Support",
-                "number": "(555) 123-4567",
-                "url": "tel:+15551234567"
-            },
+            "phone": [
+                {
+                    "label": "Main Office",
+                    "number": "618-708-4450",
+                    "url": "tel:+16187084450"
+                },
+                {
+                    "label": "Toll Free",
+                    "number": "844-907-4450",
+                    "url": "tel:+18449074450"
+                }
+            ],
             "address": {
-                "text": "123 Main St, Flora, IL 62839",
-                "map_url": "https://www.google.com/maps/dir/?api=1&destination=123+Main+St+Flora+IL"
+                "text": "607 W Clark Ave, Effingham, IL 62401",
+                "map_url": "https://www.google.com/maps/dir/?api=1&destination=607+W+Clark+Ave+Effingham+IL+62401"
             }
         },
         "social_links": [
-            { "name": "Facebook", "url": "#" },
-            { "name": "Instagram", "url": "#" }
+            { "name": "Facebook", "url": "https://www.facebook.com/SupportMyLocalCommunity" }
         ],
         "copyright": "© 2026 S&K Ventures. All rights reserved."
     }
