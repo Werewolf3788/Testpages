@@ -1,0 +1,50 @@
+{
+    "town_name": "Generic Town",
+    "categories": [
+        {
+            "category": "Landmarks",
+            "images": [
+                {
+                    "id": "landmark_01",
+                    "name": "Court House",
+                    "url": "https://live.staticflickr.com/4117/4861670451_669d9e52e9_b.jpg",
+                    "alt": "Historic town Government building"
+                },
+                {
+                    "id": "landmark_02",
+                    "name": "Flora High School",
+                    "url": "https://i.ebayimg.com/images/g/qigAAOSwAjpkAqRk/s-l400.jpg",
+                    "alt": "Flora High School Postcard"
+                }
+            ]
+        },
+        {
+            "category": "Parks",
+            "images": [
+                {
+                    "id": "park_01",
+                    "name": "Flora Sports Mascot",
+                    "url": "https://pbs.twimg.com/profile_images/1152299246151974916/OaQlVtJk_400x400.jpg",
+                    "alt": "Flora Sports Mascot"
+                },
+                {
+                    "id": "park_02",
+                    "name": "Flora Storm Warning",
+                    "url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSb2EnnCY5Oudk2m2OKJ4MhPk5ocndOW06I2SiqwvGo-c8DjP0TeQ-rGZZ7&s=10",
+                    "alt": "Flora Storem"
+                }
+            ]
+        },
+        {
+            "category": "Local Business",
+            "images": [
+                {
+                    "id": "biz_01",
+                    "name": "City sign",
+                    "url": "https://www.billburmaster.com/rmsandw/illinois/images/louisvilleilwel.jpg",
+                    "alt": "City sign"
+                }
+            ]
+        }
+    ]
+}
