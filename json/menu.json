@@ -1,26 +1,26 @@
 [
   {
     "name": "Home",
-    "url": "https://staging.supportmylocalcommunity.com/"
+    "url": "https://werewolf3788.github.io/Testpages/index.html"
   },
   {
     "name": "Clay City",
-    "url": "https://staging.supportmylocalcommunity.com/clay-city/"
-  },
-  {
-    "name": "Sailor Springs",
-    "url": "https://staging.supportmylocalcommunity.com/sailor-springs/"
-  },
-  {
-    "name": "Xenia",
-    "url": "https://staging.supportmylocalcommunity.com/xenia/"
+    "url": "https://werewolf3788.github.io/Testpages/clay-city.html"
   },
   {
     "name": "Flora",
-    "url": "https://ourflora.com"
+    "url": "https://werewolf3788.github.io/Testpages/flora.html"
   },
   {
     "name": "Louisville",
-    "url": "https://staging.supportmylocalcommunity.com/louisville/"
+    "url": "https://werewolf3788.github.io/Testpages/louisville.html"
+  },
+  {
+    "name": "Sailor Springs",
+    "url": "https://werewolf3788.github.io/Testpages/sailor-springs.html"
+  },
+  {
+    "name": "Xenia",
+    "url": "https://werewolf3788.github.io/Testpages/xenia.html"
   }
 ]
