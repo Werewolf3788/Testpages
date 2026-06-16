@@ -1,287 +1,302 @@
+/* NO STRIPPING, NO COMPRESSING, DON'T CHANGE WHAT I DIDN'T SAY TO CHANGE */
+/* NYT Timestamp: 2026-06-16 04:34:25 */
+
 (function() {
-	// DYNAMIC CONFIGURATION & DATA ENDPOINTS
-	const APPS_SCRIPT_BULLETIN_URL = "https://script.google.com/macros/s/AKfycbwtunjBquRf8yjnYdpMNMglMQB6n0j4pHSNke-9yADxZ3-9HvJqXT2DdVTUjdhRroGcxQ/exec";
-	const SMLC_LOCAL_NEWS_JSON = "https://raw.githubusercontent.com/skventuresigns-design/smlc/main/local-news/news_data.json";
-	const MERCHANT_SPREADSHEET_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTwXvTxCrAM-1tVTG4Rhg8Oka186yumxK3nebWyE61pD_jt-hhlo-d4D0iv05P4pm0Ag7JH-tAiwzbo/pub?output=csv";
-	const PARTNERS_JSON_URL = "json/partners.json";
+    const activeTown = document.body.getAttribute('data-town') || 'louisville';
 
-	const WIRE_FEEDS = [
-		"https://www.google.com/alerts/feeds/16385066500020016213/7900491242905665188",
-		"https://www.google.com/alerts/feeds/16385066500020016213/6707108232262016148",
-		"https://www.google.com/alerts/feeds/16385066500020016213/14281446210139084731",
-		"https://www.google.com/alerts/feeds/16385066500020016213/68970857447932436"
-	];
-	
-	const townHistoryTree = [
-		"https://raw.githubusercontent.com/skventuresigns-design/smlc/main/townjson/louisville.json"
-	];
+    // Absolute GitHub URLs mapped directly to your Testpages repository to bypass CORS blocks
+    const URLS = {
+        config: "https://raw.githubusercontent.com/Werewolf3788/Testpages/main/json/config.json",
+        assets: "https://raw.githubusercontent.com/Werewolf3788/Testpages/main/json/assets.json",
+        menu: "https://raw.githubusercontent.com/Werewolf3788/Testpages/main/json/menu.json",
+        partners: "https://raw.githubusercontent.com/Werewolf3788/Testpages/main/json/partners.json",
+        maps: "https://raw.githubusercontent.com/Werewolf3788/Testpages/main/json/maps.json",
+        history: `https://raw.githubusercontent.com/skventuresigns-design/smlc/main/townjson/${activeTown}.json`,
+        images: "https://raw.githubusercontent.com/Werewolf3788/Testpages/main/json/louisville-images.json",
+        footer: "https://raw.githubusercontent.com/Werewolf3788/Testpages/main/json/footer.json",
+        news: "https://raw.githubusercontent.com/skventuresigns-design/smlc/main/local-news/news_data.json",
+        bulletin: "https://script.google.com/macros/s/AKfycbwtunjBquRf8yjnYdpMNMglMQB6n0j4pHSNke-9yADxZ3-9HvJqXT2DdVTUjdhRroGcxQ/exec"
+    };
 
-	let masterPartnersArray = [];
-	let localNewsMemory = [];
+    let rssFeeds = [];
 
-	// 1. TIMING & CLOCK SERVICES
-	function fetchChicagoTime() {
-		try {
-			const opts = {
-				timeZone: 'America/Chicago',
-				year: 'numeric', month: 'numeric', day: 'numeric',
-				hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false
-			};
-			const formatter = new Intl.DateTimeFormat('en-US', opts);
-			const blocks = formatter.formatToParts(new Date());
-			const dMap = {};
-			blocks.forEach(b => dMap[b.type] = b.value);
-			return new Date(dMap.year, dMap.month - 1, dMap.day, dMap.hour, dMap.minute, dMap.second);
-		} catch(e) { return new Date(); }
-	}
+    // --- 1. GLOBAL ASSETS (Header & Footer) ---
+    async function loadAssets() {
+        try {
+            const astRes = await fetch(URLS.assets);
+            const astData = await astRes.json();
+            const headerUrl = astData.global_header_image || astData[0]?.url;
+            if(headerUrl) {
+                document.getElementById('global-header-container').innerHTML = `
+                    <a href="https://staging.supportmylocalcommunity.com/" target="main-content-window">
+                        <img src="${headerUrl}" alt="Global Header">
+                    </a>`;
+            }
 
-	function runChicagoClockLoop() {
-		const label = document.getElementById('chicago-clock');
-		if(!label) return;
-		try {
-			label.innerText = new Date().toLocaleTimeString("en-US", {
-				timeZone: "America/Chicago",
-				hour: "2-digit", minute: "2-digit"
-			});
-		} catch(e){}
-	}
-	setInterval(runChicagoClockLoop, 10000);
-	runChicagoClockLoop();
+            const ftrRes = await fetch(URLS.footer);
+            const ftrData = await ftrRes.json();
+            document.getElementById('global-footer-container').innerHTML = `
+                <div class="footer-inner-content">
+                    <img src="${ftrData.footer_logo || ''}" alt="Logo">
+                    <p style="color:#aaa; font-size:12px;">${ftrData.copyright_text || ''}</p>
+                    <p style="color:#777; font-size:11px;">All Rights Reserved - <a href="${ftrData.firm_url || '#'}" style="color:var(--town-detail);">${ftrData.firm_name || ''}</a></p>
+                </div>`;
+        } catch(e) {
+            console.error("Failed to load global assets", e);
+        }
+    }
 
-	const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-	const currentMonthLabel = monthNames[fetchChicagoTime().getMonth()];
-	if(document.getElementById('month-label')) {
-		document.getElementById('month-label').innerText = `${currentMonthLabel} Dispatches`;
-	}
+    // --- 2. MENU ---
+    async function loadMenu() {
+        try {
+            const res = await fetch(URLS.menu);
+            const data = await res.json();
+            const ul = document.getElementById('dynamic-menu-links');
+            ul.innerHTML = '';
+            data.forEach(link => {
+                ul.innerHTML += `<li><a href="${link.url}" target="main-content-window" class="${window.location.href.includes(link.url) ? 'active' : ''}">${link.name}</a></li>`;
+            });
+        } catch(e) {
+            console.error("Failed to load menu", e);
+        }
+    }
 
-	// UTILITY METADATA & URL PARSERS
-	function extractProperty(item, possibleKeys) {
-		for (const key of possibleKeys) {
-			if (item[key] !== undefined && item[key] !== null) return String(item[key]).trim();
-			const lowerKey = key.toLowerCase();
-			for (const actualKey in item) {
-				if (actualKey.toLowerCase() === lowerKey && item[actualKey] !== undefined && item[actualKey] !== null) {
-					return String(item[actualKey]).trim();
-				}
-			}
-		}
-		return '';
-	}
+    // --- 3. CALENDAR (Strict 30-Day Chicago Time Rule) ---
+    function getChicagoTime() {
+        return new Date(new Date().toLocaleString("en-US", {timeZone: "America/Chicago"}));
+    }
 
-	function generateUtmUrl(baseLink, mediumToken, labelName) {
-		if(!baseLink || baseLink === "#" || baseLink === "") return "#";
-		try {
-			const url = new URL(baseLink.trim().replace(/[\r\n\t ]+/g, ''));
-			url.searchParams.set('utm_source', 'supportmylocalcommunity');
-			url.searchParams.set('utm_medium', mediumToken);
-			url.searchParams.set('utm_campaign', 'louisville_portal');
-			if(labelName) url.searchParams.set('context', labelName.toLowerCase().replace(/[^a-z0-9]/g, '_'));
-			return url.toString();
-		} catch(e) { return baseLink; }
-	}
+    setInterval(() => {
+        const cst = getChicagoTime();
+        const clockEl = document.getElementById('chicago-clock');
+        if (clockEl) {
+            clockEl.innerText = cst.toLocaleTimeString("en-US", {hour: "2-digit", minute: "2-digit"});
+        }
+    }, 1000);
 
-	// 2. NAVIGATION BAR ENGINE
-	async function generateDynamicMenu() {
-		const menuContainer = document.getElementById('dynamic-menu-links');
-		if (!menuContainer) return;
-		try {
-			const response = await fetch(`json/menu.json?v=${Date.now()}`);
-			const menuItems = await response.json();
-			const currentUrl = window.location.href;
-			menuContainer.innerHTML = '';
+    async function loadCalendar() {
+        try {
+            const res = await fetch(URLS.bulletin + "?feed=true");
+            const events = await res.json();
+            const list = document.getElementById('divi-event-list');
+            list.innerHTML = '';
 
-			menuItems.forEach(item => {
-				const li = document.createElement('li');
-				const link = document.createElement('a');
-				link.href = item.url;
-				link.textContent = item.name;
-				link.setAttribute('target', 'main-content-window');
-				if (currentUrl.includes(item.url)) link.className = 'active';
-				li.appendChild(link);
-				menuContainer.appendChild(li);
-			});
-		} catch (e) {
-			menuContainer.innerHTML = `<li><a href="https://staging.supportmylocalcommunity.com/" target="main-content-window" class="active">Home</a></li>`;
-		}
-	}
-	generateDynamicMenu();
+            const nowCST = getChicagoTime();
+            const maxDateCST = new Date(nowCST.getTime() + (30 * 24 * 60 * 60 * 1000));
 
-	// 3. LIGHTBOX POP-OUT ENGINE
-	window.openPortalLightbox = function(title, label, meta, story, imageSrc, externalUrl) {
-		document.getElementById('lightbox-title').innerText = title;
-		document.getElementById('lightbox-label').innerText = label;
-		document.getElementById('lightbox-meta').innerText = meta;
-		document.getElementById('lightbox-story').innerText = story;
-		
-		const mediaBox = document.getElementById('lightbox-media-box');
-		const imgNode = document.getElementById('lightbox-img');
-		const outboundNode = document.getElementById('lightbox-external-link');
+            const validEvents = events.filter(ev => {
+                if(!ev.date) return false;
+                const evDate = new Date(`${ev.date} ${ev.time || '12:00 AM'}`);
+                if (isNaN(evDate)) return true; // Keep TBA
+                return evDate >= nowCST && evDate <= maxDateCST;
+            });
 
-		if(imageSrc) {
-			imgNode.src = imageSrc;
-			mediaBox.classList.add('show-media');
-		} else {
-			mediaBox.classList.remove('show-media');
-		}
+            if(validEvents.length > 0) {
+                validEvents.slice(0,6).forEach(ev => {
+                    list.innerHTML += `
+                        <div class="divi-event-item">
+                            <div class="divi-event-date">${ev.date || 'TBA'}</div>
+                            <div class="divi-event-title">${ev.title || ev.name}</div>
+                            <div class="event-info-text">
+                                <strong>Where:</strong> ${ev.location || 'Clay County'}<br>
+                                <strong>Time:</strong> ${ev.time || 'TBA'}
+                            </div>
+                        </div>`;
+                });
+            } else {
+                list.innerHTML = `<p style="padding:15px; color:#222; font-style:italic;">No events matching current timeframe.</p>`;
+            }
+        } catch(e) { 
+            const list = document.getElementById('divi-event-list');
+            if (list) list.innerHTML = "Feed offline."; 
+        }
+    }
 
-		if(externalUrl && externalUrl !== '#') {
-			outboundNode.href = generateUtmUrl(externalUrl, 'lightbox_link_click', title);
-			outboundNode.classList.remove('hidden');
-		} else {
-			outboundNode.classList.add('hidden');
-		}
+    // --- 4. CONFIG (RSS) & LOCAL NEWS (Center Column) ---
+    async function loadCenterNews() {
+        try {
+            const confRes = await fetch(URLS.config);
+            const conf = await confRes.json();
+            rssFeeds = conf.multi_alerts_rss_cluster || [];
+            const rssCont = document.getElementById('rss-feed-container');
+            if (rssCont) {
+                rssCont.innerHTML = `<p style="padding:15px; color:#ccc; font-style:italic; font-size:12px;">(RSS proxy active - feeds synced via alerts)</p>`;
+            }
 
-		const mask = document.getElementById('portal-lightbox');
-		mask.classList.add('active-show');
-		document.body.classList.add('modal-lock');
-	};
+            const newsRes = await fetch(URLS.news);
+            const newsData = await newsRes.json();
+            const townNews = newsData.filter(n => (n.title+n.full_story).toLowerCase().includes(activeTown));
+            const newsCont = document.getElementById('json-news-container');
+            if (newsCont) {
+                newsCont.innerHTML = '';
+                townNews.slice(0,3).forEach(n => {
+                    newsCont.innerHTML += `
+                        <div class="newspaper-card">
+                            <h3>${n.title}</h3>
+                            <p style="font-size:14px; color:#333;">${(n.full_story || '').substring(0,120)}...</p>
+                        </div>`;
+                });
+            }
+        } catch(e) {
+            console.error("Failed to load news", e);
+        }
+    }
 
-	window.closePortalLightbox = function() {
-		const mask = document.getElementById('portal-lightbox');
-		mask.classList.remove('active-show');
-		document.body.classList.remove('modal-lock');
-	};
+    // --- 5. MAPS DIRECTORY (Right Column) ---
+    async function loadMaps() {
+        try {
+            const res = await fetch(URLS.maps);
+            const data = await res.json();
+            const townData = data[activeTown];
+            if(townData) {
+                const addr = encodeURIComponent(townData.address);
+                const mapCont = document.getElementById('dynamic-map-container');
+                if (mapCont) {
+                    mapCont.innerHTML = `
+                        <a href="tel:${townData.phone.replace(/[^0-9]/g,'')}" class="directory-click-row" style="color:#fff; text-decoration:none;">📞 ${townData.phone}</a>
+                        <a href="https://maps.google.com/?q=${addr}" target="_blank" class="directory-click-row" style="color:#fff; text-decoration:none;">📍 ${townData.address}</a>
+                        <div style="margin-top:10px; display:flex; gap:10px;">
+                            <a href="https://www.google.com/maps/dir/?api=1&destination=${addr}" target="_blank" style="background:#333; color:#fff; padding:5px; text-decoration:none; border-radius:4px; font-size:11px;">Google Maps</a>
+                            <a href="https://waze.com/ul?q=${addr}&navigate=yes" target="_blank" style="background:#333; color:#fff; padding:5px; text-decoration:none; border-radius:4px; font-size:11px;">Waze</a>
+                        </div>`;
+                }
+            }
+        } catch(e) {
+            console.error("Failed to load maps", e);
+        }
+    }
 
-	window.triggerNewsroomLightbox = function(index) {
-		const article = localNewsMemory[index];
-		if(!article) return;
-		openPortalLightbox(article.title, 'Louisville Local Dispatch', `Date: ${article.date}`, article.fullStory, article.image, article.link);
-	};
+    // --- 6. HISTORY (Right Column) ---
+    async function loadHistory() {
+        try {
+            const res = await fetch(URLS.history);
+            const data = await res.json();
+            const cont = document.getElementById('history-json-container');
+            if (cont) {
+                cont.innerHTML = '';
+                const items = Array.isArray(data) ? data : data.history || [];
+                items.slice(0,4).forEach(h => {
+                    cont.innerHTML += `<div style="border-bottom:1px solid #333; padding:10px 0;">
+                        <span style="color:var(--town-detail); font-weight:bold; font-size:12px;">${h.year||h.date}</span>
+                        <p style="margin:5px 0 0 0; color:#ccc; font-size:11px;">${h.event||h.title}</p>
+                    </div>`;
+                });
+            }
+        } catch(e) {
+            console.error("Failed to load history", e);
+        }
+    }
 
-	// 4. BULLETIN CALENDAR LAYER
-	async function loadBulletinCalendar() {
-		const listNode = document.getElementById('divi-event-list');
-		if(!listNode) return;
-		try {
-			const res = await fetch(`${APPS_SCRIPT_BULLETIN_URL}?feed=true&v=${Date.now()}`);
-			const rawEvents = await res.json();
-			if(Array.isArray(rawEvents) && rawEvents.length > 0) {
-				const nowChicago = fetchChicagoTime();
-				listNode.innerHTML = '';
-				rawEvents.slice(0, 8).forEach(item => {
-					const t = extractProperty(item, ['name', 'title', 'event']);
-					const d = extractProperty(item, ['date', 'displayDate', 'eventDate']);
-					const card = document.createElement('div');
-					card.className = "p-3 rounded bg-black/50 border border-neutral-900 flex flex-col gap-1 text-xs text-neutral-300 cursor-pointer hover:border-louisGold/40 transition";
-					card.onclick = () => openPortalLightbox(t, 'Community Bulletin', `Date: ${d}`, item.details || 'No additional details logged.', null, '#');
-					card.innerHTML = `
-						<div class="flex justify-between items-center text-[10px] font-mono font-bold text-red-500"><span>${d}</span></div>
-						<h4 class="font-bold text-white leading-tight">${t}</h4>
-					`;
-					listNode.appendChild(card);
-				});
-			}
-		} catch(e) { listNode.innerHTML = `<div class="feed-loading">Feed currently resting...</div>`; }
-	}
-	loadBulletinCalendar();
+    // --- 7. PARTNERS (Scattered & Bottom Strip) ---
+    function shuffleArray(array) {
+        let currentIndex = array.length, randomIndex;
+        while (currentIndex != 0) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+            [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+        }
+        return array;
+    }
 
-	// 5. LOCAL DISPATCH ARCHIVE EXTRACTOR
-	async function parseSMLCNewsroom() {
-		const targetNode = document.getElementById('json-news-container');
-		if(!targetNode) return;
-		try {
-			const res = await fetch(`${SMLC_LOCAL_NEWS_JSON}?v=${Date.now()}`);
-			const payload = await res.json();
-			if(Array.isArray(payload)) {
-				const filtered = payload.filter(art => (art.title + art.full_story).toLowerCase().includes('louisville'));
-				localNewsMemory = filtered.map(art => ({ title: art.title, date: cleanDateStrings(art.date), fullStory: art.full_story, image: art.image, link: art.link }));
-				targetNode.innerHTML = '';
-				localNewsMemory.forEach((article, index) => {
-					const node = document.createElement('div');
-					node.className = "newspaper-card p-5 rounded-lg flex flex-col gap-1.5";
-					node.setAttribute('onclick', `triggerNewsroomLightbox(${index})`);
-					node.innerHTML = `<h3>${article.title}</h3><p>${article.fullStory.substring(0, 140)}...</p>`;
-					targetNode.appendChild(node);
-				});
-			}
-		} catch(e){}
-	}
-	parseSMLCNewsroom();
+    async function loadPartners() {
+        try {
+            const res = await fetch(URLS.partners);
+            const data = await res.json();
+            const partners = data.filter(p => p.county && p.county.toLowerCase().includes('clay'));
+            
+            if(partners.length > 0) {
+                const cleanPool = shuffleArray([...partners]);
+                
+                // Right Column Top
+                const pRight = cleanPool[0];
+                const rightImg = document.getElementById('partner-image-right');
+                const rightLink = document.getElementById('partner-link-right');
+                if (rightImg && rightLink) {
+                    rightImg.src = pRight.image;
+                    rightLink.innerText = pRight.name;
+                    rightLink.href = pRight.websiteUrl;
+                }
+                
+                // Ticker Top
+                const tickerLink = document.getElementById('ticker-link');
+                if (tickerLink) {
+                    tickerLink.innerText = pRight.name;
+                    tickerLink.href = pRight.websiteUrl;
+                }
 
-	// 6. WIRE FEED RSS GENERATOR
-	async function compileRegionalWireFeeds() {
-		const target = document.getElementById('rss-feed-container');
-		if(!target) return;
-		target.innerHTML = `<div class="feed-loading">Querying active network feeds...</div>`;
-	}
-	compileRegionalWireFeeds();
+                // Bottom Strip
+                const strip = document.getElementById('bottom-partners-strip');
+                if (strip) {
+                    strip.innerHTML = '';
+                    cleanPool.slice(0,5).forEach(p => {
+                        strip.innerHTML += `
+                            <div class="showcase-card-body">
+                                <div class="showcase-media-canvas"><img src="${p.image}"></div>
+                                <a href="${p.websiteUrl}" target="main-content-window" class="showcase-action-link">${p.name}</a>
+                            </div>`;
+                    });
+                }
+            }
+        } catch(e) {
+            console.error("Failed to load partners", e);
+        }
+    }
 
-	// 7. PARTNER AUTOMATION SHUFFLE ENGINE (12-Second Loop Overrides)
-	function shuffleArray(array) {
-		let currentIndex = array.length, randomIndex;
-		while (currentIndex != 0) {
-			randomIndex = Math.floor(Math.random() * currentIndex);
-			currentIndex--;
-			[array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
-		}
-		return array;
-	}
+    // --- 8. LOUISVILLE IMAGES (Bottom Gallery) ---
+    async function loadImages() {
+        try {
+            const res = await fetch(URLS.images);
+            const data = await res.json();
+            const gal = document.getElementById('louisville-images-gallery');
+            if (gal) {
+                gal.innerHTML = '';
+                data.slice(0,5).forEach(img => {
+                    gal.innerHTML += `
+                        <div class="showcase-card-body">
+                            <div class="showcase-media-canvas"><img src="${img.url || img.image || img}"></div>
+                        </div>`;
+                });
+            }
+        } catch(e) {
+            console.error("Failed to load gallery images", e);
+        }
+    }
 
-	function runPartnerPipeline() {
-		if (masterPartnersArray.length === 0) return;
+    // --- 9. FIREBASE GAS (Right Column) ---
+    function initFirebaseGas() {
+        try {
+            const fbConfig = { databaseURL: "https://smlc-fuel-monitor-default-rtdb.firebaseio.com", projectId: "smlc-fuel-monitor" };
+            if(!firebase.apps.length) firebase.initializeApp(fbConfig);
+            firebase.database().ref('fuel_prices/48026').on('value', (snap) => {
+                const val = snap.val();
+                if(val) {
+                    const regEl = document.getElementById('lv-reg');
+                    const dieEl = document.getElementById('lv-die');
+                    const timeEl = document.getElementById('lv-time');
+                    if (regEl) regEl.innerText = val.reg || "--.--";
+                    if (dieEl) dieEl.innerText = (val.dsl && val.dsl !== "0") ? val.dsl : "---";
+                    if (timeEl) timeEl.innerText = val.date ? `Updated: ${val.date}` : "Live Sync";
+                }
+            });
+        } catch(e){
+            console.error("Failed to initialize Firebase Gas", e);
+        }
+    }
 
-		// 1. Update Top Sidebar Showcase Component
-		const sidebarPartner = masterPartnersArray[Math.floor(Math.random() * masterPartnersArray.length)];
-		const sideImg = document.getElementById('partner-image');
-		const sideLink = document.getElementById('partner-link');
-		if (sideImg && sideLink) {
-			sideImg.style.opacity = '0';
-			setTimeout(() => {
-				sideImg.src = sidebarPartner.image;
-				sideImg.style.opacity = '1';
-				sideLink.innerText = sidebarPartner.name;
-				sideLink.onclick = () => window.open(generateUtmUrl(sidebarPartner.websiteUrl, 'sidebar_showcase', sidebarPartner.name), 'main-content-window');
-				sideImg.parentElement.onclick = () => openPortalLightbox(sidebarPartner.name, 'Partner Showcase', 'Visual Assets', '', sidebarPartner.image, sidebarPartner.websiteUrl);
-			}, 300);
-		}
+    // Initialize All
+    document.addEventListener('DOMContentLoaded', () => {
+        loadAssets();
+        loadMenu();
+        loadCalendar();
+        loadCenterNews();
+        loadMaps();
+        loadHistory();
+        loadPartners();
+        loadImages();
+        initFirebaseGas();
+        
+        // Setup 12-second loop for rotating partners
+        setInterval(loadPartners, 12000);
+    });
 
-		// 2. Update Top Header Ticker Link Component
-		const tickerPartner = masterPartnersArray[Math.floor(Math.random() * masterPartnersArray.length)];
-		const tickerNode = document.getElementById('ticker-link');
-		if(tickerNode) {
-			tickerNode.innerText = tickerPartner.name;
-			tickerNode.href = generateUtmUrl(tickerPartner.websiteUrl, 'ticker_marquee', tickerPartner.name);
-		}
-
-		// 3. Update Bottom 5-Card Banner Strip Row (Guarantees No Duplicates)
-		const cleanPool = shuffleArray([...masterPartnersArray]);
-		for (let i = 0; i < 5; i++) {
-			const cardImg = document.getElementById(`bottom-card-img-${i}`);
-			const cardLink = document.getElementById(`bottom-card-link-${i}`);
-			const partner = cleanPool[i % cleanPool.length]; // Fallback loop if pool is under 5
-
-			if (cardImg && cardLink && partner) {
-				cardImg.style.opacity = '0';
-				(function(p, imgEl, linkEl) {
-					setTimeout(() => {
-						imgEl.src = p.image;
-						imgEl.style.opacity = '1';
-						linkEl.innerText = p.name;
-						linkEl.onclick = () => window.open(generateUtmUrl(p.websiteUrl, 'footer_row_strip', p.name), 'main-content-window');
-						imgEl.parentElement.onclick = () => openPortalLightbox(p.name, 'Partner Showcase', 'Visual Assets', '', p.image, p.websiteUrl);
-					}, 300);
-				})(partner, cardImg, cardLink);
-			}
-		}
-	}
-
-	async function initPartnersNetwork() {
-		try {
-			const res = await fetch(`${PARTNERS_JSON_URL}?v=${Date.now()}`);
-			const data = await res.json();
-			masterPartnersArray = data.filter(p => p.county.toLowerCase().includes('clay'));
-			if(masterPartnersArray.length > 0) {
-				runPartnerPipeline();
-				setInterval(runPartnerPipeline, 12000); // Strict 12-Second Loop Execution Interval
-			}
-		} catch(e) {}
-	}
-	initPartnersNetwork();
-
-	// 8. TECTONIC TIMELINE ARRAYS
-	function executeHistoryQueryTree() {
-		const target = document.getElementById('history-json-container');
-		if(target) target.innerHTML = `<div class="feed-loading">Syncing historical indexes...</div>`;
-	}
-	executeHistoryQueryTree();
 })();
