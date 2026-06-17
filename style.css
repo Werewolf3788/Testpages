@@ -2,7 +2,7 @@
    MASTER DEVELOPMENT PROTOCOL - UNIVERSAL REGIONAL SKIN (PREMIUM GLOSS)
    ========================================================================== */
 /* NO STRIPPING, NO COMPRESSING, DON'T CHANGE WHAT I DIDN'T SAY TO CHANGE */
-/* NYT Timestamp: 2026-06-17 17:37:12 */
+/* NYT Timestamp: 2026-06-17 18:00:15 */
 
 :root {
     --container-width: 80%;
@@ -44,11 +44,6 @@ body[data-town="flora"] {
     --town-secondary: #0C0B82;  /* Branding Orange */
     --town-detail: #FE4F00; 
 }
-
-body[data-town="flora"] .menu-bar {
-    background-color: #1512c1 !important;
-}
-
 body[data-town="claycity"] { 
     --town-accent: #0258A3;    /* Deep Corporate Blue */
     --town-secondary: #6EA2C9; /* Sky Blue Accent */
@@ -66,8 +61,8 @@ body[data-town="sailorsprings"] { --town-accent: #0f766e; --town-secondary: #2dd
 
 body {
     font-size: var(--font-size-body);
-    /* Grounding background seamlessly morphs and blends top to bottom utilizing both the active primary and secondary town variables */
-    background: linear-gradient(180deg, var(--town-accent) 0%, rgba(13, 13, 13, 0.92) 40%, rgba(13, 13, 13, 0.95) 70%, var(--town-secondary) 100%) !important;
+    /* Grounding background seamlessly blends from primary to secondary town colors, removing the hardcoded dark step layers */
+    background: linear-gradient(180deg, var(--town-accent) 0%, var(--town-secondary) 100%) !important;
     background-color: var(--dynamic-bg);
     background-attachment: fixed;
     /* Rich micro-dot background matrix pattern for an elegant aesthetic depth */
@@ -78,6 +73,46 @@ body {
     padding: 0;
     -webkit-font-smoothing: antialiased;
     transition: background-color 1.0s ease-in-out, color 1.0s ease-in-out;
+}
+
+/* Specificity override layer to apply requested solid backdrop color and dark text rules exclusively for Flora layout context */
+body[data-town="flora"] {
+    background: #FFFFDA !important;
+    background-color: #FFFFDA !important;
+    color: #111111 !important;
+}
+
+body[data-town="flora"] .dynamic-text-element,
+body[data-town="flora"] .card-header,
+body[data-town="flora"] .sidebar-widget-title,
+body[data-town="flora"] .image-matched-event-title,
+body[data-town="flora"] .image-matched-event-where,
+body[data-town="flora"] .history-item-block-desc-text,
+body[data-town="flora"] .newspaper-header-border h2,
+body[data-town="flora"] .clock-display-panel {
+    color: #111111 !important;
+}
+
+body[data-town="flora"] .bulletin-widget-card,
+body[data-town="flora"] .athletics-widget-card,
+body[data-town="flora"] .wire-feed-card,
+body[data-town="flora"] .fuel-monitor-widget,
+body[data-town="flora"] .showcase-widget,
+body[data-town="flora"] .legacy-history-widget,
+body[data-town="flora"] .regional-map-widget,
+body[data-town="flora"] .newspaper-card-box {
+    background: rgba(255, 255, 255, 0.85) !important;
+    border: 1px solid rgba(0, 0, 0, 0.12) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08) !important;
+}
+
+body[data-town="flora"] .menu-bar {
+    background: rgba(255, 255, 255, 0.9) !important;
+    border-bottom: 2px solid var(--town-accent);
+}
+
+body[data-town="flora"] .menu-links a {
+    color: #111111 !important;
 }
 
 a {
@@ -155,7 +190,7 @@ p, a, h1, h2, h3, span, div {
 /* Premium Frosted Glass Navbar Navigation Configuration - Stripped of harsh white bases */
 .menu-bar {
     width: 100%;
-    background: rgba(15, 15, 0.6) !important;
+    background: rgba(15, 15, 15, 0.6) !important;
     backdrop-filter: var(--glass-blur);
     -webkit-backdrop-filter: var(--glass-blur);
     border-bottom: 2px solid var(--town-accent);
@@ -187,15 +222,15 @@ p, a, h1, h2, h3, span, div {
     box-shadow: inset 0 1px 4px rgba(255, 255, 255, 0.05);
 }
 
-/* UPGRADED HERO ARCHITECTURE SYSTEM: Adjusted dynamic gradient to blend top to bottom */
+/* UPGRADED HERO ARCHITECTURE SYSTEM: Adjusted dynamic gradient to blend top to bottom purely from accent to secondary */
 .town-hero-banner {
     width: 100%; padding: 54px 0;
     display: flex; align-items: center; justify-content: center;
     border-bottom: 4px solid var(--town-detail); border-radius: 16px; text-align: center;
     margin-bottom: 32px;
     box-shadow: var(--premium-shadow);
-    /* Decoupled from hardcoded black: seamlessly morphs backgrounds dynamically blending top to bottom */
-    background: linear-gradient(180deg, var(--town-accent) 0%, rgba(20,20,20,0.85) 50%, var(--town-secondary) 100%) !important;
+    /* Hero banner background matches layout rules blending purely top to bottom without black mid-stops */
+    background: linear-gradient(180deg, var(--town-accent) 0%, var(--town-secondary) 100%) !important;
     position: relative;
     overflow: hidden;
 }
@@ -205,8 +240,6 @@ p, a, h1, h2, h3, span, div {
     pointer-events: none;
 }
 .seat-badge { display: inline-block; padding: 5px 18px; background-color: var(--town-detail); color: #000000; font-weight: 900; font-size: 12px; border-radius: 6px; margin-bottom: 14px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-body[data-town="flora"] .seat-badge { background-color: #ffc51c !important; }
-
 .town-hero-banner h1 { font-size: 54px; font-weight: 900; margin: 0; letter-spacing: 1px; }
 .town-established-meta { font-size: 12px; letter-spacing: 2px; font-weight: 700; color: #ffffff; margin: 8px 0 0 0; opacity: 0.9; }
 .river-marquee { margin-top: 18px; font-size: 12px; font-family: monospace; font-weight: 700; color: #ffffff; background-color: rgba(0, 0, 0, 0.6); padding: 6px 18px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.1); width: max-content; margin-left: auto; margin-right: auto; box-shadow: inset 0 1px 6px rgba(0,0,0,0.4); }
@@ -233,7 +266,7 @@ body[data-town="flora"] .seat-badge { background-color: #ffc51c !important; }
     backdrop-filter: var(--glass-blur);
     -webkit-backdrop-filter: var(--glass-blur);
     border: 1px solid var(--dynamic-border);
-    border-top: 1px solid rgba(255,255,255,0.15); /* Reflective upper ridge shine */
+    border-top: 1px solid rgba(255,255,255,0.15) !important; /* Reflective upper ridge shine */
     border-radius: 14px;
     padding: 18px;
     box-shadow: var(--premium-shadow);
