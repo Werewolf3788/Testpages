@@ -44,6 +44,11 @@ body[data-town="flora"] {
     --town-secondary: #0C0B82;  /* Branding Orange */
     --town-detail: #FE4F00; 
 }
+
+body[data-town="flora"] .menu-bar {
+    background-color: #100e73 !important;
+}
+
 body[data-town="claycity"] { 
     --town-accent: #0258A3;    /* Deep Corporate Blue */
     --town-secondary: #6EA2C9; /* Sky Blue Accent */
