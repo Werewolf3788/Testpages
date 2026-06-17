@@ -1,8 +1,8 @@
 /* ==========================================================================
-   MASTER DEVELOPMENT PROTOCOL - NERVOUS SYSTEM MOTOR
+   MASTER DEVELOPMENT PROTOCOL - NERVOUS SYSTEM MOTOR (FLORA EDITION)
    ========================================================================== */
-/* NO STRIPPING, NO COMPRESSING, DON'T CHANGE WHAT I DOWN SPECIFICALLY SAY TO CHANGE */
-/* NYT Timestamp: 2026-06-16 21:52:36 */
+/* NO STRIPPING, NO COMPRESSING, DON'T CHANGE WHAT I SPECIFICALLY DIDN'T SAY TO CHANGE */
+/* NYT Timestamp: 2026-06-16 23:02:15 */
 
 (function() {
 	const activeTown = (document.body.getAttribute('data-town') || 'flora').trim().toLowerCase();
@@ -17,7 +17,7 @@
 		images: "https://raw.githubusercontent.com/Werewolf3788/Testpages/main/json/town-images.json",
 		footer: "https://raw.githubusercontent.com/Werewolf3788/Testpages/main/json/footer.json",
 		news: "https://raw.githubusercontent.com/skventuresigns-design/smlc/main/local-news/news_data.json",
-		bulletin: "https://script.google.com/macros/s/AKfycbwtunjBquRf8yjnYdpMNMglMQB6n0j4pHSNke-9yADxZ3-9HvJqXT2DdVTUjdhRroGcxQ/exec"
+		bulletin: "https://script.google.com/macros/s/AKfycbz_nol3WlVM6_8FKN1V2aVeW5jZRa54gWs13lVEHVhx07xpzjMmedBd5vRdVyPiSemopA/exec"
 	};
 
 	let masterPartnersArray = [];
@@ -51,6 +51,7 @@
 		}
 	];
 
+	// CALENDAR FAILSAFE - Preserving exact structures with your true descriptions and multi-day end targets
 	const fallbackCalendarEvents = [
 		{ 
 			dateStr: "Saturday, June 14, 2026", 
@@ -234,11 +235,38 @@
 		} catch (e) { console.error("Menu endpoint parsing exception.", e); }
 	}
 
+	/* ==========================================================================
+	   INTELLIGENT MULTI-FORMAT DATE AND RANGE PARSING ENGINE
+	   ========================================================================== */
 	function resolveAnyDateString(dateInput, timeInput) {
 		if (!dateInput) return null;
-		let d = new Date(dateInput);
+		
+		let cleanInput = dateInput.trim();
+		
+		// Unpack compound date range bounds (e.g. "June 14 - June 17, 2026")
+		if (cleanInput.includes(' - ')) {
+			cleanInput = cleanInput.split(' - ')[0].trim();
+		} else if (cleanInput.includes(' to ')) {
+			cleanInput = cleanInput.split(' to ')[0].trim();
+		} else if (cleanInput.includes('-')) {
+			// Do not split standard ISO "YYYY-MM-DD"
+			if (!/^\d{4}-\d{2}-\d{2}$/.test(cleanInput)) {
+				const hyphenParts = cleanInput.split('-');
+				if (hyphenParts.length > 1) {
+					cleanInput = hyphenParts[0].trim();
+					// Ensure year matches and gets appended if missing in split segment
+					const yearMatch = dateInput.match(/\d{4}/);
+					if (yearMatch && !cleanInput.match(/\d{4}/)) {
+						cleanInput += ", " + yearMatch[0];
+					}
+				}
+			}
+		}
+		
+		let d = new Date(cleanInput);
 		if (isNaN(d.getTime())) {
-			const parts = dateInput.split(/[-/]/);
+			// Parsing fallbacks for numerical inputs (e.g. "06/14/2026")
+			const parts = cleanInput.split(/[-/]/);
 			if (parts.length >= 2) {
 				const m = parseInt(parts[0], 10) - 1; 
 				const day = parseInt(parts[1], 10);
@@ -246,6 +274,23 @@
 				d = new Date(y, m, day);
 			}
 		}
+		
+		if (isNaN(d.getTime())) {
+			// Named Month fallbacks (e.g. "June 14")
+			const monthMap = {
+				jan:0, feb:1, mar:2, apr:3, may:4, jun:5, jul:6, aug:7, sep:8, oct:9, nov:10, dec:11,
+				january:0, february:1, march:2, april:3, june:5, july:6, august:7, september:8, october:9, november:10, december:11
+			};
+			const match = cleanInput.match(/(january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|oct|nov|dec)\s+(\d+)/i);
+			if (match) {
+				const m = monthMap[match[1].toLowerCase()];
+				const day = parseInt(match[2], 10);
+				const yearMatch = cleanInput.match(/\d{4}/);
+				const y = yearMatch ? parseInt(yearMatch[0], 10) : new Date().getFullYear();
+				d = new Date(y, m, day);
+			}
+		}
+
 		if (isNaN(d.getTime())) return null;
 
 		if (timeInput && typeof timeInput === 'string' && timeInput.toLowerCase() !== 'all day') {
@@ -313,6 +358,9 @@
 		});
 	}
 
+	/* ==========================================================================
+	   REAL-TIME CALENDAR MATRIX SYNC ENGINE - PRECISION 30-DAY WINDOW
+	   ========================================================================== */
 	async function loadBulletinCalendar() {
 		try {
 			const res = await fetch(`${URLS.bulletin}?feed=true&v=${Date.now()}`);
@@ -320,10 +368,8 @@
 			const events = await res.json();
 			
 			if(Array.isArray(events) && events.length > 0) {
-				const nowCST = fetchChicagoTime();
-				const boundaryCST = new Date(nowCST.getTime() + (30 * 24 * 60 * 60 * 1000));
-				const currentDayFloor = new Date(nowCST);
-				currentDayFloor.setHours(0, 0, 0, 0);
+				const nowCST = fetchChicagoTime(); // Mirror current time completely down to the minute
+				const boundaryCST = new Date(nowCST.getTime() + (30 * 24 * 60 * 60 * 1000)); // Precise rolling 30-day millisecond threshold
 				
 				let validEvents = [];
 
@@ -331,38 +377,124 @@
 					if (!item.date) return;
 					
 					let evDate = resolveAnyDateString(item.date, item.time);
-					let evEndDate = item.dateEnd || item.endDate ? resolveAnyDateString(item.dateEnd || item.endDate, item.endTime) : null;
+					
+					// Reconstruct evEndDate if written as a range string inside `item.date`
+					let evEndDate = null;
+					if (item.dateEnd || item.endDate) {
+						evEndDate = resolveAnyDateString(item.dateEnd || item.endDate, item.endTime);
+					} else if (item.date && (item.date.includes(' - ') || item.date.includes(' to ') || item.date.includes('-'))) {
+						let cleanInput = item.date.trim();
+						let secondPart = null;
+						if (cleanInput.includes(' - ')) {
+							secondPart = cleanInput.split(' - ')[1].trim();
+						} else if (cleanInput.includes(' to ')) {
+							secondPart = cleanInput.split(' to ')[1].trim();
+						} else if (cleanInput.includes('-') && !/^\d{4}-\d{2}-\d{2}$/.test(cleanInput)) {
+							secondPart = cleanInput.split('-')[1].trim();
+						}
+
+						if (secondPart) {
+							const hasMonth = /(january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|oct|nov|dec)/i.test(secondPart);
+							if (!hasMonth) {
+								const monthMatch = cleanInput.match(/(january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|oct|nov|dec)/i);
+								if (monthMatch) {
+									secondPart = monthMatch[0] + " " + secondPart;
+								}
+							}
+							evEndDate = resolveAnyDateString(secondPart, item.endTime);
+						}
+					}
 					
 					if (!evDate) return;
 					
-					if (evEndDate && evEndDate >= currentDayFloor && evDate <= boundaryCST) {
-						// Valid Multi-Day event
-					} else if (evDate < currentDayFloor || evDate > boundaryCST) {
-						return; 
+					// Determine reoccurrence configurations
+					let recurrenceStr = item.recurrence || item.freq || (item.recurring ? "weekly" : null);
+					let occurrences = [];
+
+					if (recurrenceStr) {
+						let current = new Date(evDate.getTime());
+						let freq = recurrenceStr.toLowerCase();
+						let iterations = 0;
+						
+						// Project and find all occurrences falling within the [nowCST, boundaryCST] 30-day window
+						while (current <= boundaryCST && iterations < 100) {
+							iterations++;
+							
+							let validationCeiling = new Date(current);
+							if (!item.time || item.time.toLowerCase() === 'all day') {
+								validationCeiling.setHours(23, 59, 59, 999);
+							}
+							
+							if (validationCeiling >= nowCST && current <= boundaryCST) {
+								occurrences.push(new Date(current.getTime()));
+							}
+							
+							// Increment based on rule frequency parameters
+							if (freq.includes('daily') || freq.includes('freq=daily')) {
+								current.setDate(current.getDate() + 1);
+							} else if (freq.includes('weekly') || freq.includes('freq=weekly')) {
+								current.setDate(current.getDate() + 7);
+							} else if (freq.includes('monthly') || freq.includes('freq=monthly')) {
+								current.setMonth(current.getMonth() + 1);
+							} else if (freq.includes('yearly') || freq.includes('freq=yearly')) {
+								current.setFullYear(current.getFullYear() + 1);
+							} else {
+								break;
+							}
+						}
+					} else {
+						// Single Instance Event validation tracking
+						let validationCeiling = new Date(evDate);
+						if (!item.time || item.time.toLowerCase() === 'all day') {
+							validationCeiling.setHours(23, 59, 59, 999);
+						}
+						
+						if (evEndDate) {
+							let endValidationCeiling = new Date(evEndDate);
+							if (!item.endTime) {
+								endValidationCeiling.setHours(23, 59, 59, 999);
+							}
+							if (endValidationCeiling >= nowCST && evDate <= boundaryCST) {
+								occurrences.push(evDate);
+							}
+						} else {
+							if (validationCeiling >= nowCST && evDate <= boundaryCST) {
+								occurrences.push(evDate);
+							}
+						}
 					}
 
-					const title = item.name || "Untitled Event";
-					const location = item.location || "Clay County";
-					const descText = item.details || item.description || "Join us for this local area community gathering.";
-					
-					let formattedDisplayDate = item.date;
-					try { formattedDisplayDate = evDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }); } catch(e){}
-					
-					let formattedDisplayEndDate = null;
-					if (evEndDate) {
-						try { formattedDisplayEndDate = evEndDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }); } catch(e){}
-					}
+					// Map and format each valid occurrence
+					occurrences.forEach(occDate => {
+						const title = item.name || "Untitled Event";
+						const location = item.location || "Clay County";
+						const descText = item.details || item.description || "Join us for this local area community gathering.";
+						
+						let formattedDisplayDate = item.date;
+						try { formattedDisplayDate = occDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }); } catch(e){}
+						
+						let formattedDisplayEndDate = null;
+						if (evEndDate) {
+							let duration = evEndDate.getTime() - evDate.getTime();
+							let currentEndDate = new Date(occDate.getTime() + duration);
+							try { formattedDisplayEndDate = currentEndDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }); } catch(e){}
+						}
 
-					validEvents.push({ 
-						dateStr: formattedDisplayDate, 
-						dateEnd: formattedDisplayEndDate,
-						title: title, 
-						location: location, 
-						details: descText,
-						startTime: item.time || "All Day",
-						endTime: item.endTime || "Conclusion"
+						validEvents.push({ 
+							dateStr: formattedDisplayDate, 
+							dateEnd: formattedDisplayEndDate,
+							title: title, 
+							location: location, 
+							details: descText,
+							startTime: item.time || "All Day",
+							endTime: item.endTime || "Conclusion",
+							rawDate: occDate
+						});
 					});
 				});
+
+				// Force sequential, chronological sorting of all processed dispatches
+				validEvents.sort((a, b) => a.rawDate - b.rawDate);
 
 				if (validEvents.length === 0) {
 					renderCalendarEvents(fallbackCalendarEvents);
@@ -401,7 +533,7 @@
 					card.innerHTML = `
 						<div>
 							<h3>${n.title}</h3>
-							<div class="clipping-card-meta padding-bottom: 4px;">${cardTimestamp}</div>
+							<div class="clipping-card-meta">${cardTimestamp}</div>
 							<div class="clipping-card-image-box">
 								<img src="${previewImg}" alt="News Element Banner" id="news-img-element-${idx}" />
 							</div>
