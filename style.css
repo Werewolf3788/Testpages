@@ -2,7 +2,7 @@
    MASTER DEVELOPMENT PROTOCOL - UNIVERSAL REGIONAL SKIN (PREMIUM GLOSS)
    ========================================================================== */
 /* NO STRIPPING, NO COMPRESSING, DON'T CHANGE WHAT I DIDN'T SAY TO CHANGE */
-/* NYT Timestamp: 2026-06-16 20:02:15 */
+/* NYT Timestamp: 2026-06-16 20:12:44 */
 
 :root {
     --container-width: 80%;
@@ -33,9 +33,22 @@
     --glossy-shine: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 100%);
 }
 
-body[data-town="louisville"] { --town-accent: var(--louis-red); --town-secondary: var(--louis-black); --town-detail: var(--louis-gold); }
-body[data-town="flora"] { --town-accent: #FE4F00; --town-secondary: #0C0B82; --town-detail: #FE4F00; }
-body[data-town="claycity"] { --town-accent: #0C30F0; --town-secondary: #D2D2D2; --town-detail: #FFFFFF; }
+/* HIGH-INTENSITY TOWN MATRIX BRANDING CONFIGURATIONS */
+body[data-town="louisville"] { 
+    --town-accent: var(--louis-red); 
+    --town-secondary: var(--louis-black); 
+    --town-detail: var(--louis-gold); 
+}
+body[data-town="flora"] { 
+    --town-accent: #0C0B82;     /* Core Royal Blue */
+    --town-secondary: #FE4F00;  /* Branding Orange */
+    --town-detail: #FE4F00; 
+}
+body[data-town="claycity"] { 
+    --town-accent: #0258A3;    /* Deep Corporate Blue */
+    --town-secondary: #6EA2C9; /* Sky Blue Accent */
+    --town-detail: #FFFFFF; 
+}
 body[data-town="xenia"] { --town-accent: #c2410c; --town-secondary: #334155; --town-detail: #f1f5f9; }
 body[data-town="sailorsprings"] { --town-accent: #0f766e; --town-secondary: #2dd4bf; --town-detail: #ccfbf1; }
 
@@ -166,19 +179,19 @@ p, a, h1, h2, h3, span, div {
     box-shadow: inset 0 1px 4px rgba(235,28,36,0.15);
 }
 
+/* UPGRADED HERO ARCHITECTURE SYSTEM: Dynamic multi-town color-mapping blend track */
 .town-hero-banner {
     width: 100%; padding: 54px 0;
     display: flex; align-items: center; justify-content: center;
     border-bottom: 4px solid var(--town-detail); border-radius: 16px; text-align: center;
     margin-bottom: 32px;
     box-shadow: var(--premium-shadow);
-}
-.static-hero-colors {
-    background: linear-gradient(135deg, #000000 0%, #1a1a1a 40%, var(--town-accent) 100%) !important;
+    /* Decoupled from hardcoded black: seamlessly morphs backgrounds based on the active body data-town token variables */
+    background: linear-gradient(135deg, var(--town-accent) 0%, rgba(20,20,20,0.85) 50%, var(--town-secondary) 100%) !important;
     position: relative;
     overflow: hidden;
 }
-.static-hero-colors::before {
+.town-hero-banner::before {
     content: ''; position: absolute; inset: 0;
     background: linear-gradient(to bottom, rgba(255,255,255,0.08) 0%, transparent 100%);
     pointer-events: none;
@@ -314,7 +327,6 @@ p, a, h1, h2, h3, span, div {
     text-shadow: none !important;
 }
 
-/* MASTER THEME MEDIA CANVAS STANDARDS RESTORED: Default rule forces logos to stay bounded completely un-cropped */
 .showcase-media-canvas { 
     width: 100%; 
     aspect-ratio: 16 / 9; 
@@ -332,7 +344,7 @@ p, a, h1, h2, h3, span, div {
 .showcase-media-canvas img { 
     width: 100% !important; 
     height: 100% !important; 
-    object-fit: contain !important; /* FIXED BACK TO CONTAIN: Prevents logo borders from clipping */
+    object-fit: contain !important; /* Fixed branding logo protection logic matches network baselines */
     cursor: pointer;
     transition: transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
@@ -530,12 +542,12 @@ iframe { max-width: 100% !important; width: 100% !important; height: 100% !impor
 }
 
 /* ==========================================================================
-   ISOLATED TARGET SELECTOR: FULL BLEED FOR THE PHONE-IMAGE SPOTLIGHT ONLY
+   ISOLATED TARGET SELECTOR: FULL BLEED COVER FOR THE PHONE-IMAGE SPOTLIGHT ONLY
    ========================================================================== */
 #spotlight-widget-media-node {
     width: 100% !important;
     height: 100% !important;
-    object-fit: cover !important; /* Stretches and fills Grandma's Kitchen phone picture perfectly */
+    object-fit: cover !important; /* Forces Grandma's Kitchen phone asset portrait crop to fill full widget box safely */
     object-position: center center !important;
 }
 
