@@ -2,7 +2,7 @@
    MASTER DEVELOPMENT PROTOCOL - NERVOUS SYSTEM MOTOR (FLORA EDITION)
    ========================================================================== */
 /* NO STRIPPING, NO COMPRESSING, DON'T CHANGE WHAT I SPECIFICALLY DIDN'T SAY TO CHANGE */
-/* NYT Timestamp: 2026-06-16 23:02:15 */
+/* NYT Timestamp: 2026-06-17 16:55:00 */
 
 (function() {
 	const activeTown = (document.body.getAttribute('data-town') || 'flora').trim().toLowerCase();
@@ -365,23 +365,36 @@
 		try {
 			const res = await fetch(`${URLS.bulletin}?feed=true&v=${Date.now()}`);
 			if (!res.ok) throw new Error("Wire communication error");
-			const events = await res.json();
+			const rawEvents = await res.json();
 			
-			if(Array.isArray(events) && events.length > 0) {
+			if(Array.isArray(rawEvents) && rawEvents.length > 0) {
 				const nowCST = fetchChicagoTime(); // Mirror current time completely down to the minute
 				const boundaryCST = new Date(nowCST.getTime() + (30 * 24 * 60 * 60 * 1000)); // Precise rolling 30-day millisecond threshold
 				
 				let validEvents = [];
 
-				events.forEach((item) => {
+				rawEvents.forEach((rawItem) => {
+					// Precision Structural Translation Block maps Firestore layouts back to parsing keys cleanly
+					const item = {
+						date: rawItem.date || rawItem.displayDate || "",
+						dateEnd: rawItem.dateEnd || rawItem.endDate || null,
+						time: rawItem.time || (rawItem.isAllDay ? "All Day" : (rawItem.displayDate && rawItem.displayDate.includes(", ")) ? rawItem.displayDate.split(", ")[1] : "All Day"),
+						endTime: rawItem.endTime || "Conclusion",
+						name: rawItem.name || rawItem.title || "Untitled Event",
+						location: rawItem.location || rawItem.addr || "Clay County",
+						details: rawItem.details || rawItem.desc || "",
+						recurrence: rawItem.recurrence || rawItem.freq || null,
+						recurring: rawItem.recurring || false
+					};
+
 					if (!item.date) return;
 					
 					let evDate = resolveAnyDateString(item.date, item.time);
 					
 					// Reconstruct evEndDate if written as a range string inside `item.date`
 					let evEndDate = null;
-					if (item.dateEnd || item.endDate) {
-						evEndDate = resolveAnyDateString(item.dateEnd || item.endDate, item.endTime);
+					if (item.dateEnd) {
+						evEndDate = resolveAnyDateString(item.dateEnd, item.endTime);
 					} else if (item.date && (item.date.includes(' - ') || item.date.includes(' to ') || item.date.includes('-'))) {
 						let cleanInput = item.date.trim();
 						let secondPart = null;
@@ -408,7 +421,7 @@
 					if (!evDate) return;
 					
 					// Determine reoccurrence configurations
-					let recurrenceStr = item.recurrence || item.freq || (item.recurring ? "weekly" : null);
+					let recurrenceStr = item.recurrence || (item.recurring ? "weekly" : null);
 					let occurrences = [];
 
 					if (recurrenceStr) {
@@ -430,13 +443,13 @@
 							}
 							
 							// Increment based on rule frequency parameters
-							if (freq.includes('daily') || freq.includes('freq=daily')) {
+							if (freq.includes('daily')) {
 								current.setDate(current.getDate() + 1);
-							} else if (freq.includes('weekly') || freq.includes('freq=weekly')) {
+							} else if (freq.includes('weekly')) {
 								current.setDate(current.getDate() + 7);
-							} else if (freq.includes('monthly') || freq.includes('freq=monthly')) {
+							} else if (freq.includes('monthly')) {
 								current.setMonth(current.getMonth() + 1);
-							} else if (freq.includes('yearly') || freq.includes('freq=yearly')) {
+							} else if (freq.includes('yearly')) {
 								current.setFullYear(current.getFullYear() + 1);
 							} else {
 								break;
@@ -468,7 +481,7 @@
 					occurrences.forEach(occDate => {
 						const title = item.name || "Untitled Event";
 						const location = item.location || "Clay County";
-						const descText = item.details || item.description || "Join us for this local area community gathering.";
+						const descText = item.details || "Join us for this local area community gathering.";
 						
 						let formattedDisplayDate = item.date;
 						try { formattedDisplayDate = occDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }); } catch(e){}
