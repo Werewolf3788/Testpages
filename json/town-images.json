@@ -9,14 +9,14 @@
             {
               "id": "flora_landmark_01",
               "name": "Charlie Brown Park",
-              "url": "./images/Charlie-Brown-Park.jpg",
+              "url": "https://github.com/Werewolf3788/Testpages/blob/426b3c31cdfacdf89a868df2778395819a4d4fe7/images/Charlie-Brown-Park.jpg",
               "alt": "Charlie Brown Park",
               "source_url": "https://supportmylocalcommunity.com/flora/charlie-brown-park"
             },
             {
               "id": "flora_landmark_02",
               "name": "B&O Railroad",
-              "url": "./images/Flora-railroad.png",
+              "url": "https://github.com/Werewolf3788/Testpages/blob/426b3c31cdfacdf89a868df2778395819a4d4fe7/images/Flora-railroad.png",
               "alt": "B&O Railroad",
               "source_url": "https://supportmylocalcommunity.com/flora/railroad-history"
             }
@@ -28,7 +28,7 @@
             {
               "id": "flora_park_01",
               "name": "Flora Sports Mascot",
-              "url": "./images/Flora.jpeg",
+              "url": "https://github.com/Werewolf3788/Testpages/blob/426b3c31cdfacdf89a868df2778395819a4d4fe7/images/Flora.jpeg",
               "alt": "Flora Sports Mascot",
               "source_url": "https://supportmylocalcommunity.com/flora/schools"
             }
@@ -40,7 +40,7 @@
             {
               "id": "flora_auto_01",
               "name": "Hanging Rock Auto Repair",
-              "url": "./images/Hanging Rock.jpg",
+              "url": "https://github.com/Werewolf3788/Testpages/blob/426b3c31cdfacdf89a868df2778395819a4d4fe7/images/Hanging Rock.jpg",
               "alt": "Hanging Rock Auto",
               "source_url": "https://supportmylocalcommunity.com/flora/hanging-rock-auto"
             }
@@ -52,7 +52,7 @@
             {
               "id": "flora_biz_01",
               "name": "Grandma's Kitchen",
-              "url": "images/Grandma_s Kitchen.jpg",
+              "url": "https://github.com/Werewolf3788/Testpages/blob/426b3c31cdfacdf89a868df2778395819a4d4fe7/images/Grandma_s Kitchen.jpg",
               "alt": "Spotlight Business",
               "source_url": "https://supportmylocalcommunity.com/flora/grandmas-kitchen"
             }
