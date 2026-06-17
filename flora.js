@@ -972,8 +972,7 @@
 			const f = raw.footer_data;
 			
 			let rawAddressText = f.contact_info.address.text || "607 W Clark Ave, Effingham, IL 62401";
-			let correctedAddressText = rawAddressText.replace(/Effingham/g, 'Flora');
-
+			
 			let phoneHTMLBlocks = '';
 			if (Array.isArray(f.contact_info.phone)) {
 				f.contact_info.phone.forEach(p => {
