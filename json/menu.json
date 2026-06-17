@@ -1,11 +1,11 @@
 [
   {
     "name": "Home",
-    "url": "https://werewolf3788.github.io/Testpages/index.html"
+    "url": "./Testpages/index.html"
   },
   {
     "name": "Clay City",
-    "url": "https://werewolf3788.github.io/Testpages/clay-city.html"
+    "url": "./Testpages/clay-city.html"
   },
   {
     "name": "Flora",
@@ -13,14 +13,14 @@
   },
   {
     "name": "Louisville",
-    "url": "https://werewolf3788.github.io/Testpages/louisville.html"
+    "url": "./Testpages/louisville.html"
   },
   {
     "name": "Sailor Springs",
-    "url": "https://werewolf3788.github.io/Testpages/sailor-springs.html"
+    "url": "./Testpages/sailor-springs.html"
   },
   {
     "name": "Xenia",
-    "url": "https://werewolf3788.github.io/Testpages/xenia.html"
+    "url": "./Testpages/xenia.html"
   }
 ]
