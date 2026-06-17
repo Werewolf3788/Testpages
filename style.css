@@ -40,8 +40,8 @@ body[data-town="louisville"] {
     --town-detail: var(--louis-gold); 
 }
 body[data-town="flora"] { 
-    --town-accent: #0C0B82;     /* Core Royal Blue */
-    --town-secondary: #FE4F00;  /* Branding Orange */
+    --town-accent:  #FE4F00;    /* Core Royal Blue */
+    --town-secondary: #0C0B82;  /* Branding Orange */
     --town-detail: #FE4F00; 
 }
 body[data-town="claycity"] { 
