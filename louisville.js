@@ -2,7 +2,7 @@
    MASTER DEVELOPMENT PROTOCOL - NERVOUS SYSTEM MOTOR
    ========================================================================== */
 /* NO STRIPPING, NO COMPRESSING, DON'T CHANGE WHAT I DOWN SPECIFICALLY SAY TO CHANGE */
-/* NYT Timestamp: 2026-06-16 08:14:12 */
+/* NYT Timestamp: 2026-06-16 20:05:05 */
 
 (function() {
 	const activeTown = document.body.getAttribute('data-town') || 'louisville';
@@ -14,7 +14,7 @@
 		partners: "https://raw.githubusercontent.com/Werewolf3788/Testpages/main/json/partners.json",
 		maps: "https://raw.githubusercontent.com/Werewolf3788/Testpages/main/json/maps.json",
 		history: "https://raw.githubusercontent.com/skventuresigns-design/smlc/main/townjson/louisville.json",
-		images: `https://raw.githubusercontent.com/Werewolf3788/Testpages/main/json/${activeTown}-images.json`,
+		images: "https://raw.githubusercontent.com/Werewolf3788/Testpages/main/json/town-images.json",
 		footer: "https://raw.githubusercontent.com/Werewolf3788/Testpages/main/json/footer.json",
 		news: "https://raw.githubusercontent.com/skventuresigns-design/smlc/main/local-news/news_data.json",
 		bulletin: "https://script.google.com/macros/s/AKfycbwtunjBquRf8yjnYdpMNMglMQB6n0j4pHSNke-9yADxZ3-9HvJqXT2DdVTUjdhRroGcxQ/exec"
@@ -51,7 +51,6 @@
 		}
 	];
 
-	// CALENDAR FAILSAFE - Updated with your absolute full copy-pasted details 
 	const fallbackCalendarEvents = [
 		{ 
 			dateStr: "Saturday, June 20, 2026", 
@@ -167,12 +166,12 @@
 	const labelNode = document.getElementById('month-label');
 	if (labelNode) labelNode.innerText = `${currentMonthLabel} Dispatches`;
 
-	function registerDynamicLightboxTrigger(element, imgUrl, title = "Community Media Showcase", context = "SMLC Network Frame Log View") {
+	function registerDynamicLightboxTrigger(element, imgUrl, title = "Community Media Showcase", context = "SMLC Network Frame Log View", targetSourceUrl = "#") {
 		if (!element) return;
 		element.style.cursor = "pointer";
 		element.addEventListener('click', (e) => {
 			e.stopPropagation();
-			openPortalLightbox(title, context, "", imgUrl, imgUrl);
+			openPortalLightbox(title, context, "SMLC Community Image Register Record Asset View.", imgUrl, targetSourceUrl);
 		});
 	}
 
@@ -270,7 +269,6 @@
 			const icsContent = "BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:" + item.title + "\nLOCATION:" + item.location + "\nDESCRIPTION:" + (item.details || "") + "\nEND:VEVENT\nEND:VCALENDAR";
 			const icsBase64 = "data:text/calendar;base64," + btoa(unescape(encodeURIComponent(icsContent)));
 			
-			// Dynamic short text calculation parameters (first 75 characters max)
 			const shortSnippet = item.details && item.details.length > 75 ? item.details.substring(0, 75) + "..." : (item.details || "No summary details added.");
 
 			div.onclick = () => {
@@ -388,7 +386,7 @@
 					targetNode.appendChild(card);
 
 					const targetNewsImg = document.getElementById(`news-img-element-${idx}`);
-					registerDynamicLightboxTrigger(targetNewsImg, previewImg, n.title, cardTimestamp);
+					registerDynamicLightboxTrigger(targetNewsImg, previewImg, n.title, cardTimestamp, n.source_url || "#");
 
 					document.getElementById(`news-trigger-btn-${idx}`).addEventListener('click', () => {
 						openPortalLightbox(n.title, cardTimestamp, n.full_story, previewImg, n.source_url || "#");
@@ -406,30 +404,48 @@
 		}
 	}
 
+	/* ==========================================================================
+	   UPGRADED FEATURE: DYNAMIC NETWORK BUSINESS SPOTLIGHT INJECTOR
+	   ========================================================================== */
 	async function loadRegionalMapsEngine() {
-		const mapContainer = document.getElementById('dynamic-map-container');
-		if (!mapContainer) return;
+		const mediaContainer = document.getElementById('global-spotlight-media-container');
+		const linkContainer = document.getElementById('global-spotlight-link-wrapper');
+		if (!mediaContainer || !linkContainer) return;
 		try {
-			const res = await fetch(`${URLS.maps}?v=${Date.now()}`);
-			const mapsManifest = await res.json();
+			const res = await fetch(`${URLS.images}?v=${Date.now()}`);
+			if (!res.ok) throw new Error("Spotlight registry link exception.");
+			const registry = await res.json();
 			
-			let mappedKey = activeTown;
-			if (activeTown === 'claycity') mappedKey = 'clay_city';
-			
-			const profile = mapsManifest.maps?.[mappedKey];
-			if (profile) {
-				mapContainer.innerHTML = `
-					<div class="showcase-card-body">
-						<div class="showcase-media-canvas" style="border-color: rgba(255,255,255,0.15); margin-bottom:12px;">
-							<img src="${profile.src}" alt="${profile.alt}" id="maps-img-element" style="width:100%; height:100%; object-fit:contain;" />
-						</div>
-						<span class="inline-block text-xs font-mono font-bold text-neutral-400 uppercase">${profile.name} Directory Grid</span>
-					</div>`;
-				
-				const mImg = document.getElementById('maps-img-element');
-				registerDynamicLightboxTrigger(mImg, profile.src, profile.name + " Geographic Directory Map", "Local Map Layout");
+			let spotlightAsset = null;
+
+			if (registry && Array.isArray(registry.global_assets)) {
+				spotlightAsset = registry.global_assets.find(asset => asset.id === "global_biz_spotlight");
 			}
-		} catch (e) { mapContainer.innerHTML = `<div>Map disconnected.</div>`; }
+
+			if (spotlightAsset) {
+				const finalImg = spotlightAsset.url || spotlightAsset.image;
+				const assetName = spotlightAsset.name || "Featured Local Business Spotlight";
+				const fallbackAlt = spotlightAsset.alt || assetName;
+				const destinationUrl = spotlightAsset.source_url || "#";
+
+				mediaContainer.innerHTML = `<img src="${finalImg}" alt="${fallbackAlt}" id="spotlight-widget-media-node" style="width:100%; height:100%; object-fit:contain; cursor:pointer;" />`;
+				
+				linkContainer.innerHTML = `<a href="${enforceUtmRouterUrl(destinationUrl)}" target="main-content-window" class="showcase-action-link dynamic-text-element hover-accent" style="font-size:15px; font-weight:bold; display:block; margin-top:8px;">${assetName}</a>`;
+				
+				const mediaNode = document.getElementById('spotlight-widget-media-node');
+				if (mediaNode) {
+					mediaNode.addEventListener('click', (e) => {
+						e.stopPropagation();
+						openPortalLightbox(assetName, "SMLC Universal Business Spotlight", "Network Wide Featured Partner Profile Overview.", finalImg, destinationUrl);
+					});
+				}
+			} else {
+				mediaContainer.innerHTML = `<div class="text-xs italic text-neutral-500">Spotlight reference context offline.</div>`;
+			}
+		} catch (e) { 
+			console.error("[Spotlight Initialization Failure]", e);
+			mediaContainer.innerHTML = `<div class="text-xs italic text-neutral-500">Spotlight disconnected.</div>`; 
+		}
 	}
 
 	function renderHistoryRecords(items) {
@@ -480,7 +496,7 @@
 			rightImg.src = pool[0].image;
 			rightLink.innerText = pool[0].name;
 			rightLink.href = enforceUtmRouterUrl(pool[0].websiteUrl);
-			registerDynamicLightboxTrigger(rightImg, pool[0].image, pool[0].name, "Showcase Business Partner");
+			registerDynamicLightboxTrigger(rightImg, pool[0].image, pool[0].name, "Showcase Business Partner", pool[0].websiteUrl);
 		}
 
 		const leftSlot = document.getElementById('inline-partner-left-slot');
@@ -492,7 +508,7 @@
 					<div class="showcase-media-canvas"><img src="${ad1.image}" id="inline-left-ad-img" style="object-fit:contain;" /></div>
 					<a href="${enforceUtmRouterUrl(ad1.websiteUrl)}" target="main-content-window" class="showcase-action-link">${ad1.name}</a>
 				</div>`;
-			registerDynamicLightboxTrigger(document.getElementById('inline-left-ad-img'), ad1.image, ad1.name, "SMLC Community Partner");
+			registerDynamicLightboxTrigger(document.getElementById('inline-left-ad-img'), ad1.image, ad1.name, "SMLC Community Partner", ad1.websiteUrl);
 		}
 
 		const centerSlot = document.getElementById('inline-partner-center-slot');
@@ -504,7 +520,7 @@
 					<div class="showcase-media-canvas"><img src="${ad3.image}" id="inline-center-ad-img" style="object-fit:contain;" /></div>
 					<a href="${enforceUtmRouterUrl(ad3.websiteUrl)}" target="main-content-window" class="showcase-action-link" style="text-align:center; font-size:15px;">Explore: ${ad3.name}</a>
 				</div>`;
-			registerDynamicLightboxTrigger(document.getElementById('inline-center-ad-img'), ad3.image, ad3.name, "Featured Center Banner Area Business");
+			registerDynamicLightboxTrigger(document.getElementById('inline-center-ad-img'), ad3.image, ad3.name, "Featured Center Banner Area Business", ad3.websiteUrl);
 		}
 
 		const stripContainer = document.getElementById('bottom-partners-strip');
@@ -520,7 +536,7 @@
 					</div>`;
 				
 				setTimeout(() => {
-					registerDynamicLightboxTrigger(document.getElementById(imgId), p.image, p.name, "Area Network Partner");
+					registerDynamicLightboxTrigger(document.getElementById(imgId), p.image, p.name, "Area Network Partner", p.websiteUrl);
 				}, 50);
 			});
 		}
@@ -552,7 +568,7 @@
 					<a href="${enforceUtmRouterUrl(currentTarget.websiteUrl)}" target="main-content-window" class="showcase-action-link" style="font-size:11px; text-align:center; display:block; margin-top:6px;">${currentTarget.name}</a>
 				</div>`;
 			
-			registerDynamicLightboxTrigger(document.getElementById('gallery-slideshow-node'), currentTarget.image, currentTarget.name, "Automated Partner Showcase Frame");
+			registerDynamicLightboxTrigger(document.getElementById('gallery-slideshow-node'), currentTarget.image, currentTarget.name, "Automated Partner Showcase Frame", currentTarget.websiteUrl);
 			cycleIndex++;
 		}
 		containerElement.style.justifyContent = "center";
@@ -560,6 +576,9 @@
 		setInterval(renderNextSlide, 60000);
 	}
 
+	/* ==========================================================================
+	   GALLERY MATRIX STREAM MODULE - LEAK ISOLATION ENGINE
+	   ========================================================================== */
 	async function loadGalleryImages() {
 		const gallery = document.getElementById('louisville-images-gallery');
 		if (!gallery) return;
@@ -570,19 +589,36 @@
 			gallery.innerHTML = '';
 			
 			let arrayCollector = [];
-			if (data.categories && Array.isArray(data.categories)) {
-				data.categories.forEach(cat => {
-					if (cat.images && Array.isArray(cat.images)) {
-						arrayCollector = arrayCollector.concat(cat.images);
+
+			// 1. Scan network_towns for local town categories matching 'louisville' ONLY
+			if (data.network_towns) {
+				for (const townKey in data.network_towns) {
+					const townData = data.network_towns[townKey];
+					if (townData.categories && Array.isArray(townData.categories)) {
+						townData.categories.forEach(cat => {
+							if (cat.images && Array.isArray(cat.images)) {
+								cat.images.forEach(img => {
+									const imgId = img.id || '';
+									if (imgId.toLowerCase().includes('louisville')) {
+										arrayCollector.push(img);
+									}
+								});
+							}
+						});
 					}
-				});
-			} else if (Array.isArray(data)) { arrayCollector = data; }
+				}
+			}
+
+			// CRITICAL BLOCK APPLIED: The data.global_assets parsing loop has been 
+			// completely removed from this segment to isolate standalone highlights 
+			// and permanently protect the town matrix strip layout from rendering leaks.
 
 			if (arrayCollector.length === 0) throw new Error("Empty Array");
 
 			arrayCollector.forEach((img, gIdx) => {
 				const finalImgPath = img.url || img.image || img;
 				const altTitleText = img.alt || img.name || "Community Image Asset";
+				const targetSourceUrl = img.source_url || "#";
 				const galleryImgId = `gallery-matrix-strip-img-${gIdx}`;
 				
 				gallery.innerHTML += `
@@ -593,7 +629,14 @@
 					</div>`;
 				
 				setTimeout(() => {
-					registerDynamicLightboxTrigger(document.getElementById(galleryImgId), finalImgPath, altTitleText, "Louisville Photo Record File");
+					const imgEl = document.getElementById(galleryImgId);
+					if (imgEl) {
+						imgEl.style.cursor = "pointer";
+						imgEl.addEventListener('click', (e) => {
+							e.stopPropagation();
+							openPortalLightbox(altTitleText, "Louisville Regional Asset Matrix Log", "SMLC Community Image Register Record Asset View.", finalImgPath, targetSourceUrl);
+						});
+					}
 				}, 50);
 			});
 		} catch(e) {
