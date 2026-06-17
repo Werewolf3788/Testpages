@@ -205,7 +205,7 @@ p, a, h1, h2, h3, span, div {
     pointer-events: none;
 }
 .seat-badge { display: inline-block; padding: 5px 18px; background-color: var(--town-detail); color: #000000; font-weight: 900; font-size: 12px; border-radius: 6px; margin-bottom: 14px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-body[data-town="flora"] .seat-badge { background-color: #ffc51c; }
+body[data-town="flora"] .seat-badge { background-color: #ffc51c !important; }
 
 .town-hero-banner h1 { font-size: 54px; font-weight: 900; margin: 0; letter-spacing: 1px; }
 .town-established-meta { font-size: 12px; letter-spacing: 2px; font-weight: 700; color: #ffffff; margin: 8px 0 0 0; opacity: 0.9; }
