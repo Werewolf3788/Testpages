@@ -2,7 +2,7 @@
    MASTER DEVELOPMENT PROTOCOL - UNIVERSAL REGIONAL SKIN (PREMIUM GLOSS)
    ========================================================================== */
 /* NO STRIPPING, NO COMPRESSING, DON'T CHANGE WHAT I DIDN'T SAY TO CHANGE */
-/* NYT Timestamp: 2026-06-16 20:12:44 */
+/* NYT Timestamp: 2026-06-17 17:37:12 */
 
 :root {
     --container-width: 80%;
@@ -12,13 +12,13 @@
     --louis-black: #000000;
     --louis-gold: #FFC10E;
     
-    /* Dynamic Theme Controls managed via script time cycles */
-    --dynamic-bg: #1F1F1F;
+    /* Permanent Premium Dark Gloss Theme Controls (Daylight white/gray components completely removed) */
+    --dynamic-bg: #0D0D0D;
     --dynamic-text: #FFFFFF;
-    --dynamic-panel: rgba(13, 13, 13, 0.7);
+    --dynamic-panel: rgba(20, 20, 20, 0.65);
     --dynamic-border: rgba(255, 255, 255, 0.08);
     --dynamic-accent: #FFC10E;
-    --dynamic-readable-tint: rgba(0, 0, 0, 0.45);
+    --dynamic-readable-tint: rgba(0, 0, 0, 0.6);
     
     /* Dynamic regular gas text tracker variable */
     --gas-regular-green: #4cd137; 
@@ -28,8 +28,8 @@
     --font-size-body: 14px;
 
     /* Premium Fluid Backdrop Glass Blur System */
-    --glass-blur: blur(12px) saturate(160%);
-    --premium-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+    --glass-blur: blur(16px) saturate(180%);
+    --premium-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.65);
     --glossy-shine: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 100%);
 }
 
@@ -52,15 +52,19 @@ body[data-town="claycity"] {
 body[data-town="xenia"] { --town-accent: #c2410c; --town-secondary: #334155; --town-detail: #f1f5f9; }
 body[data-town="sailorsprings"] { --town-accent: #0f766e; --town-secondary: #2dd4bf; --town-detail: #ccfbf1; }
 
-/* Enforce Times New Roman globally across all nodes */
+/* Enforce Times New Roman globally across all nodes and convert text to lowercase with initial capitals */
 * {
     font-family: 'Times New Roman', Times, serif !important;
     box-sizing: border-box;
+    text-transform: capitalize !important;
 }
 
 body {
     font-size: var(--font-size-body);
+    /* Grounding background seamlessly morphs and blends top to bottom utilizing both the active primary and secondary town variables */
+    background: linear-gradient(180deg, var(--town-accent) 0%, rgba(13, 13, 13, 0.92) 40%, rgba(13, 13, 13, 0.95) 70%, var(--town-secondary) 100%) !important;
     background-color: var(--dynamic-bg);
+    background-attachment: fixed;
     /* Rich micro-dot background matrix pattern for an elegant aesthetic depth */
     background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 0);
     background-size: 24px 24px;
@@ -143,10 +147,10 @@ p, a, h1, h2, h3, span, div {
 .site-brand-header a { display: flex; justify-content: center; align-items: center; width: var(--container-width); text-decoration: none; }
 .site-brand-header img { width: 100%; max-width: 900px; height: auto; display: block; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5)); }
 
-/* Premium Frosted Glass Navbar Navigation Configuration */
+/* Premium Frosted Glass Navbar Navigation Configuration - Stripped of harsh white bases */
 .menu-bar {
     width: 100%;
-    background: rgba(255, 255, 255, 0.85) !important;
+    background: rgba(15, 15, 15, 0.6) !important;
     backdrop-filter: var(--glass-blur);
     -webkit-backdrop-filter: var(--glass-blur);
     border-bottom: 2px solid var(--town-accent);
@@ -161,33 +165,32 @@ p, a, h1, h2, h3, span, div {
 @media (min-width: 768px) { .menu-inner { flex-direction: row; } }
 .menu-links { display: flex; flex-wrap: wrap; list-style: none; gap: 16px; margin: 0; padding: 0; justify-content: center; }
 .menu-links a {
-    color: #0C0B82 !important;
+    color: #ffffff !important;
     text-decoration: none;
     font-size: 14px;
     font-weight: 700;
     padding: 8px 14px;
-    text-transform: uppercase;
     transition: all 0.3s ease;
 }
-.menu-links a:hover { color: var(--louis-red) !important; background: rgba(0, 0, 0, 0.04); border-radius: 6px; }
+.menu-links a:hover { color: var(--town-accent) !important; background: rgba(255, 255, 255, 0.05); border-radius: 6px; }
 .menu-links a.active {
-    color: var(--louis-red) !important;
-    border: 1px solid var(--louis-red);
-    background: rgba(235,28,36,0.08) !important;
+    color: var(--town-accent) !important;
+    border: 1px solid var(--town-accent);
+    background: rgba(255, 255, 255, 0.04) !important;
     backdrop-filter: var(--glass-blur);
     border-radius: 8px;
-    box-shadow: inset 0 1px 4px rgba(235,28,36,0.15);
+    box-shadow: inset 0 1px 4px rgba(255, 255, 255, 0.05);
 }
 
-/* UPGRADED HERO ARCHITECTURE SYSTEM: Dynamic multi-town color-mapping blend track */
+/* UPGRADED HERO ARCHITECTURE SYSTEM: Adjusted dynamic gradient to blend top to bottom */
 .town-hero-banner {
     width: 100%; padding: 54px 0;
     display: flex; align-items: center; justify-content: center;
     border-bottom: 4px solid var(--town-detail); border-radius: 16px; text-align: center;
     margin-bottom: 32px;
     box-shadow: var(--premium-shadow);
-    /* Decoupled from hardcoded black: seamlessly morphs backgrounds based on the active body data-town token variables */
-    background: linear-gradient(135deg, var(--town-accent) 0%, rgba(20,20,20,0.85) 50%, var(--town-secondary) 100%) !important;
+    /* Decoupled from hardcoded black: seamlessly morphs backgrounds dynamically blending top to bottom */
+    background: linear-gradient(180deg, var(--town-accent) 0%, rgba(20,20,20,0.85) 50%, var(--town-secondary) 100%) !important;
     position: relative;
     overflow: hidden;
 }
@@ -196,24 +199,26 @@ p, a, h1, h2, h3, span, div {
     background: linear-gradient(to bottom, rgba(255,255,255,0.08) 0%, transparent 100%);
     pointer-events: none;
 }
-.seat-badge { display: inline-block; padding: 5px 18px; background-color: var(--town-detail); color: #000000; font-weight: 900; text-transform: uppercase; font-size: 12px; border-radius: 6px; margin-bottom: 14px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-.town-hero-banner h1 { font-size: 54px; font-weight: 900; text-transform: uppercase; margin: 0; letter-spacing: 1px; }
-.town-established-meta { font-size: 12px; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; color: #ffffff; margin: 8px 0 0 0; opacity: 0.9; }
+.seat-badge { display: inline-block; padding: 5px 18px; background-color: var(--town-detail); color: #000000; font-weight: 900; font-size: 12px; border-radius: 6px; margin-bottom: 14px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+.town-hero-banner h1 { font-size: 54px; font-weight: 900; margin: 0; letter-spacing: 1px; }
+.town-established-meta { font-size: 12px; letter-spacing: 2px; font-weight: 700; color: #ffffff; margin: 8px 0 0 0; opacity: 0.9; }
 .river-marquee { margin-top: 18px; font-size: 12px; font-family: monospace; font-weight: 700; color: #ffffff; background-color: rgba(0, 0, 0, 0.6); padding: 6px 18px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.1); width: max-content; margin-left: auto; margin-right: auto; box-shadow: inset 0 1px 6px rgba(0,0,0,0.4); }
 
+/* Clipping modules isolated into a deep glass chassis completely removing white/creme text layers */
 .clay-county-news-box.event-clipping {
     box-sizing: border-box; width: 100%; margin: 0 auto; padding: 25px;
-    border: 2px solid #222; background-color: #fffdf5 !important;
-    box-shadow: 8px 8px 0px #222; position: relative;
+    border: 2px solid var(--town-accent); background-color: rgba(20, 20, 20, 0.75) !important;
+    backdrop-filter: var(--glass-blur);
+    box-shadow: 8px 8px 0px var(--town-secondary); position: relative;
     border-radius: 4px;
 }
-.clipping-tag { position: absolute; top: -12px; left: 15px; background: #222; color: #fff; font-size: 10px; padding: 3px 10px; text-transform: uppercase; font-weight: bold; z-index: 10; border-radius: 2px; }
-.event-clipping-header { text-align: center; border-top: 4px double #222; border-bottom: 2px solid #222; padding: 15px 0; margin-bottom: 20px; margin-top: 5px; }
-.event-clipping-header h3 { font-weight: 900 !important; text-transform: uppercase; margin: 0 !important; color: #d9534f !important; font-size: 26px !important; }
-.event-clipping-text { font-size: 16px; line-height: 1.5; color: #222 !important; text-align: center; margin-bottom: 20px; font-style: italic; }
-.event-clipping-btn { display: block; text-align: center; background-color: #222; color: #fff !important; padding: 14px; text-transform: uppercase; font-weight: bold; text-decoration: none; font-size: 14px; border: 1px solid #222; transition: all 0.2s ease; }
-.event-clipping-btn:hover { background-color: #d9534f; border-color: #d9534f; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(217,83,79,0.3); }
-.clipping-footer { display: block; text-align: center; font-size: 10px; color: #666 !important; margin-top: 15px; text-transform: uppercase; }
+.clipping-tag { position: absolute; top: -12px; left: 15px; background: var(--town-accent); color: #fff; font-size: 10px; padding: 3px 10px; font-weight: bold; z-index: 10; border-radius: 2px; }
+.event-clipping-header { text-align: center; border-top: 4px double var(--town-accent); border-bottom: 2px solid var(--town-accent); padding: 15px 0; margin-bottom: 20px; margin-top: 5px; }
+.event-clipping-header h3 { font-weight: 900 !important; margin: 0 !important; color: #ffffff !important; font-size: 26px !important; }
+.event-clipping-text { font-size: 16px; line-height: 1.5; color: #ffffff !important; text-align: center; margin-bottom: 20px; font-style: italic; }
+.event-clipping-btn { display: block; text-align: center; background-color: var(--town-accent); color: #fff !important; padding: 14px; font-weight: bold; text-decoration: none; font-size: 14px; border: 1px solid var(--town-accent); transition: all 0.2s ease; }
+.event-clipping-btn:hover { background-color: #ffffff; color: #000000 !important; border-color: #ffffff; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(255,255,255,0.2); }
+.clipping-footer { display: block; text-align: center; font-size: 10px; color: #aaaaaa !important; margin-top: 15px; }
 
 /* Frosted Glass UI Component Panels Modules Configuration */
 .bulletin-widget-card, .athletics-widget-card, .wire-feed-card, .fuel-monitor-widget, .showcase-widget, .legacy-history-widget, .regional-map-widget {
@@ -228,14 +233,14 @@ p, a, h1, h2, h3, span, div {
     transition: background-color 1.0s ease, border-color 1.0s ease, transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 .bulletin-widget-card, .wire-feed-card { border-left: 3px solid var(--town-accent); }
-.card-header, .sidebar-widget-title { border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 12px; margin-bottom: 16px; color: var(--dynamic-text); font-size: 14px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; transition: color 1.0s ease, border-color 1.0s ease;}
+.card-header, .sidebar-widget-title { border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 12px; margin-bottom: 16px; color: var(--dynamic-text); font-size: 14px; font-weight: bold; letter-spacing: 0.5px; transition: color 1.0s ease, border-color 1.0s ease;}
 .sidebar-widget-title { color: var(--dynamic-accent); }
 
 .widget-header-strip { text-align: center; margin-bottom: 12px; }
-.bulletin-badge-tag { background: linear-gradient(135deg, var(--louis-red) 0%, #b31017 100%); color: #fff; text-transform: uppercase; font-size: 15px; font-weight: 900; padding: 5px 14px; display: inline-block; border-radius: 6px; letter-spacing: 0.5px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-.widget-sublabel-date { color: var(--dynamic-accent); text-transform: uppercase; font-size: 11px; font-weight: bold; margin: 8px 0 0 0; letter-spacing: 1px; transition: color 1s ease; }
+.bulletin-badge-tag { background: linear-gradient(135deg, var(--town-accent) 0%, rgba(0,0,0,0.5) 100%); color: #fff; font-size: 15px; font-weight: 900; padding: 5px 14px; display: inline-block; border-radius: 6px; letter-spacing: 0.5px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+.widget-sublabel-date { color: var(--dynamic-accent); font-size: 11px; font-weight: bold; margin: 8px 0 0 0; letter-spacing: 1px; transition: color 1s ease; }
 
-.clock-display-panel { display: flex; justify-content: space-between; align-items: center; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--dynamic-border); padding: 10px 14px; font-size: 12px; color: var(--dynamic-text); border-radius: 8px; margin-bottom: 16px; text-transform: uppercase; transition: all 1.0s ease; }
+.clock-display-panel { display: flex; justify-content: space-between; align-items: center; background: rgba(0, 0, 0, 0.4); border: 1px solid var(--dynamic-border); padding: 10px 14px; font-size: 12px; color: var(--dynamic-text); border-radius: 8px; margin-bottom: 16px; transition: all 1.0s ease; }
 #chicago-clock { color: var(--dynamic-accent); font-weight: bold; text-shadow: 0 0 8px rgba(255, 193, 14, 0.3); transition: color 1s ease;}
 
 /* Premium Glass Event Cards Elements */
@@ -278,53 +283,56 @@ p, a, h1, h2, h3, span, div {
     transition: background-color 1s ease;
 }
 .newspaper-header-border { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--town-accent); padding-bottom: 14px; margin-bottom: 24px; }
-.newspaper-header-border h2 { margin: 0; font-size: 20px; text-transform: uppercase; font-weight: 800; color: var(--dynamic-text); transition: color 1s ease;}
-.newsroom-source-tag { font-size: 10px; background: linear-gradient(135deg, var(--town-accent) 0%, rgba(0,0,0,0.3) 100%); color: #fff; padding: 5px 12px; font-weight: bold; text-transform: uppercase; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+.newspaper-header-border h2 { margin: 0; font-size: 20px; font-weight: 800; color: var(--dynamic-text); transition: color 1s ease;}
+.newsroom-source-tag { font-size: 10px; background: linear-gradient(135deg, var(--town-accent) 0%, rgba(0,0,0,0.3) 100%); color: #fff; padding: 5px 12px; font-weight: bold; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
 .newspaper-feed-wrapper { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
 
+/* Sub-panels matching the global premium dark obsidian glass rules */
 .clipping-card-container {
-    background-color: #fffdf5 !important; border: 1px solid #222; box-shadow: 5px 5px 0px #222; padding: 18px; border-radius: 4px; color: #111 !important; display: flex; flex-direction: column; justify-content: space-between;
+    background-color: rgba(25, 25, 25, 0.5) !important; border: 1px solid var(--dynamic-border); box-shadow: 5px 5px 0px rgba(0,0,0,0.4); padding: 18px; border-radius: 4px; color: #ffffff !important; display: flex; flex-direction: column; justify-content: space-between;
     transition: transform 0.2s ease;
 }
-.clipping-card-container:hover { transform: translateY(-2px); box-shadow: 7px 7px 0px #222; }
-.clipping-card-container h3 { color: #000000 !important; font-size: 18px; font-weight: 900; margin: 0 0 6px 0; text-transform: uppercase; border-bottom: 1px solid #222; padding-bottom: 4px; }
-.clipping-card-meta { font-size: 11px; color: #666; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+.clipping-card-container:hover { transform: translateY(-2px); box-shadow: 7px 7px 0px rgba(0,0,0,0.5); border-color: var(--town-accent); }
+.clipping-card-container h3 { color: #ffffff !important; font-size: 18px; font-weight: 900; margin: 0 0 6px 0; border-bottom: 1px solid var(--dynamic-border); padding-bottom: 4px; }
+.clipping-card-meta { font-size: 11px; color: #bbbbbb; margin-bottom: 12px; letter-spacing: 0.5px; }
 
-.clipping-card-image-box { width: 100%; aspect-ratio: 16 / 9; background: #000; overflow: hidden; margin-bottom: 14px; border: 1px solid #222; border-radius: 2px; }
+.clipping-card-image-box { width: 100%; aspect-ratio: 16 / 9; background: #000; overflow: hidden; margin-bottom: 14px; border: 1px solid var(--dynamic-border); border-radius: 2px; }
 .clipping-card-image-box img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
 .clipping-card-container:hover .clipping-card-image-box img { transform: scale(1.04); }
 
-.clipping-card-text { font-size: 14px; line-height: 1.5; color: #222 !important; margin: 0 0 16px 0; }
-.clipping-card-action-btn { background: #222; color: #fff !important; text-align: center; text-transform: uppercase; font-size: 12px; font-weight: bold; padding: 12px; text-decoration: none; border-radius: 3px; cursor: pointer; transition: all 0.2s ease; }
-.clipping-card-action-btn:hover { background: var(--louis-red); }
+.clipping-card-text { font-size: 14px; line-height: 1.5; color: #eeeeee !important; margin: 0 0 16px 0; }
+.clipping-card-action-btn { background: var(--town-accent); color: #fff !important; text-align: center; font-size: 12px; font-weight: bold; padding: 12px; text-decoration: none; border-radius: 3px; cursor: pointer; transition: all 0.2s ease; }
+.clipping-card-action-btn:hover { background: #ffffff; color: #000000 !important; }
 
 .fuel-pricing-grid { display: flex; justify-content: space-between; gap: 12px; margin-top: 12px; }
 
 /* UNIFIED GLOBAL PROTECTION MATRIX - FOR EVERY TOWN FUEL CARD PANEL */
+/* Pure white backgrounds swapped with hyper-glossy translucent dark slots protecting internal green elements */
 .fuel-pricing-grid .price-box { 
     padding: 12px; 
-    background: #ffffff !important; /* Locks solid background like your Flora sample */
-    border: 1px solid rgba(0, 0, 0, 0.12) !important;
+    background: rgba(0, 0, 0, 0.4) !important; 
+    border: 1px solid var(--dynamic-border) !important;
     border-radius: 8px; 
     text-align: center; 
     flex: 1; 
     margin: 0; 
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06) !important;
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.6) !important;
 }
-.price-type-label { display: block; font-size: 10px; color: #666666 !important; opacity: 1 !important; letter-spacing: 0.5px; margin-bottom: 2px; font-weight: bold; }
+.price-type-label { display: block; font-size: 10px; color: #cccccc !important; opacity: 1 !important; letter-spacing: 0.5px; margin-bottom: 2px; font-weight: bold; }
 
+/* Gas pricing displays preserve glossy contrast matrix text settings */
 .price-value-regular { 
-    color: var(--gas-regular-green, #1E4620) !important; /* Shunts to Hunter Green in day loop */
+    color: var(--gas-regular-green, #4cd137) !important;
     font-size: 22px !important; 
     font-weight: 800 !important; 
-    text-shadow: none !important;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5) !important;
     transition: color 1.0s ease-in-out;
 }
 .price-value-diesel { 
-    color: #8b0000 !important; /* Permanent high-contrast burgundy dark-red font */
+    color: #ff3333 !important; /* Shifted to luminous high-visibility red for proper dark-mode compliance */
     font-size: 22px !important; 
     font-weight: 800 !important; 
-    text-shadow: none !important;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5) !important;
 }
 
 .showcase-media-canvas { 
@@ -411,11 +419,11 @@ p, a, h1, h2, h3, span, div {
     background: rgba(15, 15, 15, 0.9) !important;
     backdrop-filter: blur(20px);
     border: 2px solid var(--town-detail); max-width: 24rem; width: 90%; border-radius: 16px; padding: 24px; text-align: center; box-shadow: 0 25px 55px rgba(0,0,0,0.8); }
-.routing-modal-window h4 { margin: 0 0 18px 0; text-transform: uppercase; font-size: 14px; letter-spacing: 0.5px; }
+.routing-modal-window h4 { margin: 0 0 18px 0; font-size: 14px; letter-spacing: 0.5px; }
 .routing-options-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 18px; }
-.routing-app-btn { background: rgba(255,255,255,0.05); color: #fff !important; border: 1px solid rgba(255,255,255,0.08); padding: 14px; font-size: 13px; font-weight: bold; text-transform: uppercase; border-radius: 8px; transition: all 0.2s ease; cursor: pointer; }
+.routing-app-btn { background: rgba(255,255,255,0.05); color: #fff !important; border: 1px solid rgba(255,255,255,0.08); padding: 14px; font-size: 13px; font-weight: bold; border-radius: 8px; transition: all 0.2s ease; cursor: pointer; }
 .routing-app-btn:hover { background: var(--town-accent); border-color: var(--town-accent); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
-.routing-close-btn { background: transparent; border: none; font-size: 12px; text-transform: uppercase; color: var(--dynamic-text); opacity: 0.6; cursor: pointer; transition: opacity 0.2s; }
+.routing-close-btn { background: transparent; border: none; font-size: 12px; color: var(--dynamic-text); opacity: 0.6; cursor: pointer; transition: opacity 0.2s; }
 .routing-close-btn:hover { opacity: 1; }
 
 /* Lightbox Modal Window Glass Framing Architecture */
@@ -440,11 +448,11 @@ p, a, h1, h2, h3, span, div {
 .lightbox-image-wrapper img { max-width: 100%; max-height: 45vh; object-fit: contain; }
 
 .lightbox-info-block-data-node { background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.06); padding: 14px 18px; border-radius: 10px; margin-bottom: 18px; font-size: 14px; }
-.lightbox-info-block-data-node strong { color: var(--dynamic-accent); font-weight: bold; margin-right: 6px; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px; }
+.lightbox-info-block-data-node strong { color: var(--dynamic-accent); font-weight: bold; margin-right: 6px; letter-spacing: 0.5px; }
 
 .calendar-action-row-container { display: flex; gap: 14px; margin-top: 24px; flex-wrap: wrap; }
-.calendar-action-btn-node { display: inline-block; padding: 12px 22px; background: linear-gradient(135deg, var(--louis-red) 0%, #ba131a 100%); color: #ffffff !important; font-weight: bold; border-radius: 6px; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px; transition: all 0.2s ease; border: 1px solid transparent; cursor: pointer; box-shadow: 0 4px 14px rgba(235,28,36,0.3); }
-.calendar-action-btn-node:hover { background: #ffffff; color: var(--louis-red) !important; border-color: var(--louis-red); transform: translateY(-1px); }
+.calendar-action-btn-node { display: inline-block; padding: 12px 22px; background: linear-gradient(135deg, var(--town-accent) 0%, rgba(0,0,0,0.6) 100%); color: #ffffff !important; font-weight: bold; border-radius: 6px; font-size: 12px; letter-spacing: 0.5px; transition: all 0.2s ease; border: 1px solid transparent; cursor: pointer; box-shadow: 0 4px 14px rgba(0,0,0,0.4); }
+.calendar-action-btn-node:hover { background: #ffffff; color: #000000 !important; border-color: #ffffff; transform: translateY(-1px); }
 
 body:not([data-town="flora"]):not([data-town="xenia"]):not([data-town="louisville"]):not([data-town="claycity"]) .fuel-monitor-widget { display: none !important; }
 body:not([data-town="claycity"]):not([data-town="flora"]):not([data-town="louisville"]) .athletics-widget-card { display: none !important; }
@@ -526,7 +534,7 @@ iframe { max-width: 100% !important; width: 100% !important; height: 100% !impor
 .sidebar-right div > a,
 .content-center-column div > a {
     display: inline-block !important;
-    background: #222222 !important; /* Insulates yellow links from white viewport backdrops */
+    background: #111111 !important; /* Total removal of mid-tones; solid midnight layer shields yellow typography */
     border: 1px solid rgba(255, 255, 255, 0.08) !important;
     padding: 6px 12px !important;
     border-radius: 6px !important;
@@ -537,7 +545,7 @@ iframe { max-width: 100% !important; width: 100% !important; height: 100% !impor
 .sidebar-left div > a:hover,
 .sidebar-right div > a:hover,
 .content-center-column div > a:hover {
-    background: rgba(13, 13, 13, 0.9) !important;
+    background: rgba(0, 0, 0, 0.9) !important;
     border-color: rgba(255, 222, 77, 0.3) !important;
 }
 
@@ -568,7 +576,7 @@ iframe { max-width: 100% !important; width: 100% !important; height: 100% !impor
 
 /* Ribbon Header Configuration: Guarantees dark shielding background across all portals */
 #network-spotlight-registry-widget .sidebar-widget-title {
-    background: #222222 !important; /* Fixed dark ribbon bar protects light text and gold star */
+    background: #111111 !important; /* Pure onyx bar protects light text and gold star */
     color: #ffffff !important;
     margin: -18px -18px 16px -18px !important;
     padding: 12px 18px !important;
@@ -598,14 +606,13 @@ iframe { max-width: 100% !important; width: 100% !important; height: 100% !impor
 /* Protective Capsule Anchor Shield Box matching the Gas Panel layout proportions */
 #global-spotlight-link-wrapper a {
     display: inline-block !important;
-    background: #222222 !important; /* Dark solid text shield protects link visibility */
+    background: #111111 !important; /* Dark solid text shield protects link visibility */
     color: #FFDE4D !important; /* Banana font link color entry formatting */
     padding: 10px 20px !important;
     border-radius: 6px !important;
     margin-top: 12px !important;
     font-weight: bold !important;
     font-size: 15px !important;
-    text-transform: uppercase !important;
     letter-spacing: 0.5px !important;
     box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
     transition: all 0.2s ease-in-out !important;
