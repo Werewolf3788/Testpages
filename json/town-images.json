@@ -86,29 +86,29 @@
           "category": "Parks",
           "images": [
             {
-              "id": "louisville_park_01",
-              "name": "Louisville Sports Mascot",
+              "id": "louisville_School",
+              "name": "Louisville Sports Logo",
               "url": "https://pbs.twimg.com/profile_images/1152299246151974916/OaQlVtJk_400x400.jpg",
-              "alt": "Louisville Sports Mascot",
+              "alt": "Louisville Sports Logo",
               "source_url": "https://supportmylocalcommunity.com/louisville/athletics"
             },
             {
-              "id": "louisville_park_02",
-              "name": "Louisville Storm Warning",
+              "id": "louisville_Summer",
+              "name": "Summer Mowing",
               "url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSb2EnnCY5Oudk2m2OKJ4MhPk5ocndOW06I2SiqwvGo-c8DjP0TeQ-rGZZ7&s=10",
-              "alt": "Louisville Storm",
+              "alt": "Summer Mowing",
               "source_url": "https://supportmylocalcommunity.com/louisville/weather"
             }
           ]
         },
         {
-          "category": "Automotive",
+          "category": "Louisville_Sign",
           "images": [
             {
               "id": "louisville_auto_01",
-              "name": "Louisville Quick Lube",
+              "name": "Louisville Town Sign",
               "url": "https://www.billburmaster.com/rmsandw/illinois/images/louisvilleilwel.jpg",
-              "alt": "Louisville Auto Care",
+              "alt": "Louisville Town Sign",
               "source_url": "https://supportmylocalcommunity.com/louisville/quick-lube"
             }
           ]
