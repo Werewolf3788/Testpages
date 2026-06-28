@@ -26,6 +26,11 @@
 	--font-size-body: 14px;
 	--glass-blur: blur(14px) saturate(160%);
 	--premium-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.7);
+
+	/* Unified Retro Clipping Token Definitions */
+	--retro-bg: #fffdf5;
+	--retro-text: #222222;
+	--retro-shadow: 6px 6px 0px #000000;
 }
 
 /* Dynamic Town Color Map Binding Rules */
@@ -284,7 +289,7 @@ histDescript1 { font-family: "Source Sans Pro", Helvetica, Arial, sans-serif !im
 
 @media (max-width: 1200px) { .partners-horizontal-strip { justify-content: flex-start; } }
 
-/* SECTION 7: FIXED TERMINAL ALIGNMENT - NO GAP REMOVED */
+/* SECTION 7: TERMINAL ALIGNMENT RETRO MATRIX ENFORCED */
 .smlc-three-column-portal-wrapper { 
 	width: 100%; 
 	padding: 60px 10%; 
@@ -297,29 +302,45 @@ histDescript1 { font-family: "Source Sans Pro", Helvetica, Arial, sans-serif !im
 .portal-grid-layout-fixed { display: grid; grid-template-columns: repeat(3, 1fr) !important; gap: 32px; width: 100%; align-items: start; }
 @media (max-width: 1024px) { .portal-grid-layout-fixed { grid-template-columns: 1fr !important; } }
 
-.bulletin-news-feed-chassis, .scorestream-embed-card, .newspaper-feed-chassis, .fuel-monitor-billboard-card, .business-spotlight-showcase-card {
-	background: linear-gradient(135deg, var(--town-accent) 0%, #000000 100%) !important; 
-	border: 2px solid var(--town-detail) !important; 
-	box-shadow: 8px 8px 0px #000000 !important; 
-	border-radius: 6px; 
-	padding: 20px; 
-	margin-bottom: 32px; 
-	color: #ffffff !important;
+/* RETRO CARD ARCHITECTURE SOURCED FROM image_f8c783.png */
+.bulletin-news-feed-chassis, 
+.scorestream-embed-card, 
+.newspaper-feed-chassis, 
+.fuel-monitor-billboard-card, 
+.business-spotlight-showcase-card,
+.clay-county-news-box.event-clipping,
+.clay-county-news-box.group-invitation-master {
+	background-color: var(--retro-bg) !important; 
+	background-image: none !important;
+	border: 2px solid var(--louis-black) !important; 
+	box-shadow: var(--retro-shadow) !important; 
+	border-radius: 4px !important; 
+	padding: 24px !important; 
+	margin-bottom: 32px !important; 
+	color: var(--retro-text) !important;
+}
+
+/* Typography protections inside retro portals */
+.bulletin-news-feed-chassis h3,
+.newspaper-feed-chassis h2,
+.fuel-monitor-billboard-card h3,
+.business-spotlight-showcase-card h3,
+.event-clipping-header h3 {
+	font-family: "Times New Roman", Times, serif !important;
+	color: var(--louis-black) !important;
+	font-weight: 900 !important;
+	text-transform: uppercase;
+	border-bottom: 2px solid var(--louis-black);
+	padding-bottom: 6px;
+	margin-top: 0;
 }
 
 /* CALENDAR DISPATCH RETRO ARCHITECTURE STABLE MATRIX */
-.clay-county-news-box.event-clipping {
-	box-sizing: border-box;
-	width: 100%;
-	max-width: 600px;
+.clay-county-news-box.event-clipping,
+.clay-county-news-box.group-invitation-master {
 	margin: 0 auto 32px auto;
-	padding: 25px;
-	border: 2px solid var(--town-detail) !important;
-	background-color: #fffdf5 !important; 
-	box-shadow: 6px 6px 0px #000000 !important;
 	font-family: "Times New Roman", Times, serif !important;
 	position: relative;
-	color: #222222 !important;
 }
 .clipping-tag {
 	position: absolute;
@@ -343,12 +364,8 @@ histDescript1 { font-family: "Source Sans Pro", Helvetica, Arial, sans-serif !im
 	margin-top: 5px;
 }
 .event-clipping-header h3 {
-	font-family: "Times New Roman", Times, serif !important;
-	font-weight: 900 !important;
-	text-transform: uppercase;
-	letter-spacing: 1px;
-	margin: 0 !important;
-	color: var(--town-accent) !important;
+	border-bottom: none !important;
+	padding-bottom: 0 !important;
 	font-size: 26px !important;
 	line-height: 1.1 !important;
 }
@@ -384,8 +401,8 @@ histDescript1 { font-family: "Source Sans Pro", Helvetica, Arial, sans-serif !im
 	transition: all 0.3s;
 }
 .event-clipping-btn:hover {
-	background-color: var(--town-accent);
-	border-color: var(--town-accent);
+	background-color: var(--louis-red);
+	border-color: var(--louis-red);
 	color: #fff !important;
 }
 .clipping-footer {
@@ -399,18 +416,6 @@ histDescript1 { font-family: "Source Sans Pro", Helvetica, Arial, sans-serif !im
 }
 
 /* SYSTEM GROUP INVITATION COMPONENT MODULE BLOCK CLEANED */
-.clay-county-news-box.group-invitation-master {
-	max-width: 400px;
-	margin: 20px auto;
-	padding: 25px;
-	border: 3px double var(--town-detail) !important; 
-	background-color: #fffdf5 !important; 
-	box-shadow: 6px 6px 0px #000000 !important; 
-	font-family: Arial, sans-serif;
-	position: relative;
-	text-align: center;
-	color: #222222 !important;
-}
 .notice-tag-red {
 	background: #d9534f;
 	color: #fff !important;
@@ -449,12 +454,8 @@ histDescript1 { font-family: "Source Sans Pro", Helvetica, Arial, sans-serif !im
 	margin-bottom: 15px;
 }
 .invitation-header-main h3 {
-	font-family: "Times New Roman", Times, serif !important;
-	font-weight: 900 !important;
-	text-transform: uppercase;
-	letter-spacing: 1px;
-	margin: 0 !important;
-	color: #222 !important;
+	border-bottom: none !important;
+	padding-bottom: 0 !important;
 	font-size: 20px !important; 
 	line-height: 1.1 !important;
 }
@@ -503,18 +504,23 @@ histDescript1 { font-family: "Source Sans Pro", Helvetica, Arial, sans-serif !im
 
 /* BULLETIN DISPATCH GRAPHICS OVERALLS RESTORED FULLY */
 .widget-header-strip { text-align: center; margin-bottom: 12px; }
-.bulletin-badge-tag { background: linear-gradient(135deg, var(--town-secondary) 0%, #222222 100%); color: var(--town-detail) !important; border: 1px solid var(--town-detail); text-transform: uppercase; font-size: 15px; font-weight: 900; padding: 5px 14px; display: inline-block; border-radius: 6px; }
-.widget-sublabel-date { color: var(--town-detail); text-transform: uppercase; font-size: 11px; font-weight: bold; margin: 8px 0 0 0; letter-spacing: 1px; }
-.clock-display-panel { display: flex; justify-content: space-between; align-items: center; background: rgba(0, 0, 0, 0.4); border: 1px solid var(--town-detail); padding: 10px 14px; font-size: 12px; border-radius: 4px; margin-bottom: 16px; text-transform: uppercase; color: #ffffff; }
+.bulletin-badge-tag { background: #222; color: #fff !important; text-transform: uppercase; font-size: 14px; font-weight: 900; padding: 5px 14px; display: inline-block; border-radius: 2px; }
+.widget-sublabel-date { color: #555555; text-transform: uppercase; font-size: 11px; font-weight: bold; margin: 8px 0 0 0; letter-spacing: 1px; }
+.clock-display-panel { display: flex; justify-content: space-between; align-items: center; background: rgba(0, 0, 0, 0.05); border: 1px solid var(--louis-black); padding: 10px 14px; font-size: 12px; border-radius: 4px; margin-bottom: 16px; text-transform: uppercase; color: var(--retro-text); }
 
-.event-item { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-left: 4px solid var(--town-detail); border-radius: 6px; padding: 16px; margin-bottom: 16px; text-align: left; color: #ffffff !important; }
-.event-date { color: var(--town-detail) !important; font-weight: bold; font-size: 13px; text-transform: uppercase; margin-bottom: 4px; }
-.event-title { font-size: 20px; font-weight: bold; margin: 4px 0; line-height: 1.2; color: #ffffff !important; }
-.event-brief-desc { font-size: 13px; font-style: italic; margin: 8px 0; line-height: 1.4; opacity: 0.85; color: #eee; }
+.event-item { background: rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.1); border-left: 4px solid var(--louis-black); border-radius: 2px; padding: 16px; margin-bottom: 16px; text-align: left; color: var(--retro-text) !important; }
+.event-date { color: var(--louis-red) !important; font-weight: bold; font-size: 13px; text-transform: uppercase; margin-bottom: 4px; }
+.event-title { font-size: 20px; font-weight: bold; margin: 4px 0; line-height: 1.2; color: var(--retro-text) !important; }
+.event-brief-desc { font-size: 13px; font-style: italic; margin: 8px 0; line-height: 1.4; opacity: 0.85; color: #333; }
+
+/* Enforces the targeted bright blue variable color mapping safely inside the event locations */
+.custom-event-blue-link {
+	color: var(--link-bright-blue) !important;
+}
 
 /* HIGH CONTRAST ACCENT COLOR FOR CALENDAR READ MORE LINK */
 .read-more-trigger { 
-	color: var(--town-detail) !important; 
+	color: var(--louis-red) !important; 
 	font-weight: bold !important; 
 	text-decoration: underline !important; 
 	cursor: pointer; 
@@ -523,66 +529,74 @@ histDescript1 { font-family: "Source Sans Pro", Helvetica, Arial, sans-serif !im
 	display: inline-block; 
 }
 .read-more-trigger:hover {
-	color: #ffffff !important;
+	color: var(--louis-black) !important;
 }
 
 .cal-links { margin-top: 12px; font-size: 12px; display: flex; align-items: center; gap: 6px; opacity: 0.9; }
-.cal-text-link { color: var(--town-detail) !important; font-weight: bold; text-decoration: none; text-transform: uppercase; font-size: 11px; }
+.cal-text-link { color: var(--louis-black) !important; font-weight: bold; text-decoration: none; text-transform: uppercase; font-size: 11px; }
 
-.global-subscribe-box { margin-top: 20px; padding: 15px; border: 1px dashed var(--town-detail); background: rgba(0, 0, 0, 0.4); text-align: center; border-radius: 6px; }
-.subscribe-title { display: block; font-size: 13px; font-weight: bold; text-transform: uppercase; color: var(--town-detail) !important; margin-bottom: 6px; }
-.subscribe-desc { font-size: 12px; line-height: 1.4; margin: 0 0 12px 0; opacity: 0.8; color: #fff; }
-.sub-btn { display: block; padding: 8px 12px; font-size: 11px; font-weight: bold; text-transform: uppercase; border: 1px solid var(--town-detail); border-radius: 4px; text-align: center; }
+.global-subscribe-box { margin-top: 20px; padding: 15px; border: 1px dashed var(--louis-black); background: rgba(0, 0, 0, 0.02); text-align: center; border-radius: 4px; }
+.subscribe-title { display: block; font-size: 13px; font-weight: bold; text-transform: uppercase; color: var(--louis-black) !important; margin-bottom: 6px; }
+.subscribe-desc { font-size: 12px; line-height: 1.4; margin: 0 0 12px 0; opacity: 0.8; color: #222; }
+.sub-btn { display: block; padding: 8px 12px; font-size: 11px; font-weight: bold; text-transform: uppercase; border: 1px solid var(--louis-black); border-radius: 4px; text-align: center; }
 .gcal-btn { background: #000; color: #fff !important; }
 .ical-btn { background: #fff; color: #222 !important; }
 
 /* NEWSROOM ARCHIVE FEED LISTS ELEMENTS */
-.clipping-card-container { background: rgba(0,0,0,0.4) !important; border: 1px solid var(--town-detail); box-shadow: 5px 5px 0px #000; padding: 18px; border-radius: 4px; color: #ffffff !important; display: flex; flex-direction: column; justify-content: space-between; margin-bottom: 16px; }
-.clipping-card-container h3 { color: #ffffff !important; font-size: 18px; font-weight: 900; margin: 0 0 6px 0; text-transform: uppercase; border-bottom: 1px solid var(--town-detail); padding-bottom: 4px; }
-.clipping-card-image-box { width: 100%; aspect-ratio: 16 / 9; background: #000; overflow: hidden; margin-bottom: 14px; border: 1px solid var(--town-detail); }
+.clipping-card-container { background: rgba(0,0,0,0.02) !important; border: 1px solid var(--louis-black); box-shadow: 4px 4px 0px #000; padding: 18px; border-radius: 4px; color: var(--retro-text) !important; display: flex; flex-direction: column; justify-content: space-between; margin-bottom: 16px; }
+.clipping-card-container h3 { color: var(--retro-text) !important; font-size: 18px; font-weight: 900; margin: 0 0 6px 0; text-transform: uppercase; border-bottom: 1px solid var(--louis-black); padding-bottom: 4px; }
+.clipping-card-image-box { width: 100%; aspect-ratio: 16 / 9; background: #000; overflow: hidden; margin-bottom: 14px; border: 1px solid var(--louis-black); }
 .clipping-card-image-box img { width: 100%; height: 100%; object-fit: cover; }
-.clipping-card-text { font-size: 14px; line-height: 1.5; color: #eeeeee !important; margin: 0 0 16px 0; }
-.clipping-card-action-btn { background: var(--town-accent); color: #fff !important; text-align: center; text-transform: uppercase; font-size: 12px; font-weight: bold; padding: 12px; text-decoration: none; border-radius: 3px; cursor: pointer; display: block; border: 1px solid var(--town-detail); }
+.clipping-card-text { font-size: 14px; line-height: 1.5; color: #333333 !important; margin: 0 0 16px 0; }
+.clipping-card-action-btn { background: #222; color: #fff !important; text-align: center; text-transform: uppercase; font-size: 12px; font-weight: bold; padding: 12px; text-decoration: none; border-radius: 3px; cursor: pointer; display: block; border: 1px solid var(--louis-black); }
 
-/* BUSINESS SPOTLIGHT STRUCTURAL FIX FOR CRASHING */
-.business-spotlight-showcase-card {
-	background: linear-gradient(135deg, var(--town-accent) 0%, #000000 100%) !important; 
-	border: 2px solid var(--town-detail) !important; 
-	box-shadow: 8px 8px 0px #000000 !important; 
-	border-radius: 6px; 
-	padding: 20px; 
-	margin-bottom: 32px; 
-	color: #ffffff !important;
-}
-.showcase-card-body {
-	width: 100%;
-}
+/* BUSINESS SPOTLIGHT SYSTEM ADAPTATIONS FROM image_f8c783.png */
 .full-bleed-spotlight-frame {
-	width: 100% !important;
-	height: auto !important;
-	max-height: none !important;
-	overflow: visible !important;
+	background-attachment: scroll !important;
+	background-clip: border-box !important;
+	background-color: rgba(0, 0, 0, 0) !important;
+	background-image: none !important;
+	background-origin: padding-box !important;
+	background-position: 0% 0% !important;
+	background-repeat: repeat !important;
+	background-size: auto !important;
 	border: none !important;
-	box-shadow: none !important;
-	background-color: transparent !important;
-	margin-bottom: 12px;
+	box-sizing: border-box !important;
+	color: rgb(102, 102, 102) !important;
+	cursor: default !important;
+	display: block !important;
+	font-family: Arial, sans-serif !important;
+	font-size: 14px !important;
+	font-weight: 500 !important;
+	line-height: 23.8px !important;
+	margin: 0px auto 12px auto !important;
+	padding: 0px !important;
+	text-size-adjust: 100% !important;
+	vertical-align: baseline !important;
+	width: 100% !important;
+	max-width: 300px !important;
+	overflow: hidden !important;
 }
+
 .full-bleed-spotlight-frame img {
 	width: 100% !important;
 	height: auto !important;
-	object-fit: contain !important;
-	border: 2px solid var(--town-detail) !important;
-	border-radius: 4px !important;
-	box-shadow: 4px 4px 0px #000 !important;
+	aspect-ratio: 300 / 112 !important; 
+	object-fit: cover !important;
+	display: block !important;
+	filter: grayscale(0.1) contrast(1.1) sepia(0.05) !important;
+	border: 2px solid var(--louis-black) !important;
+	box-shadow: 4px 4px 0px #000000 !important;
+	-webkit-font-smoothing: antialiased !important;
 }
 
 /* FUEL MONITOR LED SYSTEM PRICE DISPLAY CORES */
 .fuel-pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
-.fuel-pricing-grid .price-box { padding: 12px; background: rgba(0, 0, 0, 0.6) !important; border: 1px solid var(--town-detail) !important; border-radius: 8px; text-align: center; margin: 0; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5) !important; }
-.price-type-label { display: block; font-size: 10px; color: #cccccc !important; font-weight: bold; margin-bottom: 2px; }
-.price-value-regular { color: var(--gas-regular-green) !important; font-size: 22px !important; font-weight: 800 !important; }
-.price-value-diesel { color: #ff3333 !important; font-size: 22px !important; font-weight: 800 !important; }
-.sync-timestamp-label { font-size: 11px; text-align: center; margin-top: 12px; opacity: 0.7; text-transform: uppercase; color: #fff; }
+.fuel-pricing-grid .price-box { padding: 12px; background: #ffffff !important; border: 2px solid var(--louis-black) !important; border-radius: 4px; text-align: center; margin: 0; box-shadow: 3px 3px 0px #000 !important; }
+.price-type-label { display: block; font-size: 10px; color: #555555 !important; font-weight: bold; margin-bottom: 2px; }
+.price-value-regular { color: #1b8a00 !important; font-size: 22px !important; font-weight: 800 !important; }
+.price-value-diesel { color: #b30000 !important; font-size: 22px !important; font-weight: 800 !important; }
+.sync-timestamp-label { font-size: 11px; text-align: center; margin-top: 12px; opacity: 0.8; text-transform: uppercase; color: var(--retro-text); }
 
 /* FIXED LIGHTBOX VISIBILITY MATRIX RULES GATED */
 .lightbox-overlay-mask {
@@ -625,6 +639,13 @@ histDescript1 { font-family: "Source Sans Pro", Helvetica, Arial, sans-serif !im
 	overflow-y: auto; 
 	text-align: left; 
 }
+
+/* Enforces link styling within lightbox containers to use the exact bright blue system design token */
+.Lightbox-Left-Cell a,
+.lightbox-story-content a {
+	color: var(--link-bright-blue) !important;
+}
+
 .Lightbox-Right-Cell { 
 	flex: 0 0 35% !important; 
 	width: 35% !important;
