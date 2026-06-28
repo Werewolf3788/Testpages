@@ -7,24 +7,20 @@
 	<title>Louisville, IL - SMLC Digital Town Square</title>
 	<link rel="pingback" href="https://staging.supportmylocalcommunity.com/xmlrpc.php" />
 	
-	<link rel="stylesheet" href="./style.css?v=1.19" />
-
-	<script async src="https://www.googletagmanager.com/gtag/js?id=G-H6Q756MVE8"></script>
-	<script async src="https://www.googletagmanager.com/gtag/js?id=G-L376P3NPY4"></script>
+	<link rel="stylesheet" href="./css/style.css?v=1.27" />
+	
+	<script async src="https://googletagmanager.com"></script>
 	<script>
 		window.dataLayer = window.dataLayer || [];
 		function gtag(){dataLayer.push(arguments);}
 		gtag('js', new Date());
-		
-		gtag('config', 'G-H6Q756MVE8', { 
-			'cookie_flags': 'SameSite=None;Secure',
-			'page_title': 'SMLC Louisville Regional Town Square Dashboard Monitor'
-		});
-		gtag('config', 'G-L376P3NPY4', { 
-			'cookie_flags': 'SameSite=None;Secure',
-			'page_title': 'Watermark Engine Core Tracking Layer'
-		});
 
+		// Global Watermark
+		gtag('config', 'G-L376P3NPY4');
+		// SMLC / SKventures Tag
+		gtag('config', 'G-H6Q756MVE8');
+	</script>
+	<script>
 		function trackUtmParameters() {
 			const urlParams = new URLSearchParams(window.location.search);
 			const utmSource = urlParams.get('utm_source');
@@ -42,24 +38,50 @@
 <body data-town="louisville">
 
 	<div id="global-header-container" class="site-brand-header"></div>
-
+	
 	<header class="menu-bar">
 		<div class="menu-inner">
 			<nav>
 				<ul id="dynamic-menu-links" class="menu-links">
-					<li><a href="https://staging.supportmylocalcommunity.com/" target="main-content-window">Home</a></li>
-					<li><a href="https://staging.supportmylocalcommunity.com/clay-city/" target="main-content-window">Clay City</a></li>
-					<li><a href="https://ourflora.com" target="main-content-window">Flora</a></li>
-					<li><a href="https://staging.supportmylocalcommunity.com/louisville/" target="main-content-window" class="active">Louisville</a></li>
-					<li><a href="https://staging.supportmylocalcommunity.com/sailor-springs/" target="main-content-window">Sailor Springs</a></li>
-					<li><a href="https://staging.supportmylocalcommunity.com/xenia/" target="main-content-window">Xenia</a></li>
+					<li><a href="https://staging.supportmylocalcommunity.com/" target="current-tab">Home</a></li>
+					<li><a href="https://staging.supportmylocalcommunity.com/clay-city/" target="current-tab">Clay City</a></li>
+					<li><a href="https://ourflora.com" target="current-tab">Flora</a></li>
+					<li><a href="https://staging.supportmylocalcommunity.com/louisville/" target="current-tab" class="active">Louisville</a></li>
+					<li><a href="https://staging.supportmylocalcommunity.com/sailor-springs/" target="current-tab">Sailor Springs</a></li>
+					<li><a href="https://staging.supportmylocalcommunity.com/xenia/" target="current-tab">Xenia</a></li>
 				</ul>
 			</nav>
 		</div>
 	</header>
 
+	<!-- Section 2: Full Width Pure White Background Area Containing Image & Button Layout -->
+	<section class="town-showcase-header-strip-box">
+		<div class="town-showcase-banner-full-bleed-frame">
+			<img src="https://ourflora.com/wp-content/uploads/2026/02/smlc.png" alt="SMLC Community Digital Frame Network Map Node Area Display" class="lightbox-triggerable-element" />
+		</div>
+		<div class="town-showcase-action-row">
+			<a href="https://clay-county-business-directory.supportmylocalcommunity.com/" target="current-tab" class="town-directory-interactive-btn">
+				Clay County Business Directory
+			</a>
+		</div>
+	</section>
+
+	<!-- Section 3: Full Width Screen Edge Granite Gradient Shield Outer Bound Panel Block Layout -->
+	<section class="discover-showcase-gradient-bleed">
+		<div class="discover-inner-container-bounds">
+			<div class="discover-header-block">
+				<h2 class="et_pb_module_heading">Discover Louisville's Vibrant Community</h2>
+				<p>Join us in supporting local businesses and dive into the exciting events happening in Louisville, IL. Experience the warmth of our community and make unforgettable memories.</p>
+			</div>
+			<div class="slideshow-outer-chassis-bounds">
+				<div id="louisville-town-slideshow-matrix" class="town-premium-slideshow-container-box">
+					<div class="feed-loading-placeholder">Connecting Louisville imagery timeline arrays...</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
 	<div class="main-container">
-		
 		<section class="town-hero-banner static-hero-colors">
 			<div class="banner-content">
 				<span class="seat-badge">Clay County Seat</span>
@@ -69,178 +91,202 @@
 			</div>
 		</section>
 
-		<div class="portal-grid-layout">
+		<section class="heritage-showcase-split-grid">
+			<div class="heritage-inner-chassis">
+				<h2 class="et_pb_module_heading main-heritage-headline-node">Louisville Illinois Rich Heritage</h2>
+				<div class="heritage-dual-flex-row">
+					<div class="heritage-left-column-text">
+						<span class="heritage-large-accent-quote">donated land to the City of Louisville for several buildings and the city park. The City Park, at that time called the Public Square, is present day Library Park where Louisville Public Library is located.</span>
+					</div>
+					<div class="heritage-right-column-display">
+						<h2 class="et_pb_module_heading architecture-sub-header">Louisville Library</h2>
+						<div class="library-dual-image-matrix-row">
+							<div class="library-media-profile-card">
+								<div class="library-static-img-frame-box">
+									<img src="https://ourflora.com/wp-content/uploads/2026/01/Old-Flora-Library.webp" alt="Louisville Library Historic Architecture 1903 View" class="lightbox-triggerable-element" />
+								</div>
+								<h1 class="et_pb_module_heading library-caption-under-element">Louisville Library in 1903</h1>
+							</div>
+							<div class="library-media-profile-card">
+								<div class="library-static-img-frame-box">
+									<img src="https://ourflora.com/wp-content/uploads/2026/01/New-Flora-Libray.webp" alt="Louisville Library Modernized Structure 1933 View" class="lightbox-triggerable-element" />
+								</div>
+								<h1 class="et_pb_module_heading library-caption-under-element">Louisville Library in 1933</h1>
+							</div>
+						</div>
+						<div class="library-long-prose-footer-block">
+							<span class="library-long-desc-prose-text">The Louisville Public Library is located in Library Park at 216 North Main Street. The 9,285 square foot facility was completed in 1992 and dedicated in March 1993. This spacious, modern building replaced the Louisville Carnegie Library building, a two-story yellow brick, which stood in Library Park from 1903 until 1990. In January 1990, the Carnegie building was deemed structurally unsafe and closed to the public. After a two-year building campaign, along with the generosity and assistance of a supportive community, the new red brick structure was completed. <a href="https://florail.govoffice2.com/library" target="_blank" rel="noopener">https://florail.govoffice2.com/library</a></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="historical-timeline-chassis-wrapper">
+			<div class="timeline-inner-bounds">
+				<title1 class="main-timeline-center-title-node">Louisville's Historical Timeline</title1>
+				<p class="main-timeline-sub-caption-node">Journey through the significant milestones that have shaped Louisville, IL, into the community it is today.</p>
+				<div id="history-json-container" class="timeline-horizontal-grid-chassis">
+					<div class="feed-loading-placeholder">Parsing landmark records ledger database tracking layers...</div>
+				</div>
+			</div>
+		</section>
+	</div>
+
+	<!-- Section 6: Full Width 00205B Area Partnerships Strip Panel Chassis -->
+	<div class="widescreen-strip-container">
+		<section class="showcase-widget full-bleed-widget">
+			<div class="partners-horizontal-strip" id="top-partners-strip-matrix"></div>
+		</section>
+	</div>
+
+	<!-- Section 7: Three Column Operational Data Interface Chassis -->
+	<section class="smlc-three-column-portal-wrapper" id="adaptive-time-portal-chassis">
+		<div class="portal-grid-layout-fixed">
 			
-			<aside class="sidebar-left">
-				<div class="clay-county-news-box event-clipping widget-spacing-block">
+			<div class="portal-column-cell-box left-cell-stack">
+				<div class="clay-county-news-box event-clipping">
 					<div class="clipping-tag">Community Bulletin</div>
 					<div class="event-clipping-header">
 						<h3>What's Happening?</h3>
-						<span style="font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: #222; font-weight: bold;">Clay County Community Calendar</span>
+						<span class="calendar-sub-stamp">Clay County Community Calendar</span>
 					</div>
 					<p class="event-clipping-text">
 						"Got a local fundraiser, school event, or church dinner coming up? Share your news with the community for free!"
 					</p>
-					<a href="https://www.supportmylocalcommunity.com/submit-event" target="main-content-window" class="event-clipping-btn">Submit Your Event</a>
+					<a href="https://www.supportmylocalcommunity.com/submit-event" target="current-tab" class="event-clipping-btn">Submit Your Event</a>
 					<div class="clipping-footer">Clay City • Flora • Louisville • Sailor Springs • Xenia</div>
 				</div>
 
-				<div id="inline-partner-left-slot" class="widget-spacing-block"></div>
-
-				<div class="bulletin-widget-card widget-spacing-block">
+				<div class="bulletin-news-feed-chassis">
 					<div class="widget-header-strip">
 						<span class="bulletin-badge-tag">Community Bulletin</span>
-						<p id="month-label" class="widget-sublabel-date">Dispatches</p>
+						<p id="month-label" class="widget-sublabel-date">Upcoming Dispatches</p>
 					</div>
 					<div class="clock-display-panel">
 						<span>CST Clock:</span>
 						<span id="chicago-clock">--:-- --</span>
 					</div>
-					<div id="divi-event-list" class="scrollable-feed-viewport">
-						<div class="feed-loading-placeholder">Connecting wire...</div>
+					
+					<div id="event-list" class="scrollable-feed-viewport">
+						<div class="feed-loading-placeholder">Connecting community bulletin ledger arrays...</div>
+					</div>
+
+					<div class="global-subscribe-box">
+						<span class="subscribe-title">Subscribe to Calendar Feed</span>
+						<p class="subscribe-desc">Sync upcoming community updates automatically to your personal digital platform feed maps.</p>
+						<div class="subscribe-links">
+							<a id="global-gcal-sub" href="https://calendar.google.com/calendar/render" target="_blank" class="sub-btn gcal-btn">Subscribe on Google Calendar</a>
+							<a id="global-ical-sub" href="#" class="sub-btn ical-btn">Subscribe via iCal / Apple</a>
+						</div>
 					</div>
 				</div>
-			</aside>
+			</div>
 
-			<main class="content-center-column">
-				<section class="athletics-widget-card widget-spacing-block">
-					<div class="card-header-row">
-						<div class="header-title-group">
-							<span class="icon-spacer">🏀</span>
-							<h2 class="dynamic-text-element">Scorestream Panther Athletics</h2>
-						</div>
-						<span class="live-ticker-badge dynamic-accent-element">● Live Ticker</span>
-					</div>
-					<div class="scorestream-viewport-frame">
-						<div class="scorestream-widget-container" data-ss_widget_type="horzScoreboard" data-user-widget-id="68988"></div>
+			<div class="portal-column-cell-box center-cell-stack">
+				<div class="scorestream-embed-card">
+					<div class="scorestream-viewport-frame-fixed">
+						<div class="scorestream-widget-container" data-ss_widget_type="horzScoreboard" data-user-widget-id="68601"></div>
 						<script async="async" type="text/javascript" src="https://scorestream.com/apiJsCdn/widgets/embed.js"></script>
 					</div>
-				</section>
+				</div>
 
-				<div id="inline-partner-center-slot" class="widget-spacing-block"></div>
-
-				<section class="newspaper-card-box widget-spacing-block">
-					<div class="newspaper-header-border">
-						<div class="header-title-group">
-							<span class="icon-spacer">📢</span>
-							<h2 class="dynamic-text-element">Louisville Local Dispatches</h2>
+				<div class="newspaper-feed-chassis">
+					<div class="newspaper-header-border-fixed">
+						<div class="header-title-group-fixed">
+							<span class="icon-spacer-fixed">📢</span>
+							<h2 class="dynamic-text-element-fixed">Louisville Local Dispatches</h2>
 						</div>
-						<span class="newsroom-source-tag">SMLC Newsroom</span>
+						<span class="newsroom-source-tag-fixed">SMLC Newsroom</span>
 					</div>
-					<div id="json-news-container" class="newspaper-feed-wrapper">
-						<div class="feed-loading-placeholder">Reconstructing archives...</div>
+					<div id="json-news-container" class="newspaper-feed-wrapper-fixed">
+						<div class="feed-loading-placeholder">Reconstructing localized newsroom dispatches...</div>
 					</div>
-				</section>
+				</div>
+			</div>
 
-				<section class="wire-feed-card widget-spacing-block" id="google-alerts-wire-section">
-					<div class="card-header-row">
-						<div class="header-title-group">
-							<span class="icon-spacer">📰</span>
-							<h2 class="dynamic-text-element">Louisville News Wire Feed</h2>
-						</div>
-						<span class="feed-source-label dynamic-text-element">Google Alerts RSS</span>
-					</div>
-					<div id="rss-feed-container" class="scrollable-feed-viewport max-h-400">
-						<div class="feed-loading-placeholder">Querying feed...</div>
-					</div>
-				</section>
-			</main>
-
-			<aside class="sidebar-right">
-				<div class="fuel-monitor-widget-interactive-wrapper widget-spacing-block" id="fuel-index-monitor-box" role="button" tabindex="0" title="Click to open Gas Portal updates dashboard">
-					<div class="fuel-monitor-widget">
-						<h3 class="sidebar-widget-title dynamic-accent-element">Fuel Index Monitor</h3>
-						<div class="fuel-card-body">
-							<div class="fuel-station-header">
-								<div class="station-logo-frame">
-									<img src="https://raw.githubusercontent.com/skventuresigns-design/smlc/main/gas-prices/image/Casey's.png" alt="Logo" class="lightbox-triggerable-element">
-								</div>
-								<div class="station-meta-title">CASEY'S • LOUISVILLE</div>
+			<div class="portal-column-cell-box right-cell-stack">
+				<div class="fuel-monitor-billboard-card" id="fuel-index-monitor-box" role="button" tabindex="0">
+					<h3 class="sidebar-widget-title dynamic-accent-element">Fuel Index Monitor</h3>
+					<div class="fuel-card-body">
+						<div class="fuel-station-header">
+							<div class="station-logo-frame">
+								<img src="https://raw.githubusercontent.com/skventuresigns-design/smlc/main/gas-prices/image/Casey's.png" alt="Casey's Logo" class="lightbox-triggerable-element" />
 							</div>
-							<div class="fuel-pricing-grid">
-								<div class="price-box dynamic-inner-panel">
-									<span class="price-type-label dynamic-text-element">REGULAR</span>
-									<span id="lv-reg" class="price-value-regular">--.--</span>
-								</div>
-								<div class="price-box dynamic-inner-panel">
-									<span class="price-type-label dynamic-text-element">DIESEL</span>
-									<span id="lv-die" class="price-value-diesel dynamic-accent-element">--.--</span>
-								</div>
-							</div>
-							<div id="lv-time" class="sync-timestamp-label dynamic-text-element">Syncing...</div>
+							<div class="station-meta-title">CASEY'S • LOUISVILLE</div>
 						</div>
+						<div class="fuel-pricing-grid">
+							<div class="price-box dynamic-inner-panel">
+								<span class="price-type-label">REGULAR</span>
+								<span id="lv-reg" class="price-value-regular">--.--</span>
+							</div>
+							<div class="price-box dynamic-inner-panel">
+								<span class="price-type-label">DIESEL</span>
+								<span id="lv-die" class="price-value-diesel">--.--</span>
+							</div>
+						</div>
+						<div id="lv-time" class="sync-timestamp-label">Syncing Ledger...</div>
 					</div>
 				</div>
 
-				<div class="showcase-widget widget-spacing-block">
-					<h3 class="sidebar-widget-title dynamic-accent-element">Local Showcase</h3>
-					<div class="showcase-card-body">
-						<div id="partner-image-frame" class="showcase-media-canvas">
-							<img id="partner-image-right" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Showcase Content Graphic" class="lightbox-triggerable-element">
-							<div id="partner-loading" class="loading-spinner-overlay">
-								<span class="spinner-ring"></span>
-							</div>
-						</div>
-						<a id="partner-link-right" href="#" target="main-content-window" class="showcase-action-link dynamic-text-element hover-accent">
-							Connecting Partner...
-						</a>
-					</div>
-				</div>
-
-				<div class="showcase-widget widget-spacing-block" id="network-spotlight-registry-widget">
+				<div class="business-spotlight-showcase-card" id="network-spotlight-registry-widget">
 					<h3 class="sidebar-widget-title dynamic-accent-element">Business Spotlight</h3>
 					<div class="showcase-card-body">
-						<div id="global-spotlight-media-container" class="showcase-media-canvas" style="margin-bottom:12px;">
+						<div id="global-spotlight-media-container" class="showcase-media-canvas">
 							<div class="feed-loading-placeholder">Connecting registry network...</div>
 						</div>
-						<div id="global-spotlight-link-wrapper" style="text-align:center;"></div>
+						<div id="global-spotlight-link-wrapper" style="text-align:center; margin-top: 8px;"></div>
 					</div>
 				</div>
 
-				<div class="legacy-history-widget widget-spacing-block">
-					<h3 class="sidebar-widget-title dynamic-accent-element">Town Legacy History</h3>
-					<div id="history-json-container" class="scrollable-feed-viewport max-h-300">
-						<div class="feed-loading-placeholder">Parsing records...</div>
+				<div class="clay-county-news-box group-invitation-master">
+					<div class="notice-tag-red">Local Conversation</div>
+					<div class="polaroid-wrap">
+						<img src="https://ourflora.com/wp-content/uploads/2023/08/Ourflora.png" alt="OurFlora Community" class="lightbox-triggerable-element" data-story="Official Platform Group Asset Mapping Node">
 					</div>
+					<div class="invitation-header-main">
+						<h3>Join the Community</h3>
+						<span class="sub-header-text">Official OurFlora Facebook page</span>
+					</div>
+					<p class="invitation-body-text">
+						"Stay connected with your neighbors. Discuss local news, share community updates, and join neighbors in the OurFlora conversation."
+					</p>
+					<a href="https://www.facebook.com/SupportMyLocalCommunity" target="_blank" class="fb-action-btn">
+						Enter the Conversation
+					</a>
+					<span class="community-voice-footer">
+						Community Voice • Clay County, IL
+					</span>
 				</div>
-			</aside>
+			</div>
+			
 		</div>
-	</div>
-
-	<div class="widescreen-strip-container" style="background-color: var(--dynamic-panel);">
-		<section class="showcase-widget full-bleed-widget">
-			<h3 class="sidebar-widget-title text-center dynamic-accent-element" style="border:none;">Featured Area Partnerships</h3>
-			<div class="partners-horizontal-strip" id="bottom-partners-strip"></div>
-		</section>
-	</div>
-
-	<div class="widescreen-strip-container" style="background-color: var(--dynamic-bg);">
-		<section class="showcase-widget full-bleed-widget">
-			<h3 class="sidebar-widget-title text-center dynamic-accent-element" style="border:none;">Louisville Community Gallery</h3>
-			<div class="partners-horizontal-strip community-images-gallery" id="louisville-images-gallery"></div>
-		</section>
-	</div>
+	</section>
 
 	<div id="portal-lightbox" class="lightbox-overlay-mask">
-		<div class="lightbox-modal-window" style="background-color: var(--dynamic-panel); border-color: var(--dynamic-border);">
-			<div class="lightbox-header-bar" style="border-bottom-color: var(--dynamic-border);">
+		<div class="lightbox-modal-window">
+			<div class="lightbox-header-bar">
 				<div class="lightbox-meta-group">
-					<span id="lightbox-label" class="dynamic-accent-element" style="font-weight: bold; text-transform: uppercase; font-size: 12px;">SMLC Dynamic Reader</span>
-					<span id="lightbox-meta" style="color: var(--dynamic-text); font-size: 11px;">Wire Sync Info</span>
+					<span id="lightbox-label" class="dynamic-accent-element">SMLC Events</span>
 				</div>
-				<button onclick="closePortalLightbox()" class="lightbox-close-btn" style="color: var(--dynamic-text);">×</button>
+				<button onclick="closePortalLightbox()" class="lightbox-close-btn">×</button>
 			</div>
-			<div class="lightbox-body-scroll-frame">
-				<div id="lightbox-media-box" class="lightbox-image-wrapper">
-					<img id="lightbox-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Expanded Content Display Layer">
+			<div class="lightbox-body-scroll-frame Split-Body-Flex-Matrix">
+				<div class="Lightbox-Left-Cell">
+					<h3 id="lightbox-title">Title</h3>
+					<div id="lightbox-meta">Wire Sync Info</div>
+					
+					<div id="lightbox-story" class="lightbox-story-content">Story Body</div>
+					
+					<div id="lightbox-media-box" class="lightbox-image-wrapper">
+						<img id="lightbox-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Expanded Asset Content display">
+					</div>
 				</div>
-				<h3 id="lightbox-title" style="color: var(--dynamic-text); margin-top: 0; font-size: 24px;">Title</h3>
-				<div class="lightbox-divider-line" style="border-top-color: var(--dynamic-border);"></div>
-				<div id="lightbox-story" class="lightbox-story-content" style="color: var(--dynamic-text); line-height:1.6;">Story Body</div>
+				<div class="Lightbox-Right-Cell" id="lightbox-maps-render-viewport"></div>
 			</div>
-			<div class="lightbox-footer-bar" style="border-top-color: var(--dynamic-border);">
-				<span style="color: var(--dynamic-text); font-size: 11px;">SUPPORT MY LOCAL COMMUNITY NETWORK © 2026</span>
-				<a id="lightbox-external-link" href="#" target="main-content-window" style="color: var(--louis-red); font-weight: bold; font-size: 11px;">Open to Source →</a>
+			<div class="lightbox-footer-bar">
+				<span>SUPPORT MY LOCAL COMMUNITY NETWORK © 2026</span>
+				<a id="lightbox-external-link" href="#" target="current-tab">Open to Source →</a>
 			</div>
 		</div>
 	</div>
@@ -259,7 +305,6 @@
 
 	<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
-	
-	<script src="./louisville.js?v=1.19"></script>
+	<script src="./js/main.js?v=1.27"></script>
 </body>
 </html>
