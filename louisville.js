@@ -24,15 +24,6 @@
 	let masterSlideshowLoopTrack = null;
 	let globallyStoredAddressText = "607 W Clark Ave, Flora, IL 62401";
 
-	const partnerStripDataset = [
-		{ "label": "Wabash", "link": "https://wabash.net", "img": "https://ourflora.com/wp-content/uploads/2025/12/Wabash-e1767505357948.png" },
-		{ "label": "Grace & Truth", "link": "https://www.graceandtruthcounseling.com", "img": "https://ourflora.com/wp-content/uploads/2025/12/GTC1.png" },
-		{ "label": "Hometown Appliance", "link": "https://www.hometownappliance.com", "img": "https://skventuresigns.com/wp-content/uploads/2025/06/Hometown-Appliance.png" },
-		{ "label": "Angela's Village Florist", "link": "https://www.angelasvillageflorist.com/", "img": "https://ourflora.com/wp-content/uploads/2025/12/AngelaFlorist.png" },
-		{ "label": "S&K Venture Signs", "link": "https://skventuresigns.com", "img": "https://ourflora.com/wp-content/uploads/2026/01/SKad.png" },
-		{ "label": "Heritage Woods of Flora", "link": "https://www.gardant.com/heritagewoodsflora/", "img": "https://ourflora.com/wp-content/uploads/2025/12/HeritageWoods.png" }
-	];
-
 	function enforceUtmRouterUrl(baseLink, sourceName = "SMLC") {
 		try {
 			if (!baseLink || baseLink === "#" || baseLink.startsWith("javascript:") || baseLink.startsWith("tel:") || baseLink.startsWith("mailto:")) {
@@ -114,7 +105,6 @@
 		return rawTimeStr;
 	}
 
-	/* FIXED SCORESTREAM EMBED FORCING CHASSIS WINDOW MATRICES */
 	function bootScorestreamEmbedWidgetDynamic() {
 		try {
 			const targetContainer = document.querySelector('.scorestream-widget-container');
@@ -132,7 +122,6 @@
 		} catch (e) {}
 	}
 
-	/* EXTRACTS CLEAN CLEAN DOMAIN NAMES FOR CLICKABLE TEXT PROSE */
 	function parseCleanFriendlyDomainName(rawUrl) {
 		if (!rawUrl || rawUrl === '#') return '';
 		try {
@@ -144,7 +133,14 @@
 		}
 	}
 
-	/* SECTION 3: IMAGE RECTANGLE SLIDESHOW MATRIX */
+	function makeAllTextUrlsClickable(rawHtmlText) {
+		if (!rawHtmlText) return "";
+		const urlRegex = /(?<!href=["'])(https?:\/\/[^\s<]+)/gi;
+		return rawHtmlText.replace(urlRegex, (capturedUrl) => {
+			return `<a href="${enforceUtmRouterUrl(capturedUrl)}" target="current-tab" style="word-break: break-all; text-decoration: underline;">${capturedUrl}</a>`;
+		});
+	}
+
 	async function runStrategicSlideshowEngine() {
 		const targetChassisBox = document.getElementById('louisville-town-slideshow-matrix');
 		if (!targetChassisBox) return;
@@ -193,7 +189,6 @@
 		} catch (e) {}
 	}
 
-	/* SECTION 5: HISTORICAL DATA LEDGER CONTEXT LOADER */
 	async function dispatchHistoricalLedgerStream() {
 		const targetFeedContainer = document.getElementById('history-json-container');
 		if (!targetFeedContainer) return;
@@ -224,30 +219,30 @@
 		} catch (e) {}
 	}
 
-	/* SECTIONS 6 & 8: STATIC STRIP PARTNERS RENDERS ENGINE */
-	function renderSystemPartnersDistributed() {
+	async function renderSystemPartnersDistributed() {
 		const topStrip = document.getElementById('top-partners-strip-matrix');
 		if (!topStrip) return;
-		
-		const generateHTML = (pool) => {
-			let html = '';
-			pool.forEach(p => {
-				html += `
-					<div class="showcase-card-body">
-						<div class="showcase-media-canvas">
-							<img src="${p.img}" alt="${p.label}" class="lightbox-triggerable-element" data-story="" data-url="${p.link}" />
-						</div>
-						<a href="${enforceUtmRouterUrl(p.link)}" target="current-tab" class="showcase-action-link" style="font-size:12px; display:block; text-align:center; margin-top:8px;">${p.label}</a>
-					</div>`;
-			});
-			return html;
-		};
-
-		topStrip.innerHTML = generateHTML(shuffleArray([...partnerStripDataset]));
-		bindGlobalLightboxClickHandlers();
+		try {
+			const res = await fetch(`${URLS.partners}?v=${Date.now()}`);
+			const partnerStripDataset = await res.json();
+			
+			if (Array.isArray(partnerStripDataset)) {
+				let html = '';
+				shuffleArray([...partnerStripDataset]).forEach(p => {
+					html += `
+						<div class="showcase-card-body">
+							<div class="showcase-media-canvas">
+								<img src="${p.img}" alt="${p.label}" class="lightbox-triggerable-element" data-story="" data-url="${p.link}" />
+							</div>
+							<a href="${enforceUtmRouterUrl(p.link)}" target="current-tab" class="showcase-action-link" style="font-size:12px; display:block; text-align:center; margin-top:8px;">${p.label}</a>
+						</div>`;
+				});
+				topStrip.innerHTML = html;
+				bindGlobalLightboxClickHandlers();
+			}
+		} catch (e) {}
 	}
 
-	/* SECTION 7: BULLETIN ENGINE CALENDAR WIRE SYNC DISPATCHES */
 	async function loadBulletinCalendarFeed() {
 		const list = document.getElementById('event-list');
 		if(!list) return;
@@ -299,7 +294,7 @@
 						<div class="event-date">${cleanHumanDateStr}</div>
 						<div class="event-title">${item.name}</div>
 						<div style="font-size: 14px; line-height: 1.4;">
-							<strong>Where:</strong> <span class="map-link-router-node" style="cursor:pointer; text-decoration:underline; color:#FFC10E; font-weight:bold;" data-address="${locationString}">${locationString}</span> <br> 
+							<strong>Where:</strong> <span class="map-link-router-node custom-event-blue-link" style="cursor:pointer; text-decoration:underline; font-weight:bold;" data-address="${locationString}">${locationString}</span> <br> 
 							<strong>Time:</strong> ${cleanTimeSpan}
 						</div>
 						<div class="event-brief-desc">"${shortenedBriefSnippetText}"</div>
@@ -308,7 +303,6 @@
 							<span>ADD TO CALENDAR</span> <br>
 							<a href="${googleCalTemplateUrl}" target="_blank" class="cal-text-link">GOOGLE</a>
 							<span style="color:#777; margin: 0 5px;">|</span>
-							<!-- FIXED: download layout forces dynamic event title extension filename overrides safely -->
 							<a href="${base64AppleCalendarHrefString}" download="${item.name.replace(/[^a-zA-Z0-9]/g, '_')}.ics" class="cal-text-link">APPLE / OUTLOOK</a>
 						</div>
 					`;
@@ -358,12 +352,10 @@
 		if(targetedAddressString) { window.triggerSmartMapRouter(targetedAddressString); }
 	}
 
-	/* SECTION 7: HYPER-LOCALIZED LOCAL NEWSROOM FEED CONTROLLERS */
 	async function parseSMLCNewsroomFeed() {
 		const newsNode = document.getElementById('json-news-container');
 		if(!newsNode) return;
 		
-		/* FIXED RE-STAMP: Updated section room baseline headers exactly as instructed */
 		const headerChassisLabel = document.querySelector('.newspaper-header-border-fixed .dynamic-text-element-fixed');
 		if (headerChassisLabel) {
 			headerChassisLabel.innerHTML = "📰 Louisville Local News: SMLC HQ.";
@@ -399,14 +391,8 @@
 					`;
 					
 					const triggerFullModalView = () => {
-						let proceduralProcessedTextHTML = n.full_story || "";
-						const regexUrlDetectToken = /(https?:\/\/[^\s]+)/g;
-						proceduralProcessedTextHTML = proceduralProcessedTextHTML.replace(regexUrlDetectToken, (capturedUrl) => {
-							return `<a href="${capturedUrl}" target="_blank" rel="noopener noreferrer">${capturedUrl}</a>`;
-						});
-
 						const modularLightboxBodyHTML = `
-							<div class="lightbox-description-card-box" style="display:block; margin-top:0;"><p>${proceduralProcessedTextHTML}</p></div>
+							<div class="lightbox-description-card-box" style="display:block; margin-top:0;"><p>${n.full_story || ""}</p></div>
 						`;
 						openPortalLightbox(n.title, n.date || "News Room Archive", modularLightboxBodyHTML, n.image || n.image_url || "", n.link || "#");
 					};
@@ -424,7 +410,6 @@
 		} catch(e){}
 	}
 
-	/* SECTION 7: FIREBASE FUEL MONITOR SUBSYSTEM */
 	function initFirebaseGasIndexEngine() {
 		try {
 			const fbConfig = { databaseURL: "https://smlc-fuel-monitor-default-rtdb.firebaseio.com", projectId: "smlc-fuel-monitor" };
@@ -445,7 +430,6 @@
 		} catch(e) {}
 	}
 
-	/* SECTION 7: BUSINESS SPOTLIGHT STABLE INTEGRATION LOOP */
 	async function loadSpotlightBusinessAssetModule() {
 		const imgWrap = document.getElementById('global-spotlight-media-container');
 		const linkWrap = document.getElementById('global-spotlight-link-wrapper');
@@ -457,14 +441,13 @@
 			if (spotlightAsset) {
 				imgWrap.className = "full-bleed-spotlight-frame";
 				
-				/* FIXED URL TEXT MAPPING: Drops placeholder strings entirely. Extracts clickable standard web tags with tracking metrics safely */
-				const dynamicCleanWebsiteLabel = parseCleanFriendlyDomainName(spotlightAsset.source_url);
 				imgWrap.innerHTML = `<img src="${spotlightAsset.url}" alt="${spotlightAsset.name}" class="lightbox-triggerable-element" data-story="" data-url="${spotlightAsset.source_url}" />`;
+				
+				// FIXED: The title header itself is the clickable link, removing the broken text layout below it
 				linkWrap.innerHTML = `
-					<div style="font-size:20px !important; font-weight:900; color:var(--louis-gold); text-align:center;">
-						${spotlightAsset.name} <br>
-						<a href="${enforceUtmRouterUrl(spotlightAsset.source_url)}" target="current-tab" style="font-size:14px !important; color:#63b3ed !important; text-decoration:underline !important; text-transform:lowercase; display:inline-block; margin-top:4px;">
-							www.${dynamicCleanWebsiteLabel}.net
+					<div style="font-size:22px !important; font-weight:900; text-align:center; margin-top: 12px;">
+						<a href="${enforceUtmRouterUrl(spotlightAsset.source_url)}" target="current-tab" style="color: var(--louis-black) !important; text-decoration: underline !important;">
+							${spotlightAsset.name}
 						</a>
 					</div>`;
 					
@@ -491,15 +474,13 @@
 		if (descriptionText.trim().length > 0) {
 			modularLightboxBodyHTML = `<div class="lightbox-description-card-box" style="display:block; margin-top:0;"><p>${descriptionText}</p></div>`;
 		} else if (targetedHref !== '#') {
-			/* FIXED WEB ACTION LINKS: Maps visible website link redirects onto the picture module frames safely */
 			const dynamicLabel = parseCleanFriendlyDomainName(targetedHref);
 			modularLightboxBodyHTML = `
 				<div style="font-size:14px; color:#222; text-align:center; padding:10px 0;">
-					Go to: <a href="${enforceUtmRouterUrl(targetedHref)}" target="current-tab" style="color:#cc0000 !important; font-weight:bold; text-decoration:underline;">www.${dynamicLabel}.net</a>
+					Go to: <a href="${enforceUtmRouterUrl(targetedHref)}" target="current-tab" style="color:var(--link-bright-blue) !important; font-weight:bold; text-decoration:underline;">www.${dynamicLabel}.net</a>
 				</div>`;
 		}
 		
-		/* FIXED HEADING REDIRECT: Replaced template strings with 'Local Image' exactly as requested */
 		openPortalLightbox(altTitle, "Local Image", modularLightboxBodyHTML, imgUrl, targetedHref);
 	}
 
@@ -509,7 +490,9 @@
 		
 		document.getElementById('lightbox-title').innerText = title;
 		document.getElementById('lightbox-meta').innerText = meta;
-		document.getElementById('lightbox-story').innerHTML = story;
+		
+		// Enforces comprehensive dynamic url token parsing transformations across the dynamic dashboard blocks safely
+		document.getElementById('lightbox-story').innerHTML = makeAllTextUrlsClickable(story);
 		
 		const leftCell = mask.querySelector('.Lightbox-Left-Cell');
 		const mapContainerBlock = document.getElementById('lightbox-maps-render-viewport');
