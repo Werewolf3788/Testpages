@@ -1,123 +1,39 @@
 /* ==========================================================================
-   MASTER DEVELOPMENT PROTOCOL - NERVOUS SYSTEM MOTOR
+   MASTER DEVELOPMENT PROTOCOL - HIGHLY LOCALIZED CENTRAL OPERATIONS MOTOR
    ========================================================================== */
-/* NO STRIPPING, NO COMPRESSING, DON'T CHANGE WHAT I DIDN'T SAY TO CHANGE */
-/* NYT Timestamp: 2026-06-17 16:50:00 */
-
+/* NO STRIPPING, NO COMPRESSING, DON'T CHANGE SPECIFIC DATA ARRAY MAPPINGS */
+/* NYT Timestamp: 2026-06-27 22:28:09 */
 (function() {
-	const activeTown = document.body.getAttribute('data-town') || 'louisville';
+	const CURRENT_SITE_TOWN = "louisville";
+	const FILTER_KEYWORDS_POSITIVE = ["hoosier", "clay county", "louisville"];
+	const FILTER_KEYWORDS_NEGATIVE = ["flora", "clay city", "xenia", "bible grove", "hord"];
 
 	const URLS = {
 		config: "https://raw.githubusercontent.com/Werewolf3788/Testpages/main/json/config.json",
 		assets: "https://raw.githubusercontent.com/Werewolf3788/Testpages/main/json/assets.json",
 		menu: "https://raw.githubusercontent.com/Werewolf3788/Testpages/main/json/menu.json",
-		partners: "https://raw.githubusercontent.com/Werewolf3788/Testpages/main/json/partners.json",
-		maps: "https://raw.githubusercontent.com/Werewolf3788/Testpages/main/json/maps.json",
+		partners: "https://raw.githubusercontent.com/skventuresigns-design/smlc/main/slideshow/partners.json",
 		history: "https://raw.githubusercontent.com/skventuresigns-design/smlc/main/townjson/louisville.json",
 		images: "https://raw.githubusercontent.com/Werewolf3788/Testpages/main/json/town-images.json",
 		footer: "https://raw.githubusercontent.com/Werewolf3788/Testpages/main/json/footer.json",
 		news: "https://raw.githubusercontent.com/skventuresigns-design/smlc/main/local-news/news_data.json",
-		bulletin: "https://script.google.com/macros/s/AKfycbwtunjBquRf8yjnYdpMNMglMQB6n0j4pHSNke-9yADxZ3-9HvJqXT2DdVTUjdhRroGcxQ/exec"
+		bulletin: "https://script.google.com/macros/s/AKfycbz_nol3WlVM6_8FKN1V2aVeW5jZRa54gWs13lVEHVhx07xpzjMmedBd5vRdVyPiSemopA/exec"
 	};
 
-	let masterPartnersArray = [];
-	let gasPortalOverrideUrl = "https://werewolf3788.github.io/Testpages/update-gas.html";
+	let internalSequenceIndex = 0;
+	let masterSlideshowLoopTrack = null;
+	let globallyStoredAddressText = "607 W Clark Ave, Flora, IL 62401";
 
-	const localHistoryFallback = [
-		{
-			"year": 1824,
-			"event": "Clay County Formation",
-			"description": "Clay County was formed in 1824 out of portions of Wayne, Crawford, and Fayette counties. Its name is in honor of Henry Clay – famous American statesman, member of the United States Senate from Kentucky, and United States Secretary of State in the 19th Century."
-		},
-		{
-			"year": 1841,
-			"event": "Designated County Seat",
-			"description": "Commissioners officially moved the county seat from the original location of Maysville to the newly established village of Louisville."
-		},
-		{
-			"year": 1883,
-			"event": "Grand Army of the Republic",
-			"description": "The local chapter (Post No. 249) of the Grand Army of the Republic was chartered in Louisville, marking a significant milestone for local Civil War veterans."
-		},
-		{
-			"year": 2020,
-			"event": "Modern Census",
-			"description": "As of the 2020 Census, Louisville continues to serve as the administrative center of Clay County with a population of 1,136."
-		},
-		{
-			"year": 2022,
-			"event": "Rise of Bailey Zimmerman",
-			"description": "Louisville native Bailey Zimmerman achieved national fame in the country music industry, putting the small town on the map for his chart-topping hits like 'Fall in Love' and 'Rock and a Hard Place'."
-		}
+	const partnerStripDataset = [
+		{ "label": "Wabash", "link": "https://wabash.net", "img": "https://ourflora.com/wp-content/uploads/2025/12/Wabash-e1767505357948.png" },
+		{ "label": "Grace & Truth", "link": "https://www.graceandtruthcounseling.com", "img": "https://ourflora.com/wp-content/uploads/2025/12/GTC1.png" },
+		{ "label": "Hometown Appliance", "link": "https://www.hometownappliance.com", "img": "https://skventuresigns.com/wp-content/uploads/2025/06/Hometown-Appliance.png" },
+		{ "label": "Angela's Village Florist", "link": "https://www.angelasvillageflorist.com/", "img": "https://ourflora.com/wp-content/uploads/2025/12/AngelaFlorist.png" },
+		{ "label": "S&K Venture Signs", "link": "https://skventuresigns.com", "img": "https://ourflora.com/wp-content/uploads/2026/01/SKad.png" },
+		{ "label": "Heritage Woods of Flora", "link": "https://www.gardant.com/heritagewoodsflora/", "img": "https://ourflora.com/wp-content/uploads/2025/12/HeritageWoods.png" }
 	];
 
-	const fallbackCalendarEvents = [
-		{ 
-			dateStr: "Saturday, June 20, 2026", 
-			title: "Studs & Suds", 
-			location: "Storm Brewing",
-			startTime: "10:00 AM",
-			endTime: "4:00 PM",
-			details: "Join the community fundraiser event at Storm Brewing. Local vendors, refreshments, and interactive activities scheduled throughout the day."
-		},
-		{ 
-			dateStr: "Saturday, June 20, 2026", 
-			title: "Clay City Women's Elevation Tea", 
-			location: "Clay City Community Center",
-			startTime: "2:00 PM",
-			endTime: "5:00 PM",
-			details: "THE OIL SHIFTED FROM THE WELLS TO HER VESSEL\n\nHosted by TTEA Women\n\nThey thought the oil was running low…\nThen the women started pouring.\n\nJoin women from across the region for a luxury afternoon of:\n• High Tea\n• Crowning\n• Empowerment\n• Fellowship\n• Inspiration from Nicole Gentles\n• Faith-centered elevation\n\nMinimum Contribution: $20\n\nReserve Your Seat: https://tteawomen.com/events\nFacebook Event URL: https://www.facebook.com/events/2888637127971863/"
-		},
-		{ 
-			dateStr: "July 4, 2026", 
-			title: "Flora Tourism Presents: 4th of July", 
-			location: "Charley Brown Park",
-			startTime: "6:00 PM",
-			endTime: "10:00 PM",
-			details: "Celebrate Independence Day at Charley Brown Park with spectacular evening firework shows, family recreation activities, and food trucks."
-		}
-	];
-
-	window.addEventListener('error', function(e) {
-		if (e.target && e.target.tagName === 'IMG') {
-			e.target.style.setProperty('display', 'none', 'important');
-			const frame = e.target.closest('.showcase-media-canvas, .clipping-card-image-box');
-			if (frame) frame.style.setProperty('display', 'none', 'important');
-		}
-	}, true);
-
-	function shuffleArray(arr) {
-		for (let i = arr.length - 1; i > 0; i--) {
-			const j = Math.floor(Math.random() * (i + 1));
-			[arr[i], arr[j]] = [arr[j], arr[i]];
-		}
-		return arr;
-	}
-
-	function synchronizeTimeBackdropTheme() {
-		const hour = new Date().getHours();
-		let bg, text, panel, border, accent, readableTint;
-		
-		if (hour >= 8 && hour < 17) {
-			bg = '#f5f5f5'; text = '#111111'; panel = '#ffffff'; border = '#cccccc'; accent = '#8B0000'; readableTint = '#D4D4D4';
-		} else if (hour >= 17 && hour < 20) {
-			bg = '#a3a3a3'; text = '#111111'; panel = '#d4d4d4'; border = '#888888'; accent = '#8B0000'; readableTint = '#e5e5e5';
-		} else if (hour >= 5 && hour < 8) {
-			bg = '#d4d4d4'; text = '#111111'; panel = '#e5e5e5'; border = '#aaaaaa'; accent = '#8B0000'; readableTint = '#f0f0f0';
-		} else {
-			bg = '#1F1F1F'; text = '#ffffff'; panel = '#0d0d0d'; border = '#333333'; accent = '#FFC10E'; readableTint = '#000000';
-		}
-		
-		document.documentElement.style.setProperty('--dynamic-bg', bg);
-		document.documentElement.style.setProperty('--dynamic-text', text);
-		document.documentElement.style.setProperty('--dynamic-panel', panel);
-		document.documentElement.style.setProperty('--dynamic-border', border);
-		document.documentElement.style.setProperty('--dynamic-accent', accent);
-		document.documentElement.style.setProperty('--dynamic-readable-tint', readableTint);
-	}
-	setInterval(synchronizeTimeBackdropTheme, 60000);
-
-	function enforceUtmRouterUrl(baseLink, sourceName = "smlc_portal") {
+	function enforceUtmRouterUrl(baseLink, sourceName = "SMLC") {
 		try {
 			if (!baseLink || baseLink === "#" || baseLink.startsWith("javascript:") || baseLink.startsWith("tel:") || baseLink.startsWith("mailto:")) {
 				return baseLink;
@@ -125,12 +41,18 @@
 			const urlObj = new URL(baseLink, window.location.origin);
 			urlObj.searchParams.set('utm_source', sourceName);
 			urlObj.searchParams.set('utm_medium', 'digital_town_square');
-			urlObj.searchParams.set('utm_campaign', activeTown + '_delivery');
-			urlObj.searchParams.set('v', '1.17');
+			urlObj.searchParams.set('utm_campaign', CURRENT_SITE_TOWN + '_delivery');
+			urlObj.searchParams.set('v', '1.27');
 			return urlObj.toString();
-		} catch (e) {
-			return baseLink;
+		} catch (e) { return baseLink; }
+	}
+
+	function shuffleArray(arr) {
+		for (let i = arr.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			[arr[i], arr[j]] = [arr[j], arr[i]];
 		}
+		return arr;
 	}
 
 	function fetchChicagoTime() {
@@ -159,45 +81,518 @@
 		} catch(e){}
 	}
 	setInterval(runChicagoClockLoop, 10000);
-	runChicagoClockLoop();
 
-	const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-	const currentMonthLabel = monthNames[fetchChicagoTime().getMonth()];
-	const labelNode = document.getElementById('month-label');
-	if (labelNode) labelNode.innerText = `${currentMonthLabel} Dispatches`;
+	function evaluateAdaptivePortalThemeCycles() {
+		const portalWrapper = document.getElementById('adaptive-time-portal-chassis');
+		if(!portalWrapper) return;
+		try {
+			const formatter = new Intl.DateTimeFormat('en-US', { hour: 'numeric', hour12: false, timeZone: 'America/Chicago' });
+			const chicagoHour = parseInt(formatter.format(new Date()), 10);
+			if (chicagoHour >= 19 || chicagoHour < 6) {
+				portalWrapper.classList.add('dark-theme-active');
+			} else {
+				portalWrapper.classList.remove('dark-theme-active');
+			}
+		} catch(e) {}
+	}
 
-	function registerDynamicLightboxTrigger(element, imgUrl, title = "Community Media Showcase", context = "SMLC Network Frame Log View", targetSourceUrl = "#") {
-		if (!element) return;
-		element.style.cursor = "pointer";
-		element.addEventListener('click', (e) => {
-			e.stopPropagation();
-			openPortalLightbox(title, context, "SMLC Community Image Register Record Asset View.", imgUrl, targetSourceUrl);
+	function formatSystemTimeStringToCleanLayout(rawTimeStr) {
+		if (!rawTimeStr) return "Scheduled Hours";
+		if (rawTimeStr.includes("T")) {
+			try {
+				const parsedDateObj = new Date(rawTimeStr);
+				if (!isNaN(parsedDateObj.getTime())) {
+					let hours = parsedDateObj.getUTCHours();
+					const minutes = parsedDateObj.getUTCMinutes().toString().padStart(2, '0');
+					const ampm = hours >= 12 ? 'pm' : 'am';
+					hours = hours % 12;
+					hours = hours ? hours : 12;
+					return `${hours}:${minutes}${ampm}`;
+				}
+			} catch (e) {}
+		}
+		return rawTimeStr;
+	}
+
+	/* FIXED SCORESTREAM EMBED FORCING CHASSIS WINDOW MATRICES */
+	function bootScorestreamEmbedWidgetDynamic() {
+		try {
+			const targetContainer = document.querySelector('.scorestream-widget-container');
+			if (targetContainer) {
+				targetContainer.innerHTML = '';
+				const iframeElementNode = document.createElement('iframe');
+				iframeElementNode.src = "https://scorestream.com/widgets/scoreboards/horz?userWidgetId=68601";
+				iframeElementNode.style.width = "100%";
+				iframeElementNode.style.height = "150px";
+				iframeElementNode.style.border = "none";
+				iframeElementNode.style.overflow = "hidden";
+				iframeElementNode.setAttribute('scrolling', 'no');
+				targetContainer.appendChild(iframeElementNode);
+			}
+		} catch (e) {}
+	}
+
+	/* EXTRACTS CLEAN CLEAN DOMAIN NAMES FOR CLICKABLE TEXT PROSE */
+	function parseCleanFriendlyDomainName(rawUrl) {
+		if (!rawUrl || rawUrl === '#') return '';
+		try {
+			let hostname = new URL(rawUrl).hostname;
+			hostname = hostname.replace('www.', '');
+			return hostname.split('.')[0];
+		} catch (e) {
+			return 'website';
+		}
+	}
+
+	/* SECTION 3: IMAGE RECTANGLE SLIDESHOW MATRIX */
+	async function runStrategicSlideshowEngine() {
+		const targetChassisBox = document.getElementById('louisville-town-slideshow-matrix');
+		if (!targetChassisBox) return;
+		try {
+			const res = await fetch(`${URLS.images}?v=${Date.now()}`);
+			const dataset = await res.json();
+			let parsedAssetCollectorPool = [];
+			if (dataset.network_towns) {
+				for (const townKey in dataset.network_towns) {
+					const individualTownObject = dataset.network_towns[townKey];
+					if (individualTownObject.categories && Array.isArray(individualTownObject.categories)) {
+						individualTownObject.categories.forEach(categoryBlock => {
+							if (categoryBlock.images && Array.isArray(categoryBlock.images)) {
+								categoryBlock.images.forEach(imageRecord => {
+									if (imageRecord.id && imageRecord.id.toLowerCase().includes(CURRENT_SITE_TOWN)) {
+										parsedAssetCollectorPool.push(imageRecord);
+									}
+								});
+							}
+						});
+					}
+				}
+			}
+			if (parsedAssetCollectorPool.length === 0) return;
+
+			function triggerNextSlideSequence() {
+				const activeNodeAsset = parsedAssetCollectorPool[internalSequenceIndex % parsedAssetCollectorPool.length];
+				const absoluteSourcePath = activeNodeAsset.url || activeNodeAsset.image;
+				const interactiveTextLabel = activeNodeAsset.name || "SMLC Local Asset Element View";
+				const dynamicTrackingHref = activeNodeAsset.source_url || "#";
+
+				targetChassisBox.innerHTML = `
+					<div class="slideshow-engine-node-wrapper">
+						<div class="slideshow-image-mask-viewport">
+							<img src="${absoluteSourcePath}" alt="${activeNodeAsset.alt || interactiveTextLabel}" class="lightbox-triggerable-element" data-story="" data-url="${dynamicTrackingHref}" />
+						</div>
+						<a href="${enforceUtmRouterUrl(dynamicTrackingHref)}" target="current-tab" class="slideshow-action-link-caption-node">${interactiveTextLabel}</a>
+					</div>
+				`;
+				internalSequenceIndex++;
+				bindGlobalLightboxClickHandlers();
+			}
+			triggerNextSlideSequence();
+			if (masterSlideshowLoopTrack) clearInterval(masterSlideshowLoopTrack);
+			masterSlideshowLoopTrack = setInterval(triggerNextSlideSequence, 8000);
+		} catch (e) {}
+	}
+
+	/* SECTION 5: HISTORICAL DATA LEDGER CONTEXT LOADER */
+	async function dispatchHistoricalLedgerStream() {
+		const targetFeedContainer = document.getElementById('history-json-container');
+		if (!targetFeedContainer) return;
+		try {
+			const res = await fetch(`${URLS.history}?v=${Date.now()}`);
+			const dynamicPayload = await res.json();
+			if (dynamicPayload && Array.isArray(dynamicPayload.history)) {
+				targetFeedContainer.innerHTML = '';
+				dynamicPayload.history.forEach((record) => {
+					const boxCardNode = document.createElement('div');
+					boxCardNode.className = 'timeline-horizontal-box-card';
+					let imageStringHTML = record.image_url ? `<div class="timeline-box-media-frame"><img src="${record.image_url}" class="lightbox-triggerable-element" data-story="${record.description}" data-url="#" alt="${record.event}" /></div>` : '';
+					
+					boxCardNode.innerHTML = `
+						<year1 class="timeline-box-year-stamp">${record.year}</year1>
+						<HistTitle1 class="timeline-box-event-headline">${record.event}</HistTitle1>
+						<histDescript1 class="timeline-box-snippet-prose">${record.description}</histDescript1>
+						${imageStringHTML}
+					`;
+					targetFeedContainer.appendChild(boxCardNode);
+					boxCardNode.addEventListener('click', (e) => {
+						if (e.target.classList.contains('lightbox-triggerable-element')) return;
+						openPortalLightbox(record.event, `Year: ${record.year}`, record.description, record.image_url || "", "#");
+					});
+				});
+				bindGlobalLightboxClickHandlers();
+			}
+		} catch (e) {}
+	}
+
+	/* SECTIONS 6 & 8: STATIC STRIP PARTNERS RENDERS ENGINE */
+	function renderSystemPartnersDistributed() {
+		const topStrip = document.getElementById('top-partners-strip-matrix');
+		if (!topStrip) return;
+		
+		const generateHTML = (pool) => {
+			let html = '';
+			pool.forEach(p => {
+				html += `
+					<div class="showcase-card-body">
+						<div class="showcase-media-canvas">
+							<img src="${p.img}" alt="${p.label}" class="lightbox-triggerable-element" data-story="" data-url="${p.link}" />
+						</div>
+						<a href="${enforceUtmRouterUrl(p.link)}" target="current-tab" class="showcase-action-link" style="font-size:12px; display:block; text-align:center; margin-top:8px;">${p.label}</a>
+					</div>`;
+			});
+			return html;
+		};
+
+		topStrip.innerHTML = generateHTML(shuffleArray([...partnerStripDataset]));
+		bindGlobalLightboxClickHandlers();
+	}
+
+	/* SECTION 7: BULLETIN ENGINE CALENDAR WIRE SYNC DISPATCHES */
+	async function loadBulletinCalendarFeed() {
+		const list = document.getElementById('event-list');
+		if(!list) return;
+		try {
+			const response = await fetch(URLS.bulletin);
+			const events = await response.json();
+
+			if (events && events.length > 0) {
+				list.innerHTML = '';
+				
+				const nowCST = fetchChicagoTime();
+				const boundaryForwardCST = new Date(nowCST.getTime() + (30 * 24 * 60 * 60 * 1000));
+				const currentDayFloor = new Date(nowCST.getFullYear(), nowCST.getMonth(), nowCST.getDate(), 0, 0, 0, 0);
+
+				let parsedValidEntries = [];
+				events.forEach(item => {
+					if(!item.date) return;
+					let evDate = new Date(item.date);
+					if (isNaN(evDate.getTime())) evDate = new Date(item.date.replace(/-/g, "/"));
+					if (isNaN(evDate.getTime())) return;
+
+					if (evDate >= currentDayFloor && evDate <= boundaryForwardCST) {
+						parsedValidEntries.push({ ...item, computedDateObj: evDate });
+					}
+				});
+
+				if(parsedValidEntries.length === 0) {
+					list.innerHTML = "<p style='text-align:center; padding: 20px; color: inherit; font-style:italic;'>No active dispatches scheduled at this time.</p>";
+					return;
+				}
+
+				parsedValidEntries.sort((a, b) => a.computedDateObj - b.computedDateObj);
+
+				parsedValidEntries.forEach(item => {
+					const cleanHumanDateStr = item.computedDateObj.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: '2-digit' });
+					const isoDateString = item.computedDateObj.toISOString().replace(/-|:|\.\d\d\d/g, "").split("T")[0];
+					const locationString = item.location || "Clay County Area Region";
+					
+					const cleanTimeSpan = formatSystemTimeStringToCleanLayout(item.time);
+					const rawLongDescriptionText = item.details || item.description || "";
+					const shortenedBriefSnippetText = rawLongDescriptionText.length > 85 ? rawLongDescriptionText.substring(0, 85) + "..." : (rawLongDescriptionText || "Join us for this local area community gathering.");
+
+					const googleCalTemplateUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(item.name)}&dates=${isoDateString}/${isoDateString}&details=${encodeURIComponent(rawLongDescriptionText)}&location=${encodeURIComponent(locationString)}&sf=true&output=xml`;
+					const base64AppleCalendarHrefString = "data:text/calendar;charset=utf8," + encodeURIComponent(`BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:${item.name}\nLOCATION:${locationString}\nDTSTART:${isoDateString}\nDTEND:${isoDateString}\nDESCRIPTION:${rawLongDescriptionText}\nEND:VEVENT\nEND:VCALENDAR`);
+
+					const div = document.createElement('div');
+					div.className = 'event-item';
+					div.innerHTML = `
+						<div class="event-date">${cleanHumanDateStr}</div>
+						<div class="event-title">${item.name}</div>
+						<div style="font-size: 14px; line-height: 1.4;">
+							<strong>Where:</strong> <span class="map-link-router-node" style="cursor:pointer; text-decoration:underline; color:#FFC10E; font-weight:bold;" data-address="${locationString}">${locationString}</span> <br> 
+							<strong>Time:</strong> ${cleanTimeSpan}
+						</div>
+						<div class="event-brief-desc">"${shortenedBriefSnippetText}"</div>
+						<div><span class="read-more-trigger">READ MORE</span></div>
+						<div class="cal-links">
+							<span>ADD TO CALENDAR</span> <br>
+							<a href="${googleCalTemplateUrl}" target="_blank" class="cal-text-link">GOOGLE</a>
+							<span style="color:#777; margin: 0 5px;">|</span>
+							<!-- FIXED: download layout forces dynamic event title extension filename overrides safely -->
+							<a href="${base64AppleCalendarHrefString}" download="${item.name.replace(/[^a-zA-Z0-9]/g, '_')}.ics" class="cal-text-link">APPLE / OUTLOOK</a>
+						</div>
+					`;
+					
+					div.querySelector('.read-more-trigger').addEventListener('click', (e) => {
+						e.stopPropagation();
+						
+						let detailsBoxMarkupHTML = '';
+						if (rawLongDescriptionText.trim().length > 0) {
+							detailsBoxMarkupHTML = `<div class="lightbox-description-card-box" style="display:block;"><p>${rawLongDescriptionText}</p></div>`;
+						}
+
+						const modularLightboxBodyHTML = `
+							<div class="lightbox-meta-prose-row"><strong>Scheduled Date:</strong> ${cleanHumanDateStr}</div>
+							<div class="lightbox-meta-prose-row"><strong>Target Location:</strong> <span class="map-link-router-node" style="cursor:pointer; text-decoration:underline; font-weight:bold; color:#cc0000;" data-address="${locationString}">${locationString}</span></div>
+							<div class="lightbox-meta-prose-row"><strong>Time Window:</strong> ${cleanTimeSpan}</div>
+							${detailsBoxMarkupHTML}
+							<div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap;">
+								<a href="${googleCalTemplateUrl}" target="_blank" style="background:#000; color:#fff !important; font-weight:bold; padding:8px 14px; border-radius:4px; text-transform:uppercase; font-size:11px; text-decoration:none; border:1px solid #222;">Google Calendar</a>
+								<a href="${base64AppleCalendarHrefString}" download="${item.name.replace(/[^a-zA-Z0-9]/g, '_')}.ics" style="background:#fff; color:#222 !important; font-weight:bold; padding:8px 14px; border-radius:4px; text-transform:uppercase; font-size:11px; text-decoration:none; border:1px solid #222; box-shadow:2px 2px 0px #222;">iCal / Apple</a>
+							</div>
+						`;
+						openPortalLightbox(item.name, `SMLC Immersive Event Synchronization Panel`, modularLightboxBodyHTML, "", "#");
+						bindInlineMapRouterNodeClicks();
+					});
+
+					list.appendChild(div);
+				});
+
+				bindInlineMapRouterNodeClicks();
+			}
+		} catch (e) {
+			list.innerHTML = "<p style='text-align:center; padding: 20px;'>Wire synchronization channel interruption loop.</p>";
+		}
+	}
+
+	function bindInlineMapRouterNodeClicks() {
+		document.querySelectorAll('.map-link-router-node').forEach(node => {
+			node.removeEventListener('click', handleMapLinkClickAction);
+			node.addEventListener('click', handleMapLinkClickAction);
 		});
 	}
 
-	async function loadSystemConfigTree() {
-		try {
-			const res = await fetch(`${URLS.config}?v=${Date.now()}`);
-			const json = await res.json();
-			if (json.regional_endpoints?.update_gas_portal_url) {
-				gasPortalOverrideUrl = json.regional_endpoints.update_gas_portal_url;
-			}
-		} catch (e) { console.error("Configuration tree reading exception."); }
+	function handleMapLinkClickAction(e) {
+		e.stopPropagation();
+		const targetedAddressString = this.getAttribute('data-address');
+		if(targetedAddressString) { window.triggerSmartMapRouter(targetedAddressString); }
 	}
 
-	async function loadGlobalAssets() {
-		const headerBox = document.getElementById('global-header-container');
-		if (!headerBox) return;
+	/* SECTION 7: HYPER-LOCALIZED LOCAL NEWSROOM FEED CONTROLLERS */
+	async function parseSMLCNewsroomFeed() {
+		const newsNode = document.getElementById('json-news-container');
+		if(!newsNode) return;
+		
+		/* FIXED RE-STAMP: Updated section room baseline headers exactly as instructed */
+		const headerChassisLabel = document.querySelector('.newspaper-header-border-fixed .dynamic-text-element-fixed');
+		if (headerChassisLabel) {
+			headerChassisLabel.innerHTML = "📰 Louisville Local News: SMLC HQ.";
+		}
+
 		try {
-			const res = await fetch(`${URLS.assets}?v=${Date.now()}`);
-			const assets = await res.json();
-			const imgPath = assets.global_assets?.header_image?.url || "https://raw.githubusercontent.com/skventuresigns-design/media/main/smlc-web.png";
-			const altText = assets.global_assets?.header_image?.alt || "SMLC Community Banner";
-			headerBox.innerHTML = `
-				<a href="${enforceUtmRouterUrl('https://staging.supportmylocalcommunity.com/')}" target="main-content-window">
-					<img src="${imgPath}" alt="${altText}" />
-				</a>`;
-		} catch (e) { console.error("Asset core link break.", e); }
+			const res = await fetch(URLS.news);
+			const payload = await res.json();
+			if(Array.isArray(payload)) {
+				const filteredArticles = payload.filter(art => {
+					const searchableHaystack = `${art.title} ${art.full_story}`.toLowerCase();
+					const hasPositiveMatches = FILTER_KEYWORDS_POSITIVE.some(keyword => searchableHaystack.includes(keyword));
+					const hasNegativeExclusions = FILTER_KEYWORDS_NEGATIVE.some(blockword => searchableHaystack.includes(blockword));
+					return hasPositiveMatches && !hasNegativeExclusions;
+				});
+
+				newsNode.innerHTML = '';
+				if(filteredArticles.length === 0) {
+					newsNode.innerHTML = `<p style="text-align:center; padding:20px; font-style:italic;">No recent archives matched.</p>`;
+					return;
+				}
+
+				filteredArticles.forEach((n) => {
+					const card = document.createElement('div');
+					card.className = 'clipping-card-container';
+					let imgHTML = (n.image || n.image_url) ? `<div class="clipping-card-image-box"><img src="${n.image || n.image_url}" class="lightbox-triggerable-element" data-story="" data-url="${n.link || '#'}" alt="${n.title}" /></div>` : '';
+
+					card.innerHTML = `
+						${imgHTML}
+						<h3>${n.title}</h3>
+						<p class="clipping-card-text">"${(n.full_story || '').substring(0, 110)}..."</p>
+						<a class="clipping-card-action-btn">Read Full Story</a>
+					`;
+					
+					const triggerFullModalView = () => {
+						let proceduralProcessedTextHTML = n.full_story || "";
+						const regexUrlDetectToken = /(https?:\/\/[^\s]+)/g;
+						proceduralProcessedTextHTML = proceduralProcessedTextHTML.replace(regexUrlDetectToken, (capturedUrl) => {
+							return `<a href="${capturedUrl}" target="_blank" rel="noopener noreferrer">${capturedUrl}</a>`;
+						});
+
+						const modularLightboxBodyHTML = `
+							<div class="lightbox-description-card-box" style="display:block; margin-top:0;"><p>${proceduralProcessedTextHTML}</p></div>
+						`;
+						openPortalLightbox(n.title, n.date || "News Room Archive", modularLightboxBodyHTML, n.image || n.image_url || "", n.link || "#");
+					};
+
+					card.querySelector('.clipping-card-action-btn').addEventListener('click', (e) => { e.stopPropagation(); triggerFullModalView(); });
+					card.addEventListener('click', (e) => {
+						if (e.target.classList.contains('lightbox-triggerable-element') || e.target.classList.contains('clipping-card-action-btn')) return;
+						triggerFullModalView();
+					});
+
+					newsNode.appendChild(card);
+				});
+				bindGlobalLightboxClickHandlers();
+			}
+		} catch(e){}
+	}
+
+	/* SECTION 7: FIREBASE FUEL MONITOR SUBSYSTEM */
+	function initFirebaseGasIndexEngine() {
+		try {
+			const fbConfig = { databaseURL: "https://smlc-fuel-monitor-default-rtdb.firebaseio.com", projectId: "smlc-fuel-monitor" };
+			if(!firebase.apps.length) firebase.initializeApp(fbConfig);
+			const targetedNodeId = '48026';
+
+			firebase.database().ref('fuel_prices/' + targetedNodeId).on('value', (snap) => {
+				const val = snap.val();
+				if(val) {
+					const regNode = document.getElementById('lv-reg');
+					const dieNode = document.getElementById('lv-die');
+					const timeNode = document.getElementById('lv-time');
+					if(regNode) regNode.innerText = val.reg || "--.--";
+					if(dieNode) dieNode.innerText = (val.dsl && val.dsl !== "0") ? val.dsl : "---";
+					if(timeNode) timeNode.innerText = val.date ? `Updated: ${val.date}` : "Live Sync";
+				}
+			});
+		} catch(e) {}
+	}
+
+	/* SECTION 7: BUSINESS SPOTLIGHT STABLE INTEGRATION LOOP */
+	async function loadSpotlightBusinessAssetModule() {
+		const imgWrap = document.getElementById('global-spotlight-media-container');
+		const linkWrap = document.getElementById('global-spotlight-link-wrapper');
+		if (!imgWrap) return;
+		try {
+			const res = await fetch(`${URLS.images}?v=${Date.now()}`);
+			const registry = await res.json();
+			let spotlightAsset = registry?.global_assets?.find(asset => asset.id === "global_biz_spotlight");
+			if (spotlightAsset) {
+				imgWrap.className = "full-bleed-spotlight-frame";
+				
+				/* FIXED URL TEXT MAPPING: Drops placeholder strings entirely. Extracts clickable standard web tags with tracking metrics safely */
+				const dynamicCleanWebsiteLabel = parseCleanFriendlyDomainName(spotlightAsset.source_url);
+				imgWrap.innerHTML = `<img src="${spotlightAsset.url}" alt="${spotlightAsset.name}" class="lightbox-triggerable-element" data-story="" data-url="${spotlightAsset.source_url}" />`;
+				linkWrap.innerHTML = `
+					<div style="font-size:20px !important; font-weight:900; color:var(--louis-gold); text-align:center;">
+						${spotlightAsset.name} <br>
+						<a href="${enforceUtmRouterUrl(spotlightAsset.source_url)}" target="current-tab" style="font-size:14px !important; color:#63b3ed !important; text-decoration:underline !important; text-transform:lowercase; display:inline-block; margin-top:4px;">
+							www.${dynamicCleanWebsiteLabel}.net
+						</a>
+					</div>`;
+					
+				bindGlobalLightboxClickHandlers();
+			}
+		} catch (e) {}
+	}
+
+	function bindGlobalLightboxClickHandlers() {
+		document.querySelectorAll('.lightbox-triggerable-element, .polaroid-wrap img, .timeline-box-media-frame img').forEach(item => {
+			item.removeEventListener('click', triggerDynamicLightboxModal);
+			item.addEventListener('click', triggerDynamicLightboxModal);
+		});
+	}
+
+	function triggerDynamicLightboxModal(e) {
+		e.stopPropagation();
+		const imgUrl = this.src || "";
+		const altTitle = this.alt || "SMLC Community Digital Matrix Content View";
+		const descriptionText = this.getAttribute('data-story') || "";
+		const targetedHref = this.getAttribute('data-url') || "#";
+		
+		let modularLightboxBodyHTML = '';
+		if (descriptionText.trim().length > 0) {
+			modularLightboxBodyHTML = `<div class="lightbox-description-card-box" style="display:block; margin-top:0;"><p>${descriptionText}</p></div>`;
+		} else if (targetedHref !== '#') {
+			/* FIXED WEB ACTION LINKS: Maps visible website link redirects onto the picture module frames safely */
+			const dynamicLabel = parseCleanFriendlyDomainName(targetedHref);
+			modularLightboxBodyHTML = `
+				<div style="font-size:14px; color:#222; text-align:center; padding:10px 0;">
+					Go to: <a href="${enforceUtmRouterUrl(targetedHref)}" target="current-tab" style="color:#cc0000 !important; font-weight:bold; text-decoration:underline;">www.${dynamicLabel}.net</a>
+				</div>`;
+		}
+		
+		/* FIXED HEADING REDIRECT: Replaced template strings with 'Local Image' exactly as requested */
+		openPortalLightbox(altTitle, "Local Image", modularLightboxBodyHTML, imgUrl, targetedHref);
+	}
+
+	window.openPortalLightbox = function(title, meta, story, imgUrl, targetSourceUrl) {
+		const mask = document.getElementById('portal-lightbox');
+		if (!mask) return;
+		
+		document.getElementById('lightbox-title').innerText = title;
+		document.getElementById('lightbox-meta').innerText = meta;
+		document.getElementById('lightbox-story').innerHTML = story;
+		
+		const leftCell = mask.querySelector('.Lightbox-Left-Cell');
+		const mapContainerBlock = document.getElementById('lightbox-maps-render-viewport');
+		const imgNode = document.getElementById('lightbox-img');
+
+		if (imgUrl) {
+			if(imgNode) imgNode.src = imgUrl;
+			document.getElementById('lightbox-media-box').style.display = 'flex';
+			if(mapContainerBlock) mapContainerBlock.style.display = 'none';
+			leftCell.style.flex = "12";
+		} else {
+			document.getElementById('lightbox-media-box').style.display = 'none';
+			if(mapContainerBlock) mapContainerBlock.style.display = 'block';
+			leftCell.style.flex = "1 1 55%";
+
+			const matchLocAddressStr = story.match(/data-address="([^"]*)"/i) || story.match(/<strong>Target Location:<\/strong> <span class="map-link-router-node"[^>]*>(.*?)<\/span>/i);
+			const cleanExtractedAddress = matchLocAddressStr ? (matchLocAddressStr[1] || matchLocAddressStr[2]) : "Louisville, IL 62858";
+			
+			if(mapContainerBlock) {
+				mapContainerBlock.innerHTML = `<iframe width="100%" height="100%" style="border:0; min-height:100%;" loading="lazy" allowfullscreen src="https://maps.google.com/maps?q=${encodeURIComponent(cleanExtractedAddress)}&t=&z=14&ie=UTF8&iwloc=&output=embed"></iframe>`;
+			}
+		}
+
+		const trackingLink = document.getElementById('lightbox-external-link');
+		if (!targetSourceUrl || targetSourceUrl === '#') {
+			trackingLink.style.display = 'none';
+		} else {
+			trackingLink.style.display = 'inline-block';
+			trackingLink.href = enforceUtmRouterUrl(targetSourceUrl);
+		}
+		mask.classList.add('active-show');
+	};
+
+	window.closePortalLightbox = function() {
+		const mask = document.getElementById('portal-lightbox');
+		if (mask) mask.classList.remove('active-show');
+	};
+
+	window.triggerSmartMapRouter = function(addressStr) {
+		const overlay = document.getElementById('app-routing-overlay');
+		const grid = document.getElementById('routing-options-grid');
+		if (!overlay || !grid) return;
+
+		const encodedAddress = encodeURIComponent(addressStr);
+		grid.innerHTML = `
+			<a href="https://maps.google.com/?q=${encodedAddress}" target="_blank" class="routing-app-btn">Google Maps App</a>
+			<a href="maps://?daddr=${encodedAddress}" target="_blank" class="routing-app-btn">Apple Maps App</a>
+			<a href="https://waze.com/ul?q=${encodedAddress}&navigate=yes" target="_blank" class="routing-app-btn">Waze App System Link</a>
+		`;
+		overlay.classList.add('active-show');
+	};
+
+	window.closeRoutingOverlay = function() {
+		const overlay = document.getElementById('app-routing-overlay');
+		if (overlay) overlay.classList.remove('active-show');
+	};
+
+	async function loadGlobalFooterDataMatrix() {
+		const footerNode = document.getElementById('global-footer-container');
+		if (!footerNode) return;
+		try {
+			const res = await fetch(`${URLS.footer}?v=${Date.now()}`);
+			const raw = await res.json();
+			const f = raw.footer_data;
+			
+			let rawAddressText = f.contact_info.address.text || "607 W Clark Ave, Flora, IL 62401";
+			globallyStoredAddressText = rawAddressText.replace(/Effingham/g, 'Flora');
+
+			let numbersHTMLBlocks = '';
+			if (Array.isArray(f.contact_info.phone)) {
+				f.contact_info.phone.forEach((p, index) => {
+					numbersHTMLBlocks += `<span class="footer-value" onclick="window.location.href='tel:${p.number.replace(/[^0-9]/g, '')}'">${p.number}</span>`;
+					if(index < f.contact_info.phone.length - 1) { numbersHTMLBlocks += `<span class="footer-split-text-divider-span">or</span>`; }
+				});
+			}
+
+			footerNode.className = "site-global-footer-matrix";
+			footerNode.innerHTML = `
+				<div class="footer-matrix-block-cell"><p class="footer-label">Give us a call</p>${numbersHTMLBlocks}</div>
+				<div class="footer-matrix-block-cell"><p class="footer-label">Send us an Email</p><span class="footer-value" onclick="window.location.href='mailto:${f.contact_info.email.address}'">${f.contact_info.email.address}</span></div>
+				<div class="footer-matrix-block-cell"><p class="footer-label">Visit our office</p><span class="footer-value" onclick="window.triggerSmartMapRouter('${globallyStoredAddressText}')">${globallyStoredAddressText}</span></div>
+			`;
+		} catch (e) {}
 	}
 
 	async function generateDynamicMenu() {
@@ -212,590 +607,65 @@
 				const link = document.createElement('a');
 				link.href = enforceUtmRouterUrl(item.url);
 				link.textContent = item.name;
-				link.setAttribute('target', 'main-content-window');
-				if (item.name.toLowerCase() === activeTown.toLowerCase() || (activeTown === 'claycity' && item.name.toLowerCase() === 'clay city')) {
-					link.className = 'active';
-				}
+				link.setAttribute('target', 'current-tab');
+				if (item.name.toLowerCase() === CURRENT_SITE_TOWN) link.className = 'active';
 				li.appendChild(link);
 				menuContainer.appendChild(li);
 			});
-		} catch (e) { console.error("Menu endpoint parsing exception.", e); }
+		} catch (e) {}
 	}
 
-	function resolveAnyDateString(dateInput, timeInput) {
-		if (!dateInput) return null;
-		let d = new Date(dateInput);
-		if (isNaN(d.getTime())) {
-			const parts = dateInput.split(/[-/]/);
-			if (parts.length >= 2) {
-				const m = parseInt(parts[0], 10) - 1; 
-				const day = parseInt(parts[1], 10);
-				const y = parts[2] ? parseInt(parts[2], 10) : new Date().getFullYear();
-				d = new Date(y, m, day);
-			}
-		}
-		if (isNaN(d.getTime())) return null;
-
-		if (timeInput && typeof timeInput === 'string') {
-			const timeMatch = timeInput.match(/(\d+)(?::(\d+))?\s*(AM|PM)/i);
-			if (timeMatch) {
-				let h = parseInt(timeMatch[1], 10);
-				let m = timeMatch[2] ? parseInt(timeMatch[2], 10) : 0;
-				let ampm = timeMatch[3] ? timeMatch[3].toUpperCase() : '';
-				if (ampm === 'PM' && h < 12) h += 12;
-				if (ampm === 'AM' && h === 12) h = 0;
-				d.setHours(h, m, 0, 0);
-			}
-		} else {
-			d.setHours(23, 59, 0, 0);
-		}
-		return d;
+	async function loadGlobalAssets() {
+		const headerBox = document.getElementById('global-header-container');
+		if (!headerBox) return;
+		try {
+			const res = await fetch(`${URLS.assets}?v=${Date.now()}`);
+			const assets = await res.json();
+			const imgPath = assets.global_assets?.header_image?.url || "https://raw.githubusercontent.com/skventuresigns-design/media/main/smlc-web.png";
+			headerBox.innerHTML = `<a href="${enforceUtmRouterUrl('https://staging.supportmylocalcommunity.com/')}" target="current-tab"><img src="${imgPath}" alt="Header" /></a>`;
+		} catch (e) {}
 	}
 
-	function renderCalendarEvents(eventsArray) {
-		const listNode = document.getElementById('divi-event-list');
-		if(!listNode) return;
-		listNode.innerHTML = '';
-		eventsArray.forEach((item) => {
-			const div = document.createElement('div');
-			div.className = 'image-matched-event-card';
-			
-			const cleanTitle = encodeURIComponent(item.title);
-			const cleanLoc = encodeURIComponent(item.location);
-			const cleanDesc = encodeURIComponent(item.details || "SMLC Community Calendar Update Node");
-			
-			const gCalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${cleanTitle}&details=${cleanDesc}&location=${cleanLoc}&sf=true&output=xml`;
-			
-			const icsContent = "BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:" + item.title + "\nLOCATION:" + item.location + "\nDESCRIPTION:" + (item.details || "") + "\nEND:VEVENT\nEND:VCALENDAR";
-			const icsBase64 = "data:text/calendar;base64," + btoa(unescape(encodeURIComponent(icsContent)));
-			
-			const shortSnippet = item.details && item.details.length > 75 ? item.details.substring(0, 75) + "..." : (item.details || "No summary details added.");
-
-			div.onclick = () => {
-				const detailsBodyHTML = `
-					<div class="lightbox-info-block-data-node">
-						<div><strong>Event:</strong> ${item.title}</div>
-						<div style="margin-top:4px;"><strong>Location:</strong> ${item.location}</div>
-						<div style="margin-top:4px;"><strong>Date:</strong> ${item.dateStr}</div>
-						<div style="margin-top:4px;"><strong>Start Time:</strong> ${item.startTime || '2:00 PM'}</div>
-						<div style="margin-top:4px;"><strong>End Time:</strong> ${item.endTime || '5:00 PM'}</div>
-					</div>
-					<p style="margin-top:16px; font-size:15px; line-height:1.6; border-top:1px dashed #444; padding-top:12px;">${item.details || 'No structural logging content provided.'}</p>
-					<div class="calendar-action-row-container">
-						<a href="${gCalUrl}" target="_blank" class="calendar-action-btn-node">Add to Google Calendar</a>
-						<a href="${icsBase64}" download="${item.title.replace(/\s+/g, '_')}.ics" class="calendar-action-btn-node">Download iCal File</a>
-					</div>
-				`;
-				openPortalLightbox(item.title, `Event Synchronization Dashboard`, detailsBodyHTML, "", "#");
-			};
-
-			div.innerHTML = `
-				<div class="image-matched-event-date">${item.dateStr}</div>
-				<div class="image-matched-event-title">${item.title}</div>
-				<div class="image-matched-event-where"><strong>Where:</strong> ${item.location}</div>
-				<div class="image-matched-event-snippet-text">"${shortSnippet}"</div>
-			`;
-			listNode.appendChild(div);
+	function initGlobalTabFocusController() {
+		const channel = new BroadcastChannel('smlc_navigation_hub');
+		document.addEventListener('click', (e) => {
+			const anchor = e.target.closest('a');
+			if (anchor && anchor.getAttribute('target') === 'current-tab') {
+				const destUrl = anchor.href;
+				e.preventDefault();
+				channel.postMessage({ action: 'jump_focus', url: destUrl });
+				window.location.href = destUrl;
+			}
 		});
-	}
-
-	async function loadBulletinCalendar() {
-		try {
-			const res = await fetch(`${URLS.bulletin}?feed=true&v=${Date.now()}`);
-			if (!res.ok) throw new Error("Wire communication error");
-			const events = await res.json();
-			
-			if(Array.isArray(events) && events.length > 0) {
-				const nowCST = fetchChicagoTime();
-				const boundaryCST = new Date(nowCST.getTime() + (30 * 24 * 60 * 60 * 1000));
-				const currentDayFloor = new Date(nowCST);
-				currentDayFloor.setHours(0, 0, 0, 0);
-				
-				let validEvents = [];
-
-				events.forEach((rawItem) => {
-					// Fallback Normalization Layer to map title/displayDate properties back to name/date keys seamlessly
-					const item = {
-						date: rawItem.date || rawItem.displayDate || "",
-						time: rawItem.time || "All Day",
-						name: rawItem.name || rawItem.title || "Untitled Event",
-						location: rawItem.location || rawItem.addr || "Clay County",
-						details: rawItem.details || rawItem.desc || ""
-					};
-
-					if (!item.date) return;
-					
-					let evDate = resolveAnyDateString(item.date, item.time);
-					if (!evDate) return;
-					
-					if (evDate < currentDayFloor || evDate > boundaryCST) return;
-
-					const title = item.name || "Untitled Event";
-					const location = item.location || "Clay County";
-					const descText = item.details || item.description || "Join us for this local area community gathering.";
-					
-					let formattedDisplayDate = item.date;
-					try { formattedDisplayDate = evDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }); } catch(e){}
-					
-					validEvents.push({ 
-						dateStr: formattedDisplayDate, 
-						title: title, 
-						location: location, 
-						details: descText,
-						startTime: item.time || "All Day",
-						endTime: item.endTime || "Conclusion"
-					});
-				});
-
-				if (validEvents.length === 0) {
-					renderCalendarEvents(fallbackCalendarEvents);
-				} else {
-					renderCalendarEvents(validEvents);
-				}
-			} else {
-				renderCalendarEvents(fallbackCalendarEvents);
-			}
-		} catch(e) { 
-			renderCalendarEvents(fallbackCalendarEvents);
-		}
-	}
-
-	async function parseSMLCNewsroom() {
-		const targetNode = document.getElementById('json-news-container');
-		if(!targetNode) return;
-		try {
-			const res = await fetch(`${URLS.news}?v=${Date.now()}`);
-			const payload = await res.json();
-			if(Array.isArray(payload)) {
-				const filtered = payload.filter(art => (art.title + art.full_story).toLowerCase().includes(activeTown.toLowerCase()));
-				targetNode.innerHTML = '';
-				
-				if(filtered.length === 0) {
-					targetNode.innerHTML = `<div class="text-center py-6 italic text-neutral-600">No recent dispatches for this region.</div>`;
-					return;
-				}
-
-				filtered.slice(0, 3).forEach((n, idx) => {
-					const previewImg = n.image || n.image_url || "https://raw.githubusercontent.com/skventuresigns-design/media/main/smlc-web.png";
-					const cardTimestamp = n.date || "Recent News";
-					
-					const card = document.createElement('div');
-					card.className = 'clipping-card-container';
-					card.innerHTML = `
-						<div>
-							<h3>${n.title}</h3>
-							<div class="clipping-card-meta">${cardTimestamp}</div>
-							<div class="clipping-card-image-box">
-								<img src="${previewImg}" alt="News Element Banner" id="news-img-element-${idx}" />
-							</div>
-							<p class="clipping-card-text">"${(n.full_story || '').substring(0, 110)}..."</p>
-						</div>
-						<a class="clipping-card-action-btn" id="news-trigger-btn-${idx}">Read Full Story</a>
-					`;
-					targetNode.appendChild(card);
-
-					const targetNewsImg = document.getElementById(`news-img-element-${idx}`);
-					registerDynamicLightboxTrigger(targetNewsImg, previewImg, n.title, cardTimestamp, n.source_url || "#");
-
-					document.getElementById(`news-trigger-btn-${idx}`).addEventListener('click', () => {
-						openPortalLightbox(n.title, cardTimestamp, n.full_story, previewImg, n.source_url || "#");
-					});
-				});
-			}
-		} catch(e){ targetNode.innerHTML = `<div>Archive query error.</div>`; }
-	}
-
-	function fetchGoogleAlertsFeed() {
-		const wholeSection = document.getElementById('google-alerts-wire-section');
-		if (wholeSection) {
-			wholeSection.style.setProperty('display', 'none', 'important');
-			wholeSection.remove();
-		}
-	}
-
-	/* ==========================================================================
-	   UPGRADED FEATURE: DYNAMIC NETWORK BUSINESS SPOTLIGHT INJECTOR
-	   ========================================================================== */
-	async function loadRegionalMapsEngine() {
-		const mediaContainer = document.getElementById('global-spotlight-media-container');
-		const linkContainer = document.getElementById('global-spotlight-link-wrapper');
-		if (!mediaContainer || !linkContainer) return;
-		try {
-			const res = await fetch(`${URLS.images}?v=${Date.now()}`);
-			if (!res.ok) throw new Error("Spotlight registry link exception.");
-			const registry = await res.json();
-			
-			let spotlightAsset = null;
-
-			if (registry && Array.isArray(registry.global_assets)) {
-				spotlightAsset = registry.global_assets.find(asset => asset.id === "global_biz_spotlight");
-			}
-
-			if (spotlightAsset) {
-				const finalImg = spotlightAsset.url || spotlightAsset.image;
-				const assetName = spotlightAsset.name || "Featured Local Business Spotlight";
-				const fallbackAlt = spotlightAsset.alt || assetName;
-				const destinationUrl = spotlightAsset.source_url || "#";
-
-				mediaContainer.innerHTML = `<img src="${finalImg}" alt="${fallbackAlt}" id="spotlight-widget-media-node" style="width:100%; height:100%; object-fit:contain; cursor:pointer;" />`;
-				
-				linkContainer.innerHTML = `<a href="${enforceUtmRouterUrl(destinationUrl)}" target="main-content-window" class="showcase-action-link dynamic-text-element hover-accent" style="font-size:15px; font-weight:bold; display:block; margin-top:8px;">${assetName}</a>`;
-				
-				const mediaNode = document.getElementById('spotlight-widget-media-node');
-				if (mediaNode) {
-					mediaNode.addEventListener('click', (e) => {
-						e.stopPropagation();
-						openPortalLightbox(assetName, "SMLC Universal Business Spotlight", "Network Wide Featured Partner Profile Overview.", finalImg, destinationUrl);
-					});
-				}
-			} else {
-				mediaContainer.innerHTML = `<div class="text-xs italic text-neutral-500">Spotlight reference context offline.</div>`;
-			}
-		} catch (e) { 
-			console.error("[Spotlight Initialization Failure]", e);
-			mediaContainer.innerHTML = `<div class="text-xs italic text-neutral-500">Spotlight disconnected.</div>`; 
-		}
-	}
-
-	function renderHistoryRecords(items) {
-		const cont = document.getElementById('history-json-container');
-		if (!cont) return;
-		cont.innerHTML = '';
-		items.forEach((h, idx) => {
-			const historyCardId = `history-log-item-card-${idx}`;
-			cont.innerHTML += `
-				<div id="${historyCardId}" class="history-item-block-row" title="Click to view history logging detail info block">
-					<span class="history-item-block-year-label">${h.year} - ${h.event}</span>
-					<p class="history-item-block-desc-text">${h.description.substring(0, 90)}...</p>
-				</div>`;
-			
-			setTimeout(() => {
-				const cardEl = document.getElementById(historyCardId);
-				if (cardEl) {
-					cardEl.addEventListener('click', () => {
-						openPortalLightbox(h.event, `Historical Landmark Event Year: ${h.year}`, h.description, h.image_url || "", "#");
-					});
-				}
-			}, 50);
-		});
-	}
-
-	async function loadHistoryLogs() {
-		try {
-			const res = await fetch(`${URLS.history}?v=${Date.now()}`);
-			if (!res.ok) throw new Error("Fallback activation triggered");
-			const data = await res.json();
-			if (data && Array.isArray(data.history) && data.history.length > 0) {
-				renderHistoryRecords(data.history);
-			} else {
-				renderHistoryRecords(localHistoryFallback);
-			}
-		} catch(e) { 
-			renderHistoryRecords(localHistoryFallback);
-		}
-	}
-
-	function executePartnersDistribution() {
-		if (masterPartnersArray.length === 0) return;
-		const pool = shuffleArray([...masterPartnersArray]);
-
-		const rightImg = document.getElementById('partner-image-right');
-		const rightLink = document.getElementById('partner-link-right');
-		if (rightImg && rightLink) {
-			rightImg.src = pool[0].image;
-			rightLink.innerText = pool[0].name;
-			rightLink.href = enforceUtmRouterUrl(pool[0].websiteUrl);
-			registerDynamicLightboxTrigger(rightImg, pool[0].image, pool[0].name, "Showcase Business Partner", pool[0].websiteUrl);
-		}
-
-		const leftSlot = document.getElementById('inline-partner-left-slot');
-		if (leftSlot && pool[2 % pool.length]) {
-			const ad1 = pool[2 % pool.length];
-			leftSlot.innerHTML = `
-				<div class="showcase-widget" style="border-color: var(--town-accent);">
-					<span style="font-size:9px; text-transform:uppercase; color:#666; display:block; margin-bottom:6px;">Community Partner</span>
-					<div class="showcase-media-canvas"><img src="${ad1.image}" id="inline-left-ad-img" style="object-fit:contain;" /></div>
-					<a href="${enforceUtmRouterUrl(ad1.websiteUrl)}" target="main-content-window" class="showcase-action-link">${ad1.name}</a>
-				</div>`;
-			registerDynamicLightboxTrigger(document.getElementById('inline-left-ad-img'), ad1.image, ad1.name, "SMLC Community Partner", ad1.websiteUrl);
-		}
-
-		const centerSlot = document.getElementById('inline-partner-center-slot');
-		if (centerSlot && pool[4 % pool.length]) {
-			const ad3 = pool[4 % pool.length];
-			centerSlot.innerHTML = `
-				<div class="showcase-widget" style="width:100%; border-color:var(--town-detail);">
-					<span style="font-size:9px; text-transform:uppercase; color:#666; display:block; margin-bottom:6px;">Featured Area Business</span>
-					<div class="showcase-media-canvas"><img src="${ad3.image}" id="inline-center-ad-img" style="object-fit:contain;" /></div>
-					<a href="${enforceUtmRouterUrl(ad3.websiteUrl)}" target="main-content-window" class="showcase-action-link" style="text-align:center; font-size:15px;">Explore: ${ad3.name}</a>
-				</div>`;
-			registerDynamicLightboxTrigger(document.getElementById('inline-center-ad-img'), ad3.image, ad3.name, "Featured Center Banner Area Business", ad3.websiteUrl);
-		}
-
-		const stripContainer = document.getElementById('bottom-partners-strip');
-		if (stripContainer) {
-			stripContainer.innerHTML = '';
-			const bottomSlice = shuffleArray([...masterPartnersArray]);
-			bottomSlice.forEach((p, bIdx) => {
-				const imgId = `bottom-strip-partner-img-${bIdx}`;
-				stripContainer.innerHTML += `
-					<div class="showcase-card-body">
-						<div class="showcase-media-canvas" style="margin-bottom:6px;"><img src="${p.image}" id="${imgId}" style="width:100%; height:100%; object-fit:contain;" /></div>
-						<a href="${enforceUtmRouterUrl(p.websiteUrl)}" target="main-content-window" class="showcase-action-link" style="font-size:12px; display:block; text-align:center;">${p.name}</a>
-					</div>`;
-				
-				setTimeout(() => {
-					registerDynamicLightboxTrigger(document.getElementById(imgId), p.image, p.name, "Area Network Partner", p.websiteUrl);
-				}, 50);
-			});
-		}
-	}
-
-	async function initPartnersNetwork() {
-		try {
-			const res = await fetch(`${URLS.partners}?v=${Date.now()}`);
-			const data = await res.json();
-			masterPartnersArray = data.filter(p => p.county && p.county.toLowerCase().includes('clay'));
-			if(masterPartnersArray.length > 0) {
-				executePartnersDistribution();
-				setInterval(executePartnersDistribution, 12000);
-			}
-		} catch(e) {}
-	}
-
-	function runGallerySlideshow(containerElement, replacementPool) {
-		if (!containerElement || replacementPool.length === 0) return;
-		let cycleIndex = 0;
-		
-		function renderNextSlide() {
-			const currentTarget = replacementPool[cycleIndex % replacementPool.length];
-			containerElement.innerHTML = `
-				<div class="showcase-card-body" style="animation: fadeIn 0.8s ease-in-out;">
-					<div class="showcase-media-canvas" style="margin:0;">
-						<img src="${currentTarget.image}" id="gallery-slideshow-node" alt="${currentTarget.name}" style="width:100%; height:100%; object-fit:contain; cursor:pointer;" />
-					</div>
-					<a href="${enforceUtmRouterUrl(currentTarget.websiteUrl)}" target="main-content-window" class="showcase-action-link" style="font-size:11px; text-align:center; display:block; margin-top:6px;">${currentTarget.name}</a>
-				</div>`;
-			
-			registerDynamicLightboxTrigger(document.getElementById('gallery-slideshow-node'), currentTarget.image, currentTarget.name, "Automated Partner Showcase Frame", currentTarget.websiteUrl);
-			cycleIndex++;
-		}
-		containerElement.style.justifyContent = "center";
-		renderNextSlide();
-		setInterval(renderNextSlide, 60000);
-	}
-
-	/* ==========================================================================
-	   GALLERY MATRIX STREAM MODULE - LEAK ISOLATION ENGINE
-	   ========================================================================== */
-	async function loadGalleryImages() {
-		const gallery = document.getElementById('louisville-images-gallery');
-		if (!gallery) return;
-		try {
-			const res = await fetch(`${URLS.images}?v=${Date.now()}`);
-			if (!res.ok) throw new Error("Gallery empty or parsing missing");
-			const data = await res.json();
-			gallery.innerHTML = '';
-			
-			let arrayCollector = [];
-
-			if (data.network_towns) {
-				for (const townKey in data.network_towns) {
-					const townData = data.network_towns[townKey];
-					if (townData.categories && Array.isArray(townData.categories)) {
-						townData.categories.forEach(cat => {
-							if (cat.images && Array.isArray(cat.images)) {
-								cat.images.forEach(img => {
-									const imgId = img.id || '';
-									if (imgId.toLowerCase().includes('louisville')) {
-										arrayCollector.push(img);
-									}
-								});
-							}
-						});
-					}
-				}
-			}
-
-			if (arrayCollector.length === 0) throw new Error("Empty Array");
-
-			arrayCollector.forEach((img, gIdx) => {
-				const finalImgPath = img.url || img.image || img;
-				const altTitleText = img.alt || img.name || "Community Image Asset";
-				const targetSourceUrl = img.source_url || "#";
-				const galleryImgId = `gallery-matrix-strip-img-${gIdx}`;
-				
-				gallery.innerHTML += `
-					<div class="showcase-card-body">
-						<div class="showcase-media-canvas" style="margin:0;">
-							<img src="${finalImgPath}" id="${galleryImgId}" alt="${altTitleText}" style="width:100%; height:100%; object-fit:contain; cursor:pointer;" />
-						</div>
-					</div>`;
-				
-				setTimeout(() => {
-					const imgEl = document.getElementById(galleryImgId);
-					if (imgEl) {
-						imgEl.style.cursor = "pointer";
-						imgEl.addEventListener('click', (e) => {
-							e.stopPropagation();
-							openPortalLightbox(altTitleText, "Louisville Regional Asset Matrix Log", "SMLC Community Image Register Record Asset View.", finalImgPath, targetSourceUrl);
-						});
-					}
-				}, 50);
-			});
-		} catch(e) {
-			if (masterPartnersArray.length > 0) {
-				runGallerySlideshow(gallery, masterPartnersArray);
-			} else {
-				setTimeout(() => {
-					if (masterPartnersArray.length > 0) runGallerySlideshow(gallery, masterPartnersArray);
-				}, 1000);
-			}
-		}
-	}
-
-	function initFirebaseGasIndex() {
-		try {
-			const fbConfig = { databaseURL: "https://smlc-fuel-monitor-default-rtdb.firebaseio.com", projectId: "smlc-fuel-monitor" };
-			if(!firebase.apps.length) firebase.initializeApp(fbConfig);
-			firebase.database().ref('fuel_prices/48026').on('value', (snap) => {
-				const val = snap.val();
-				if(val) {
-					document.getElementById('lv-reg').innerText = val.reg || "--.--";
-					document.getElementById('lv-die').innerText = (val.dsl && val.dsl !== "0") ? val.dsl : "---";
-					document.getElementById('lv-time').innerText = val.date ? `Updated: ${val.date}` : "Live Sync";
-				}
-			});
-			
-			const interactiveWidgetContainer = document.getElementById('fuel-index-monitor-box');
-			if (interactiveWidgetContainer) {
-				interactiveWidgetContainer.addEventListener('click', (e) => {
-					if (e.target.classList.contains('lightbox-triggerable-element')) return;
-					window.open(enforceUtmRouterUrl(gasPortalOverrideUrl), 'main-content-window');
-				});
-				
-				const stationImg = interactiveWidgetContainer.querySelector('.station-logo-frame img');
-				registerDynamicLightboxTrigger(stationImg, "https://raw.githubusercontent.com/skventuresigns-design/smlc/main/gas-prices/image/Casey's.png", "Casey's General Store Logo", "Louisville Gas Index Logo");
-			}
-		} catch(e){}
-	}
-
-	window.openPortalLightbox = function(title, meta, story, imgUrl, targetSourceUrl) {
-		const mask = document.getElementById('portal-lightbox');
-		if (!mask) return;
-		document.getElementById('lightbox-title').innerText = title;
-		document.getElementById('lightbox-meta').innerText = meta;
-		document.getElementById('lightbox-story').innerHTML = story;
-		
-		const imgNode = document.getElementById('lightbox-img');
-		if (imgUrl) {
-			imgNode.src = imgUrl;
-			document.getElementById('lightbox-media-box').style.display = 'flex';
-		} else {
-			document.getElementById('lightbox-media-box').style.display = 'none';
-		}
-		
-		const trackingLink = document.getElementById('lightbox-external-link');
-		
-		if (!targetSourceUrl || targetSourceUrl === '#' || targetSourceUrl.includes('cdpn.io')) {
-			trackingLink.style.display = 'none';
-		} else {
-			trackingLink.style.display = 'inline-block';
-			trackingLink.href = enforceUtmRouterUrl(targetSourceUrl);
-		}
-
-		mask.classList.add('active-show');
-	};
-
-	window.closePortalLightbox = function() {
-		const mask = document.getElementById('portal-lightbox');
-		if (mask) mask.classList.remove('active-show');
-	};
-
-	document.addEventListener('DOMContentLoaded', () => {
-		const mask = document.getElementById('portal-lightbox');
-		if(mask) {
-			mask.addEventListener('click', function(e) {
-				if (e.target === mask) closePortalLightbox();
-			});
-		}
-	});
-
-	window.triggerSmartMapRouter = function(addressStr) {
-		const overlay = document.getElementById('app-routing-overlay');
-		const grid = document.getElementById('routing-options-grid');
-		if (!overlay || !grid) return;
-
-		const encoded = encodeURIComponent(addressStr);
-		const destinations = [
-			{ name: "Google Maps App", link: `https://www.google.com/maps/search/?api=1&query=${encoded}` },
-			{ name: "Apple Maps Link", link: `maps://?q=${encoded}` },
-			{ name: "Waze Navigation App", link: `https://waze.com/ul?q=${encoded}&navigate=yes` }
-		];
-
-		grid.innerHTML = '';
-		destinations.forEach(d => {
-			grid.innerHTML += `<a href="${d.link}" target="_blank" class="routing-app-btn">${d.name}</a>`;
-		});
-		overlay.classList.add('active-show');
-	};
-
-	window.closeRoutingOverlay = function() {
-		const overlay = document.getElementById('app-routing-overlay');
-		if (overlay) overlay.classList.remove('active-show');
-	};
-
-	async function loadGlobalFooterData() {
-		const footerNode = document.getElementById('global-footer-container');
-		if (!footerNode) return;
-		try {
-			const res = await fetch(`${URLS.footer}?v=${Date.now()}`);
-			const raw = await res.json();
-			const f = raw.footer_data;
-			
-			let rawAddressText = f.contact_info.address.text || "607 W Clark Ave, Effingham, IL 62401";
-			let correctedAddressText = rawAddressText.replace(/Effingham/g, 'Flora');
-
-			let phoneHTMLBlocks = '';
-			if (Array.isArray(f.contact_info.phone)) {
-				f.contact_info.phone.forEach(p => {
-					phoneHTMLBlocks += `<a href="${p.url}" style="margin:0 10px;">${p.label}: ${p.number}</a>`;
-				});
-			}
-
-			footerNode.innerHTML = `
-				<div class="footer-content-block">
-					<p>${f.copyright}</p>
-					<div style="margin:12px 0;">
-						<a href="${f.contact_info.email.url}">${f.contact_info.email.label}: ${f.contact_info.email.address}</a>
-						<span style="color:#404040; margin:0 10px;">|</span>
-						${phoneHTMLBlocks}
-					</div>
-					<p style="margin-top:10px;">
-						<a href="javascript:void(0);" onclick="triggerSmartMapRouter('${correctedAddressText}')" style="font-weight:bold;">
-							📍 Headquarters Target: ${correctedAddressText}
-						</a>
-					</p>
-					<div class="footer-link-group">
-						<a href="${enforceUtmRouterUrl(f.social_links[0].url)}" target="_blank">Follow us on ${f.social_links[0].name}</a>
-					</div>
-				</div>`;
-		} catch (e) { console.error("Footer construction failure.", e); }
 	}
 
 	document.addEventListener('DOMContentLoaded', () => {
-		synchronizeTimeBackdropTheme();
-		loadSystemConfigTree();
 		loadGlobalAssets();
 		generateDynamicMenu();
-		loadBulletinCalendar();
-		parseSMLCNewsroom();
-		fetchGoogleAlertsFeed();
-		loadRegionalMapsEngine();
-		loadHistoryLogs();
-		initPartnersNetwork();
-		loadGalleryImages();
-		initFirebaseGasIndex();
-		loadGlobalFooterData();
+		runStrategicSlideshowEngine();
+		dispatchHistoricalLedgerStream();
+		renderSystemPartnersDistributed();
+		loadBulletinCalendarFeed();
+		parseSMLCNewsroomFeed();
+		initFirebaseGasIndexEngine();
+		loadSpotlightBusinessAssetModule();
+		loadGlobalFooterDataMatrix();
+		runChicagoClockLoop();
+		evaluateAdaptivePortalThemeCycles();
+		initGlobalTabFocusController();
+		bootScorestreamEmbedWidgetDynamic();
+
+		const lightboxMask = document.getElementById('portal-lightbox');
+		if (lightboxMask) {
+			lightboxMask.addEventListener('click', function(e) {
+				if (e.target === lightboxMask) closePortalLightbox();
+			});
+		}
+		const routingOverlay = document.getElementById('app-routing-overlay');
+		if (routingOverlay) {
+			routingOverlay.addEventListener('click', function(e) {
+				if (e.target === routingOverlay) closeRoutingOverlay();
+			});
+		}
 	});
 })();
