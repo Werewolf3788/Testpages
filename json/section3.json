@@ -1,0 +1,82 @@
+[
+  {
+    "Town": "Flora",
+    "Title": "Flora Library",
+    "Header1": "Old Flora Library",
+    "ImageUrl1": "https://ourflora.com/wp-content/uploads/2026/01/Old-Flora-Library.webp",
+    "Header2": "New Flora Library",
+    "ImageUrl2": "https://ourflora.com/wp-content/uploads/2026/01/New-Flora-Libray.webp",
+    "Description1": "The Flora Public Library is located in Library Park at 216 North Main Street. The 9,285 square foot facility was completed in 1992 and dedicated in March 1993. This spacious, modern building replaced the Flora Carnegie Library building, a two-story yellow brick, which stood in Library Park from 1903 until 1990. In January 1990, the Carnegie building was deemed structurally unsafe and closed to the public. After a two-year building campaign, along with the generosity and assistance of a supportive community, the new red brick structure was completed. https://florail.govoffice2.com/library",
+    "Description2": "Flora, IL was established in 1854 by Samuel White, who donated land to the City of Flora for several buildings and the city park. The City Park, at that time called the Public Square, is present day Library Park where Flora Public Library is located."
+  },
+  {
+    "Town": "Louisville",
+    "Title": "Clay County Veterans Memorial",
+    "Header1": "Veterans Memorial Marker",
+    "ImageUrl1": "https://www.hmdb.org/Photos6/607/Photo607264.jpg?91202115400PM",
+    "Header2": "Courthouse Square Display",
+    "ImageUrl2": "https://www.hmdb.org/Photos6/607/Photo607265.jpg?91202115500PM",
+    "Description1": "W. Memorial is in Louisville, Illinois, in Clay County. It is at the intersection of Broadway Street and South Main Street, on the left when traveling north on Broadway Street. Marker is at the southeast corner of the Clay County Courthouse. Memorial is at or near this postal address: 125 Broadway St, Louisville IL 62858, United States of America.",
+    "Description2": "Louisville, IL is home to major utility-scale solar developments like the Maple Flats Solar Energy Center. For your own property, you can install residential panels or—if you are a renter or prefer not to install panels on your roof—join a local community solar program to save on your utility bills."
+  },
+  {
+    "Town": "Xenia",
+    "Title": "Historic Crossroads",
+    "Header1": "Main Street Landmark",
+    "ImageUrl1": "https://example.com/images/xenia-main.jpg",
+    "Header2": "Railroad Heritage Site",
+    "ImageUrl2": "https://example.com/images/xenia-landmark.jpg",
+    "Description1": "A quiet village located on the western edge of Clay County with deep agricultural roots.",
+    "Description2": "Xenia offers peaceful residential living and is historically linked to the old Baltimore and Ohio Railroad line."
+  },
+  {
+    "Town": "Clay City",
+    "Title": "Community Heritage",
+    "Header1": "Downtown District",
+    "ImageUrl1": "https://example.com/images/claycity-main.jpg",
+    "Header2": "Little Wabash River Basin",
+    "ImageUrl2": "https://example.com/images/claycity-river.jpg",
+    "Description1": "A welcoming village in the eastern part of the county, closely tied to farming and oil production history.",
+    "Description2": "The community boasts strong local schools and excellent access to outdoor recreational activities near the river."
+  },
+  {
+    "Town": "Sailor Springs",
+    "Title": "Mineral Springs Resort",
+    "Header1": "Springs Historic Grounds",
+    "ImageUrl1": "https://example.com/images/sailorsprings-main.jpg",
+    "Header2": "Village Park",
+    "ImageUrl2": "https://example.com/images/sailorsprings-park.jpg",
+    "Description1": "A historic village once famous in the late 19th century as a premier health resort town due to its natural mineral springs.",
+    "Description2": "Today, it is a serene, small community that preserves its unique history and quiet natural surroundings."
+  },
+  {
+    "Town": "Ingraham",
+    "Title": "Rural Crossroads",
+    "Header1": "Agricultural Center",
+    "ImageUrl1": "https://example.com/images/ingraham-main.jpg",
+    "Header2": "Community Center",
+    "ImageUrl2": "https://example.com/images/ingraham-rural.jpg",
+    "Description1": "An unincorporated community located in the northern portion of the county, surrounded by rich farmland.",
+    "Description2": "Ingraham serves as a tight-knit neighborhood hub for the local farming families and rural residents."
+  },
+  {
+    "Town": "Bible Grove",
+    "Title": "Country Sanctuary",
+    "Header1": "Landscape View",
+    "ImageUrl1": "https://example.com/images/biblegrove-main.jpg",
+    "Header2": "Historic Church Site",
+    "ImageUrl2": "https://example.com/images/biblegrove-church.jpg",
+    "Description1": "A scenic unincorporated community known for its tranquil countryside and deep-rooted heritage.",
+    "Description2": "The area is primarily residential and agricultural, offering a slow-paced, traditional midwestern lifestyle."
+  },
+  {
+    "Town": "Hord",
+    "Title": "Crossroads Community",
+    "Header1": "Settlement Marker",
+    "ImageUrl1": "https://example.com/images/hord-main.jpg",
+    "Header2": "Northern Farmland",
+    "ImageUrl2": "https://example.com/images/hord-landscape.jpg",
+    "Description1": "A small, historic unincorporated settlement located along the northern edge of Clay County.",
+    "Description2": "Hord represents the classic, quiet rural crossroads of the region, defined by vast fields and family farms."
+  }
+]
