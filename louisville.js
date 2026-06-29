@@ -2,11 +2,12 @@
    MASTER DEVELOPMENT PROTOCOL - HIGHLY LOCALIZED CENTRAL OPERATIONS MOTOR
    ========================================================================== */
 /* NO STRIPPING, NO COMPRESSING, DON'T CHANGE SPECIFIC DATA ARRAY MAPPINGS */
-/* NYT Timestamp: 2026-06-27 22:28:09 */
+/* NYT Timestamp: 2026-06-28 21:20:00 */
 (function() {
 	const CURRENT_SITE_TOWN = "louisville";
-	const FILTER_KEYWORDS_POSITIVE = ["hoosier", "clay county", "louisville"];
-	const FILTER_KEYWORDS_NEGATIVE = ["flora", "clay city", "xenia", "bible grove", "hord"];
+
+	// Rigid boundary filter defining the exact communities within Clay County, IL
+	const CLAY_COUNTY_TOWNS = ["louisville", "flora", "clay city", "xenia", "sailor springs", "iola", "bible grove", "hord", "ingraham", "wendelin"];
 
 	const URLS = {
 		config: "https://raw.githubusercontent.com/Werewolf3788/Testpages/main/json/config.json",
@@ -89,7 +90,7 @@
 
 	function formatSystemTimeStringToCleanLayout(rawTimeStr) {
 		if (!rawTimeStr) return "Scheduled Hours";
-		if (rawTimeStr.includes("T")) {
+		if (String(rawTimeStr).includes("T")) {
 			try {
 				const parsedDateObj = new Date(rawTimeStr);
 				if (!isNaN(parsedDateObj.getTime())) {
@@ -102,7 +103,7 @@
 				}
 			} catch (e) {}
 		}
-		return rawTimeStr;
+		return String(rawTimeStr);
 	}
 
 	function bootScorestreamEmbedWidgetDynamic() {
@@ -150,17 +151,17 @@
 			let parsedAssetCollectorPool = [];
 			if (dataset.network_towns) {
 				for (const townKey in dataset.network_towns) {
-					const individualTownObject = dataset.network_towns[townKey];
-					if (individualTownObject.categories && Array.isArray(individualTownObject.categories)) {
-						individualTownObject.categories.forEach(categoryBlock => {
-							if (categoryBlock.images && Array.isArray(categoryBlock.images)) {
-								categoryBlock.images.forEach(imageRecord => {
-									if (imageRecord.id && imageRecord.id.toLowerCase().includes(CURRENT_SITE_TOWN)) {
+					if (townKey.toLowerCase() === CURRENT_SITE_TOWN) {
+						const individualTownObject = dataset.network_towns[townKey];
+						if (individualTownObject.categories && Array.isArray(individualTownObject.categories)) {
+							individualTownObject.categories.forEach(categoryBlock => {
+								if (categoryBlock.images && Array.isArray(categoryBlock.images)) {
+									categoryBlock.images.forEach(imageRecord => {
 										parsedAssetCollectorPool.push(imageRecord);
-									}
-								});
-							}
-						});
+									});
+								}
+							});
+						}
 					}
 				}
 			}
@@ -189,6 +190,54 @@
 		} catch (e) {}
 	}
 
+	async function processSection4TownMatrixEngine() {
+		const container = document.getElementById('section4-towns-matrix-root');
+		if (!container) return;
+		try {
+			const response = await fetch('https://raw.githubusercontent.com/Werewolf3788/Testpages/main/json/section4.json');
+			const data = await response.json();
+			
+			if (Array.isArray(data) && data.length > 0) {
+				container.innerHTML = '';
+				const louisvilleData = data.filter(item => item.Town && item.Town.toLowerCase() === CURRENT_SITE_TOWN);
+
+				louisvilleData.forEach(item => {
+					const cardNode = document.createElement('div');
+					cardNode.className = 'section4-towns-matrix-wrapper';
+					
+					cardNode.innerHTML = `
+						<div class="section4-left-prose-pane">
+							${item.Description2}
+						</div>
+						<div class="section4-right-media-pane">
+							<h3 class="section4-centered-title">${item.Title}</h3>
+							<div class="section4-images-row">
+								<div class="section4-image-column">
+									<div class="section4-image-container-frame">
+										<img src="${item.ImageUrl1}" alt="${item.Header1}" class="lightbox-triggerable-element" data-story="${item.Description1}" data-url="${item.ImageUrl1}" />
+									</div>
+									<span class="section4-header-label">${item.Header1}</span>
+								</div>
+								<div class="section4-image-column">
+									<div class="section4-image-container-frame">
+										<img src="${item.ImageUrl2}" alt="${item.Header2}" class="lightbox-triggerable-element" data-story="${item.Description1}" data-url="${item.ImageUrl2}" />
+									</div>
+									<span class="section4-header-label">${item.Header2}</span>
+								</div>
+							</div>
+							<div class="section4-description1-footer">
+								${makeAllTextUrlsClickable(item.Description1)}
+							</div>
+						</div>
+					`;
+					container.appendChild(cardNode);
+				});
+				
+				bindGlobalLightboxClickHandlers();
+			}
+		} catch (e) {}
+	}
+
 	async function dispatchHistoricalLedgerStream() {
 		const targetFeedContainer = document.getElementById('history-json-container');
 		if (!targetFeedContainer) return;
@@ -205,7 +254,7 @@
 					boxCardNode.innerHTML = `
 						<year1 class="timeline-box-year-stamp">${record.year}</year1>
 						<HistTitle1 class="timeline-box-event-headline">${record.event}</HistTitle1>
-						<histDescript1 class="timeline-box-snippet-prose">${record.description}</histDescript1>
+						<layout-prose class="timeline-box-snippet-prose">${record.description}</layout-prose>
 						${imageStringHTML}
 					`;
 					targetFeedContainer.appendChild(boxCardNode);
@@ -243,6 +292,58 @@
 		} catch (e) {}
 	}
 
+	async function renderSection8TownShowcaseStrip() {
+		const stripMatrix = document.getElementById('section8-town-images-matrix');
+		if (!stripMatrix) return;
+		try {
+			const res = await fetch(`${URLS.images}?v=${Date.now()}`);
+			const data = await res.json();
+			let filteredLouisvilleAssets = [];
+
+			if (data.network_towns) {
+				for (const townKey in data.network_towns) {
+					if (townKey.toLowerCase() === CURRENT_SITE_TOWN) {
+						const townObj = data.network_towns[townKey];
+						if (townObj.categories && Array.isArray(townObj.categories)) {
+							townObj.categories.forEach(cat => {
+								if (Array.isArray(cat.images)) {
+									cat.images.forEach(img => {
+										if (img.id !== "global_biz_spotlight") {
+											filteredLouisvilleAssets.push(img);
+										}
+									});
+								}
+							});
+						}
+					}
+				}
+			}
+
+			if (filteredLouisvilleAssets.length === 0) {
+				stripMatrix.innerHTML = "<p style='text-align:center; padding:20px; color:#fff;'>No regional specific arrays matched.</p>";
+				return;
+			}
+
+			shuffleArray(filteredLouisvilleAssets);
+
+			let htmlOutput = '';
+			filteredLouisvilleAssets.forEach(p => {
+				htmlOutput += `
+					<div class="showcase-card-body">
+						<div class="showcase-media-canvas">
+							<img src="${p.url}" alt="${p.alt || p.name}" class="lightbox-triggerable-element" data-story="" data-url="${p.source_url}" />
+						</div>
+						<a href="${enforceUtmRouterUrl(p.source_url)}" target="current-tab" class="showcase-action-link" style="font-size:12px; display:block; text-align:center; margin-top:8px;">${p.name}</a>
+					</div>`;
+			});
+			stripMatrix.innerHTML = htmlOutput;
+			bindGlobalLightboxClickHandlers();
+		} catch (e) {
+			stripMatrix.innerHTML = "<p style='text-align:center; padding:20px; color:#fff;'>Showcase loop synchronization interruption.</p>";
+		}
+	}
+
+	/* ARMORED CALENDAR ENGINE - DECOUPLED FROM INLINE GLOBAL ROUTER WINDOW FUNCTIONS */
 	async function loadBulletinCalendarFeed() {
 		const list = document.getElementById('event-list');
 		if(!list) return;
@@ -255,15 +356,18 @@
 				
 				const nowCST = fetchChicagoTime();
 				const boundaryForwardCST = new Date(nowCST.getTime() + (30 * 24 * 60 * 60 * 1000));
-				const currentDayFloor = new Date(nowCST.getFullYear(), nowCST.getMonth(), nowCST.getDate(), 0, 0, 0, 0);
+				
+				// Added specific historical boundary offset multiplier to shield timezone rollbacks safely
+				const currentDayFloor = new Date(nowCST.getFullYear(), nowCST.getMonth(), nowCST.getDate() - 1, 0, 0, 0, 0);
 
 				let parsedValidEntries = [];
 				events.forEach(item => {
-					if(!item.date) return;
+					if(!item || !item.date) return;
 					let evDate = new Date(item.date);
-					if (isNaN(evDate.getTime())) evDate = new Date(item.date.replace(/-/g, "/"));
+					if (isNaN(evDate.getTime())) evDate = new Date(String(item.date).replace(/-/g, "/"));
 					if (isNaN(evDate.getTime())) return;
 
+					// Your explicit 30-day structural calendar layer loop filter
 					if (evDate >= currentDayFloor && evDate <= boundaryForwardCST) {
 						parsedValidEntries.push({ ...item, computedDateObj: evDate });
 					}
@@ -277,22 +381,23 @@
 				parsedValidEntries.sort((a, b) => a.computedDateObj - b.computedDateObj);
 
 				parsedValidEntries.forEach(item => {
+					const targetCleanNameString = String(item.name || "SMLC Community Update");
 					const cleanHumanDateStr = item.computedDateObj.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: '2-digit' });
 					const isoDateString = item.computedDateObj.toISOString().replace(/-|:|\.\d\d\d/g, "").split("T")[0];
-					const locationString = item.location || "Clay County Area Region";
+					const locationString = String(item.location || "Clay County Area Region");
 					
 					const cleanTimeSpan = formatSystemTimeStringToCleanLayout(item.time);
-					const rawLongDescriptionText = item.details || item.description || "";
-					const shortenedBriefSnippetText = rawLongDescriptionText.length > 85 ? rawLongDescriptionText.substring(0, 85) + "..." : (rawLongDescriptionText || "Join us for this local area community gathering.");
+					const rawLongDescriptionText = String(item.details || item.description || "");
+					const shortenedBriefSnippetText = rawLongDescriptionText.length > 85 ? rawLongDescriptionText.substring(0, 85) + "..." : rawLongDescriptionText;
 
-					const googleCalTemplateUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(item.name)}&dates=${isoDateString}/${isoDateString}&details=${encodeURIComponent(rawLongDescriptionText)}&location=${encodeURIComponent(locationString)}&sf=true&output=xml`;
-					const base64AppleCalendarHrefString = "data:text/calendar;charset=utf8," + encodeURIComponent(`BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:${item.name}\nLOCATION:${locationString}\nDTSTART:${isoDateString}\nDTEND:${isoDateString}\nDESCRIPTION:${rawLongDescriptionText}\nEND:VEVENT\nEND:VCALENDAR`);
+					const googleCalTemplateUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(targetCleanNameString)}&dates=${isoDateString}/${isoDateString}&details=${encodeURIComponent(rawLongDescriptionText)}&location=${encodeURIComponent(locationString)}&sf=true&output=xml`;
+					const base64AppleCalendarHrefString = "data:text/calendar;charset=utf8," + encodeURIComponent(`BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:${targetCleanNameString}\nLOCATION:${locationString}\nDTSTART:${isoDateString}\nDTEND:${isoDateString}\nDESCRIPTION:${rawLongDescriptionText}\nEND:VEVENT\nEND:VCALENDAR`);
 
 					const div = document.createElement('div');
 					div.className = 'event-item';
 					div.innerHTML = `
 						<div class="event-date">${cleanHumanDateStr}</div>
-						<div class="event-title">${item.name}</div>
+						<div class="event-title">${targetCleanNameString}</div>
 						<div style="font-size: 14px; line-height: 1.4;">
 							<strong>Where:</strong> <span class="map-link-router-node custom-event-blue-link" style="cursor:pointer; text-decoration:underline; font-weight:bold;" data-address="${locationString}">${locationString}</span> <br> 
 							<strong>Time:</strong> ${cleanTimeSpan}
@@ -303,7 +408,7 @@
 							<span>ADD TO CALENDAR</span> <br>
 							<a href="${googleCalTemplateUrl}" target="_blank" class="cal-text-link">GOOGLE</a>
 							<span style="color:#777; margin: 0 5px;">|</span>
-							<a href="${base64AppleCalendarHrefString}" download="${item.name.replace(/[^a-zA-Z0-9]/g, '_')}.ics" class="cal-text-link">APPLE / OUTLOOK</a>
+							<a href="${base64AppleCalendarHrefString}" download="${targetCleanNameString.replace(/[^a-zA-Z0-9]/g, '_')}.ics" class="cal-text-link">APPLE / OUTLOOK</a>
 						</div>
 					`;
 					
@@ -322,10 +427,10 @@
 							${detailsBoxMarkupHTML}
 							<div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap;">
 								<a href="${googleCalTemplateUrl}" target="_blank" style="background:#000; color:#fff !important; font-weight:bold; padding:8px 14px; border-radius:4px; text-transform:uppercase; font-size:11px; text-decoration:none; border:1px solid #222;">Google Calendar</a>
-								<a href="${base64AppleCalendarHrefString}" download="${item.name.replace(/[^a-zA-Z0-9]/g, '_')}.ics" style="background:#fff; color:#222 !important; font-weight:bold; padding:8px 14px; border-radius:4px; text-transform:uppercase; font-size:11px; text-decoration:none; border:1px solid #222; box-shadow:2px 2px 0px #222;">iCal / Apple</a>
+								<a href="${base64AppleCalendarHrefString}" download="${targetCleanNameString.replace(/[^a-zA-Z0-9]/g, '_')}.ics" style="background:#fff; color:#222 !important; font-weight:bold; padding:8px 14px; border-radius:4px; text-transform:uppercase; font-size:11px; text-decoration:none; border:1px solid #222; box-shadow:2px 2px 0px #222;">iCal / Apple</a>
 							</div>
 						`;
-						openPortalLightbox(item.name, `SMLC Immersive Event Synchronization Panel`, modularLightboxBodyHTML, "", "#");
+						openPortalLightbox(targetCleanNameString, `SMLC Immersive Event Synchronization Panel`, modularLightboxBodyHTML, "", "#");
 						bindInlineMapRouterNodeClicks();
 					});
 
@@ -333,6 +438,8 @@
 				});
 
 				bindInlineMapRouterNodeClicks();
+			} else {
+				list.innerHTML = "<p style='text-align:center; padding: 20px; color: inherit; font-style:italic;'>No active dispatches scheduled at this time.</p>";
 			}
 		} catch (e) {
 			list.innerHTML = "<p style='text-align:center; padding: 20px;'>Wire synchronization channel interruption loop.</p>";
@@ -349,9 +456,13 @@
 	function handleMapLinkClickAction(e) {
 		e.stopPropagation();
 		const targetedAddressString = this.getAttribute('data-address');
-		if(targetedAddressString) { window.triggerSmartMapRouter(targetedAddressString); }
+		// FIXED: Enforce wrapped global invocation checking parameters safely to completely sidestep early setup loops
+		if(targetedAddressString && typeof window.triggerSmartMapRouter === 'function') { 
+			window.triggerSmartMapRouter(targetedAddressString); 
+		}
 	}
 
+	/* INTELLIGENT COMPREHENSIVE COUNTY BOUNDARY FILTERING MOTOR */
 	async function parseSMLCNewsroomFeed() {
 		const newsNode = document.getElementById('json-news-container');
 		if(!newsNode) return;
@@ -366,10 +477,31 @@
 			const payload = await res.json();
 			if(Array.isArray(payload)) {
 				const filteredArticles = payload.filter(art => {
-					const searchableHaystack = `${art.title} ${art.full_story}`.toLowerCase();
-					const hasPositiveMatches = FILTER_KEYWORDS_POSITIVE.some(keyword => searchableHaystack.includes(keyword));
-					const hasNegativeExclusions = FILTER_KEYWORDS_NEGATIVE.some(blockword => searchableHaystack.includes(blockword));
-					return hasPositiveMatches && !hasNegativeExclusions;
+					const title = (art.title || "").toLowerCase();
+					const story = (art.full_story || "").toLowerCase();
+					const haystack = `${title} ${story}`;
+
+					// Phase 1: Scan for explicit state-level or county-wide safety networks/infrastructure programs
+					const isStateOrGlobalCounty = haystack.includes("state") || 
+												  haystack.includes("idph") || 
+												  haystack.includes("snap") || 
+												  haystack.includes("food stamps") || 
+												  haystack.includes("medicaid") || 
+												  haystack.includes("health department") || 
+												  haystack.includes("secretary of state") ||
+												  (haystack.includes("clay county") && !CLAY_COUNTY_TOWNS.some(t => t !== CURRENT_SITE_TOWN && haystack.includes(t)));
+
+					// Phase 2: Check for current town tags or athletic co-op definitions
+					const isCurrentTownTarget = haystack.includes(CURRENT_SITE_TOWN) || 
+												haystack.includes("nc ") || 
+												haystack.includes("north clay");
+
+					// Phase 3: Identify if the story mentions any other neighboring town inside Clay County
+					const targetedNeighborTown = CLAY_COUNTY_TOWNS.find(town => town !== CURRENT_SITE_TOWN && haystack.includes(town));
+
+					if (isCurrentTownTarget) return true;
+					if (isStateOrGlobalCounty && !targetedNeighborTown) return true;
+					return false;
 				});
 
 				newsNode.innerHTML = '';
@@ -443,7 +575,6 @@
 				
 				imgWrap.innerHTML = `<img src="${spotlightAsset.url}" alt="${spotlightAsset.name}" class="lightbox-triggerable-element" data-story="" data-url="${spotlightAsset.source_url}" />`;
 				
-				// FIXED: The title header itself is the clickable link, removing the broken text layout below it
 				linkWrap.innerHTML = `
 					<div style="font-size:22px !important; font-weight:900; text-align:center; margin-top: 12px;">
 						<a href="${enforceUtmRouterUrl(spotlightAsset.source_url)}" target="current-tab" style="color: var(--louis-black) !important; text-decoration: underline !important;">
@@ -491,7 +622,6 @@
 		document.getElementById('lightbox-title').innerText = title;
 		document.getElementById('lightbox-meta').innerText = meta;
 		
-		// Enforces comprehensive dynamic url token parsing transformations across the dynamic dashboard blocks safely
 		document.getElementById('lightbox-story').innerHTML = makeAllTextUrlsClickable(story);
 		
 		const leftCell = mask.querySelector('.Lightbox-Left-Cell');
@@ -558,22 +688,48 @@
 			const raw = await res.json();
 			const f = raw.footer_data;
 			
-			let rawAddressText = f.contact_info.address.text || "607 W Clark Ave, Flora, IL 62401";
-			globallyStoredAddressText = rawAddressText.replace(/Effingham/g, 'Flora');
+			let targetEmailAddress = f.contact_info.email.address || "Scott.Robinson@skventuresigns.com";
+			let rawAddressText = f.contact_info.address.text || "607 W Clark Ave, Effingham, IL 62401";
+			globallyStoredAddressText = rawAddressText;
+
+			const section10EmailLink = document.getElementById('section10-dynamic-email-anchor');
+			if(section10EmailLink) {
+				section10EmailLink.href = `mailto:${targetEmailAddress}`;
+				section10EmailLink.innerText = targetEmailAddress;
+			}
 
 			let numbersHTMLBlocks = '';
 			if (Array.isArray(f.contact_info.phone)) {
 				f.contact_info.phone.forEach((p, index) => {
 					numbersHTMLBlocks += `<span class="footer-value" onclick="window.location.href='tel:${p.number.replace(/[^0-9]/g, '')}'">${p.number}</span>`;
-					if(index < f.contact_info.phone.length - 1) { numbersHTMLBlocks += `<span class="footer-split-text-divider-span">or</span>`; }
+					if(index < f.contact_info.phone.length - 1) { 
+						numbersHTMLBlocks += `<span class="footer-split-text-divider-span">or</span>`; 
+					}
 				});
 			}
 
-			footerNode.className = "site-global-footer-matrix";
 			footerNode.innerHTML = `
-				<div class="footer-matrix-block-cell"><p class="footer-label">Give us a call</p>${numbersHTMLBlocks}</div>
-				<div class="footer-matrix-block-cell"><p class="footer-label">Send us an Email</p><span class="footer-value" onclick="window.location.href='mailto:${f.contact_info.email.address}'">${f.contact_info.email.address}</span></div>
-				<div class="footer-matrix-block-cell"><p class="footer-label">Visit our office</p><span class="footer-value" onclick="window.triggerSmartMapRouter('${globallyStoredAddressText}')">${globallyStoredAddressText}</span></div>
+				<div class="footer-primary-row-chassis">
+					<div class="footer-matrix-block-cell left-align-cell">
+						<p class="footer-label">Give us a call</p>
+						<div class="footer-value-row">${numbersHTMLBlocks}</div>
+					</div>
+					<div class="footer-matrix-block-cell center-align-cell">
+						<p class="footer-label">Send us an Email</p>
+						<div class="footer-value-row">
+							<span class="footer-value" onclick="window.location.href='mailto:${targetEmailAddress}'">${targetEmailAddress}</span>
+						</div>
+					</div>
+					<div class="footer-matrix-block-cell right-align-cell">
+						<p class="footer-label">Visit our office</p>
+						<div class="footer-value-row">
+							<span class="footer-value" onclick="window.triggerSmartMapRouter('${globallyStoredAddressText}')">${globallyStoredAddressText}</span>
+						</div>
+					</div>
+				</div>
+				<div class="footer-copyright-bottom-row">
+					<p class="footer-copyright-text">${f.copyright || "© 2026 S&K Ventures. All rights reserved."}</p>
+				</div>
 			`;
 		} catch (e) {}
 	}
@@ -626,8 +782,10 @@
 		loadGlobalAssets();
 		generateDynamicMenu();
 		runStrategicSlideshowEngine();
+		processSection4TownMatrixEngine();
 		dispatchHistoricalLedgerStream();
 		renderSystemPartnersDistributed();
+		renderSection8TownShowcaseStrip();
 		loadBulletinCalendarFeed();
 		parseSMLCNewsroomFeed();
 		initFirebaseGasIndexEngine();
