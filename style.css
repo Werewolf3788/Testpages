@@ -2,7 +2,7 @@
    MASTER DEVELOPMENT PROTOCOL - UNIVERSAL VARIABLE SYSTEM SKINS
    ========================================================================== */
 /* NO STRIPPING, NO COMPRESSING, DON'T CHANGE WHAT I DIDN'T SAY TO CHANGE */
-/* NYT Timestamp: 2026-06-27 23:15:42 */
+/* NYT Timestamp: 2026-06-28 21:58:00 */
 :root {
 	--container-width: 80%;
 	--bar-height: fluid;
@@ -72,9 +72,30 @@ a { color: var(--link-bright-blue) !important; text-decoration: none; }
 .dynamic-accent-element { color: var(--dynamic-accent) !important; }
 .dynamic-inner-panel { background: var(--dynamic-readable-tint) !important; border-color: var(--dynamic-border) !important; }
 
-/* MENUBAR BRAND DESIGNS MATRIX SETUP */
-.site-brand-header { width: 100%; background: linear-gradient(180deg, #0C71C3 0%, #0a5da1 100%); display: flex; justify-content: center; }
-.site-brand-header img { width: 100%; height: auto; display: block; }
+/* MENUBAR BRAND DESIGNS MATRIX SETUP - ENFORCED TO ABSOLUTE FULL-WIDTH EDGE PORTALS */
+.site-brand-header { 
+	width: 100% !important; 
+	max-width: 100vw !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	background: linear-gradient(180deg, #0C71C3 0%, #0a5da1 100%); 
+	display: flex; 
+	justify-content: center; 
+	overflow: hidden;
+}
+.site-brand-header a {
+	width: 100% !important;
+	display: block !important;
+	margin: 0 !important;
+	padding: 0 !important;
+}
+.site-brand-header img { 
+	width: 100% !important; 
+	max-width: 100vw !important;
+	height: auto !important; 
+	display: block !important; 
+	margin: 0 !important;
+}
 
 /* UNIVERSAL NAVIGATION BAR BAR CHASSIS: Locked to full width with adaptive town accent background */
 .menu-bar {
@@ -229,6 +250,112 @@ a { color: var(--link-bright-blue) !important; text-decoration: none; }
 .slideshow-image-mask-viewport img { width: 100% !important; height: 100% !important; object-fit: cover !important; }
 .slideshow-action-link-caption-node { margin-top: 20px !important; display: inline-block !important; color: #FFDE4D !important; font-weight: bold !important; font-size: 16px !important; text-shadow: 0 2px 5px rgba(0,0,0,0.9) !important; }
 
+/* FIXED: Section 4 Row wrapper forced to absolute transparency so the background passes through */
+.section4-fluid-container-row {
+	width: 100%;
+	background: transparent !important;
+	margin-bottom: 32px;
+	padding: 24px 0;
+}
+
+/* Precise Section 4 Typography/Layout Properties Mapped to match blueprints */
+.section4-towns-matrix-wrapper {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 32px;
+	align-items: start;
+	margin-top: 32px;
+	width: 100%;
+	background: transparent !important;
+}
+@media (min-width: 1024px) {
+	.section4-towns-matrix-wrapper {
+		grid-template-columns: 1fr 1fr;
+		gap: 48px;
+	}
+}
+
+.section4-left-prose-pane {
+	font-family: "Source Sans Pro", Helvetica, Arial, sans-serif !important;
+	font-size: 14px !important;
+	font-weight: 500 !important;
+	color: #dddddd !important;
+	line-height: 1.6 !important;
+	display: flex;
+	align-items: center;
+	height: 100%;
+	text-align: left;
+	background: transparent !important;
+	border: none !important;
+	padding: 0 !important;
+}
+.section4-right-media-pane {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	width: 100%;
+	background: transparent !important;
+}
+
+.section4-centered-title {
+	font-size: 18px !important;
+	font-weight: 500 !important;
+	color: #ffffff !important;
+	line-height: 25.2px !important;
+	margin-bottom: 20px;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	border-bottom: 2px solid currentColor;
+	padding-bottom: 4px;
+	display: inline-block;
+}
+.section4-images-row {
+	display: flex;
+	gap: 20px;
+	justify-content: center;
+	width: 100%;
+	margin-bottom: 16px;
+}
+.section4-image-column {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	max-width: 250px;
+}
+.section4-image-container-frame {
+	width: 100%;
+	height: 150px;
+	border-radius: 4px;
+	overflow: hidden;
+	background: #111;
+	border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.section4-image-container-frame img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+.section4-header-label {
+	font-size: 0.9rem;
+	margin-top: 10px;
+	font-weight: 600;
+}
+
+.section4-description1-footer {
+	width: 100%;
+	text-align: left;
+	font-family: "Source Sans Pro", Helvetica, Arial, sans-serif !important;
+	font-size: 14px !important;
+	font-weight: 500 !important;
+	color: #dddddd !important;
+	line-height: 1.6 !important;
+	margin-top: 12px;
+	border-top: 1px dashed rgba(255, 255, 255, 0.15);
+	padding-top: 12px;
+}
+
 /* HERITAGE GRID CONTRAST PROTECTION */
 .heritage-showcase-split-grid { width: 100%; padding: 54px 0; }
 .heritage-inner-chassis { width: var(--container-width); margin: 0 auto; }
@@ -302,7 +429,7 @@ histDescript1 { font-family: "Source Sans Pro", Helvetica, Arial, sans-serif !im
 .portal-grid-layout-fixed { display: grid; grid-template-columns: repeat(3, 1fr) !important; gap: 32px; width: 100%; align-items: start; }
 @media (max-width: 1024px) { .portal-grid-layout-fixed { grid-template-columns: 1fr !important; } }
 
-/* RETRO CARD ARCHITECTURE SOURCED FROM image_f8c783.png */
+/* RETRO CARD ARCHITECTURE SOURCED EXCLUSIVELY FROM image_420ac2.jpg PREFERENCES */
 .bulletin-news-feed-chassis, 
 .scorestream-embed-card, 
 .newspaper-feed-chassis, 
@@ -513,12 +640,10 @@ histDescript1 { font-family: "Source Sans Pro", Helvetica, Arial, sans-serif !im
 .event-title { font-size: 20px; font-weight: bold; margin: 4px 0; line-height: 1.2; color: var(--retro-text) !important; }
 .event-brief-desc { font-size: 13px; font-style: italic; margin: 8px 0; line-height: 1.4; opacity: 0.85; color: #333; }
 
-/* Enforces the targeted bright blue variable color mapping safely inside the event locations */
 .custom-event-blue-link {
 	color: var(--link-bright-blue) !important;
 }
 
-/* HIGH CONTRAST ACCENT COLOR FOR CALENDAR READ MORE LINK */
 .read-more-trigger { 
 	color: var(--louis-red) !important; 
 	font-weight: bold !important; 
@@ -550,7 +675,7 @@ histDescript1 { font-family: "Source Sans Pro", Helvetica, Arial, sans-serif !im
 .clipping-card-text { font-size: 14px; line-height: 1.5; color: #333333 !important; margin: 0 0 16px 0; }
 .clipping-card-action-btn { background: #222; color: #fff !important; text-align: center; text-transform: uppercase; font-size: 12px; font-weight: bold; padding: 12px; text-decoration: none; border-radius: 3px; cursor: pointer; display: block; border: 1px solid var(--louis-black); }
 
-/* BUSINESS SPOTLIGHT SYSTEM ADAPTATIONS FROM image_f8c783.png */
+/* BUSINESS SPOTLIGHT SYSTEM ADAPTATIONS FROM image_420ac2.jpg */
 .full-bleed-spotlight-frame {
 	background-attachment: scroll !important;
 	background-clip: border-box !important;
@@ -598,6 +723,172 @@ histDescript1 { font-family: "Source Sans Pro", Helvetica, Arial, sans-serif !im
 .price-value-diesel { color: #b30000 !important; font-size: 22px !important; font-weight: 800 !important; }
 .sync-timestamp-label { font-size: 11px; text-align: center; margin-top: 12px; opacity: 0.8; text-transform: uppercase; color: var(--retro-text); }
 
+/* ==========================================================================
+   NEW SECTIONS 8, 9, 10 & 11 INTEGRATIONS - ALIGNED TO image_427f01.png
+   ========================================================================== */
+.section8-town-images-strip {
+	margin-top: 32px !important;
+	margin-bottom: 32px !important;
+}
+
+/* Section 10: Glassmorphism Card Wrapper Architecture Layout */
+.section10-message-chassis {
+	margin: 40px auto !important;
+	padding: 0 !important;
+}
+.section10-proclamation-card-box {
+	background: var(--dynamic-panel) !important;
+	backdrop-filter: var(--glass-blur);
+	border: 2px solid var(--dynamic-border);
+	box-shadow: var(--premium-shadow);
+	padding: 40px;
+	border-radius: 12px;
+	text-align: center;
+}
+.section10-body-prose {
+	font-family: 'Times New Roman', Times, serif !important;
+	font-size: 18px !important;
+	line-height: 1.8 !important;
+	color: #ffffff !important;
+	margin: 0 0 24px 0 !important;
+	font-style: normal;
+	text-align: center;
+}
+.section10-footer-dispatch {
+	font-family: 'Times New Roman', Times, serif !important;
+	font-size: 16px !important;
+	color: var(--louis-gold) !important;
+	margin: 0 !important;
+	font-weight: bold;
+}
+.section10-prose-link {
+	color: var(--link-bright-blue) !important;
+	text-decoration: underline !important;
+}
+
+/* Section 11: Perfect Balanced Solid Black Footer Matrix System */
+.site-global-footer-matrix {
+	width: 100% !important;
+	background-color: #000000 !important;
+	background-image: none !important;
+	color: #ffffff !important;
+	padding: 45px 0 25px 0 !important;
+	margin-top: 60px !important;
+	border-top: 3px solid var(--louis-gold) !important;
+	display: flex !important;
+	flex-direction: column !important;
+	align-items: center !important;
+	box-sizing: border-box !important;
+}
+
+.footer-primary-row-chassis {
+	width: 100% !important;
+	max-width: 100vw !important;
+	display: flex !important;
+	justify-content: space-between !important;
+	align-items: flex-start !important;
+	box-sizing: border-box !important;
+	padding: 0 5% !important; /* Perfect 5% edge alignment spacing */
+}
+
+/* Symmetric column setups mapping labels exactly over stacked arrays */
+.footer-matrix-block-cell {
+	display: flex !important;
+	flex-direction: column !important;
+	box-sizing: border-box !important;
+}
+.footer-matrix-block-cell.left-align-cell {
+	width: 38% !important;
+	text-align: left !important;
+	align-items: flex-start !important;
+}
+.footer-matrix-block-cell.center-align-cell {
+	width: 24% !important;
+	text-align: center !important;
+	align-items: center !important;
+}
+.footer-matrix-block-cell.right-align-cell {
+	width: 38% !important;
+	text-align: right !important;
+	align-items: flex-end !important;
+}
+
+.footer-label {
+	font-family: 'Times New Roman', Times, serif !important;
+	font-size: 13px !important;
+	font-weight: normal !important;
+	color: #aaaaaa !important;
+	margin: 0 0 10px 0 !important;
+	text-transform: none !important;
+	letter-spacing: 0.5px;
+}
+.footer-value-row {
+	display: flex !important;
+	align-items: center !important;
+	gap: 12px !important;
+	width: 100% !important;
+}
+.footer-matrix-block-cell.left-align-cell .footer-value-row {
+	justify-content: flex-start !important;
+}
+.footer-matrix-block-cell.right-align-cell .footer-value-row {
+	justify-content: flex-end !important;
+}
+
+.footer-value {
+	font-family: 'Times New Roman', Times, serif !important;
+	font-size: 16px !important;
+	font-weight: bold !important;
+	color: #ffffff !important;
+	cursor: pointer;
+	transition: color 0.2s ease;
+	white-space: nowrap !important;
+}
+.footer-value:hover {
+	color: var(--louis-gold) !important;
+}
+.footer-split-text-divider-span {
+	font-family: 'Times New Roman', Times, serif !important;
+	font-size: 12px !important;
+	color: #888888 !important;
+	font-style: italic;
+	font-weight: normal !important;
+}
+
+.footer-copyright-bottom-row {
+	width: 100% !important;
+	text-align: center !important;
+	margin-top: 40px !important;
+	border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+	padding-top: 20px !important;
+}
+.footer-copyright-text {
+	font-family: 'Times New Roman', Times, serif !important;
+	font-size: 12px !important;
+	color: #777777 !important;
+	margin: 0 !important;
+}
+
+@media (max-width: 900px) {
+	.footer-primary-row-chassis {
+		flex-direction: column !important;
+		align-items: center !important;
+		gap: 30px !important;
+		padding: 0 20px !important;
+	}
+	.footer-matrix-block-cell.left-align-cell,
+	.footer-matrix-block-cell.center-align-cell,
+	.footer-matrix-block-cell.right-align-cell {
+		width: 100% !important;
+		text-align: center !important;
+		align-items: center !important;
+	}
+	.footer-matrix-block-cell.left-align-cell .footer-value-row,
+	.footer-matrix-block-cell.right-align-cell .footer-value-row {
+		justify-content: center !important;
+	}
+}
+
 /* FIXED LIGHTBOX VISIBILITY MATRIX RULES GATED */
 .lightbox-overlay-mask {
 	position: fixed;
@@ -638,12 +929,6 @@ histDescript1 { font-family: "Source Sans Pro", Helvetica, Arial, sans-serif !im
 	padding: 0; 
 	overflow-y: auto; 
 	text-align: left; 
-}
-
-/* Enforces link styling within lightbox containers to use the exact bright blue system design token */
-.Lightbox-Left-Cell a,
-.lightbox-story-content a {
-	color: var(--link-bright-blue) !important;
 }
 
 .Lightbox-Right-Cell { 
