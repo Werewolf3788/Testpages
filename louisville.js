@@ -2,7 +2,7 @@
    MASTER DEVELOPMENT PROTOCOL - HIGHLY LOCALIZED CENTRAL OPERATIONS MOTOR
    ========================================================================== */
 /* NO STRIPPING, NO COMPRESSING, DON'T CHANGE SPECIFIC DATA ARRAY MAPPINGS */
-/* NYT Timestamp: 2026-06-28 21:20:00 */
+/* NYT Timestamp: 2026-06-28 23:15:00 */
 (function() {
 	const CURRENT_SITE_TOWN = "louisville";
 
@@ -269,8 +269,9 @@
 	}
 
 	async function renderSystemPartnersDistributed() {
-		const topStrip = document.getElementById('top-partners-strip-matrix');
-		if (!topStrip) return;
+		const section6Strip = document.getElementById('top-partners-strip-matrix');
+		const section8Strip = document.getElementById('section8-town-images-matrix');
+		if (!section6Strip) return;
 		try {
 			const res = await fetch(`${URLS.partners}?v=${Date.now()}`);
 			const partnerStripDataset = await res.json();
@@ -286,64 +287,18 @@
 							<a href="${enforceUtmRouterUrl(p.link)}" target="current-tab" class="showcase-action-link" style="font-size:12px; display:block; text-align:center; margin-top:8px;">${p.label}</a>
 						</div>`;
 				});
-				topStrip.innerHTML = html;
+				section6Strip.innerHTML = html;
+
+				if (section8Strip) {
+					section8Strip.innerHTML = html;
+				}
+				
 				bindGlobalLightboxClickHandlers();
 			}
 		} catch (e) {}
 	}
 
-	async function renderSection8TownShowcaseStrip() {
-		const stripMatrix = document.getElementById('section8-town-images-matrix');
-		if (!stripMatrix) return;
-		try {
-			const res = await fetch(`${URLS.images}?v=${Date.now()}`);
-			const data = await res.json();
-			let filteredLouisvilleAssets = [];
-
-			if (data.network_towns) {
-				for (const townKey in data.network_towns) {
-					if (townKey.toLowerCase() === CURRENT_SITE_TOWN) {
-						const townObj = data.network_towns[townKey];
-						if (townObj.categories && Array.isArray(townObj.categories)) {
-							townObj.categories.forEach(cat => {
-								if (Array.isArray(cat.images)) {
-									cat.images.forEach(img => {
-										if (img.id !== "global_biz_spotlight") {
-											filteredLouisvilleAssets.push(img);
-										}
-									});
-								}
-							});
-						}
-					}
-				}
-			}
-
-			if (filteredLouisvilleAssets.length === 0) {
-				stripMatrix.innerHTML = "<p style='text-align:center; padding:20px; color:#fff;'>No regional specific arrays matched.</p>";
-				return;
-			}
-
-			shuffleArray(filteredLouisvilleAssets);
-
-			let htmlOutput = '';
-			filteredLouisvilleAssets.forEach(p => {
-				htmlOutput += `
-					<div class="showcase-card-body">
-						<div class="showcase-media-canvas">
-							<img src="${p.url}" alt="${p.alt || p.name}" class="lightbox-triggerable-element" data-story="" data-url="${p.source_url}" />
-						</div>
-						<a href="${enforceUtmRouterUrl(p.source_url)}" target="current-tab" class="showcase-action-link" style="font-size:12px; display:block; text-align:center; margin-top:8px;">${p.name}</a>
-					</div>`;
-			});
-			stripMatrix.innerHTML = htmlOutput;
-			bindGlobalLightboxClickHandlers();
-		} catch (e) {
-			stripMatrix.innerHTML = "<p style='text-align:center; padding:20px; color:#fff;'>Showcase loop synchronization interruption.</p>";
-		}
-	}
-
-	/* ARMORED CALENDAR ENGINE - DECOUPLED FROM INLINE GLOBAL ROUTER WINDOW FUNCTIONS */
+	/* FIXED AND SYNCHRONIZED CALENDAR FEED - PROPS EXCLUSIVELY TIED TO BULLETIN-ENGINE CONTRACTS */
 	async function loadBulletinCalendarFeed() {
 		const list = document.getElementById('event-list');
 		if(!list) return;
@@ -356,8 +311,6 @@
 				
 				const nowCST = fetchChicagoTime();
 				const boundaryForwardCST = new Date(nowCST.getTime() + (30 * 24 * 60 * 60 * 1000));
-				
-				// Added specific historical boundary offset multiplier to shield timezone rollbacks safely
 				const currentDayFloor = new Date(nowCST.getFullYear(), nowCST.getMonth(), nowCST.getDate() - 1, 0, 0, 0, 0);
 
 				let parsedValidEntries = [];
@@ -367,7 +320,7 @@
 					if (isNaN(evDate.getTime())) evDate = new Date(String(item.date).replace(/-/g, "/"));
 					if (isNaN(evDate.getTime())) return;
 
-					// Your explicit 30-day structural calendar layer loop filter
+					// Exact 30-day loop logic filter preserved perfectly
 					if (evDate >= currentDayFloor && evDate <= boundaryForwardCST) {
 						parsedValidEntries.push({ ...item, computedDateObj: evDate });
 					}
@@ -384,10 +337,10 @@
 					const targetCleanNameString = String(item.name || "SMLC Community Update");
 					const cleanHumanDateStr = item.computedDateObj.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: '2-digit' });
 					const isoDateString = item.computedDateObj.toISOString().replace(/-|:|\.\d\d\d/g, "").split("T")[0];
-					const locationString = String(item.location || "Clay County Area Region");
 					
-					const cleanTimeSpan = formatSystemTimeStringToCleanLayout(item.time);
-					const rawLongDescriptionText = String(item.details || item.description || "");
+					// Aligned directly with your explicit Google Script objects contract keys
+					const locationString = String(item.location || "Clay County Area Region");
+					const rawLongDescriptionText = String(item.details || "Join us for this local area community gathering.");
 					const shortenedBriefSnippetText = rawLongDescriptionText.length > 85 ? rawLongDescriptionText.substring(0, 85) + "..." : rawLongDescriptionText;
 
 					const googleCalTemplateUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(targetCleanNameString)}&dates=${isoDateString}/${isoDateString}&details=${encodeURIComponent(rawLongDescriptionText)}&location=${encodeURIComponent(locationString)}&sf=true&output=xml`;
@@ -400,7 +353,7 @@
 						<div class="event-title">${targetCleanNameString}</div>
 						<div style="font-size: 14px; line-height: 1.4;">
 							<strong>Where:</strong> <span class="map-link-router-node custom-event-blue-link" style="cursor:pointer; text-decoration:underline; font-weight:bold;" data-address="${locationString}">${locationString}</span> <br> 
-							<strong>Time:</strong> ${cleanTimeSpan}
+							<strong>Time:</strong> ${item.time || "Scheduled Hours"}
 						</div>
 						<div class="event-brief-desc">"${shortenedBriefSnippetText}"</div>
 						<div><span class="read-more-trigger">READ MORE</span></div>
@@ -423,7 +376,7 @@
 						const modularLightboxBodyHTML = `
 							<div class="lightbox-meta-prose-row"><strong>Scheduled Date:</strong> ${cleanHumanDateStr}</div>
 							<div class="lightbox-meta-prose-row"><strong>Target Location:</strong> <span class="map-link-router-node" style="cursor:pointer; text-decoration:underline; font-weight:bold; color:#cc0000;" data-address="${locationString}">${locationString}</span></div>
-							<div class="lightbox-meta-prose-row"><strong>Time Window:</strong> ${cleanTimeSpan}</div>
+							<div class="lightbox-meta-prose-row"><strong>Time Window:</strong> ${item.time || "Scheduled Hours"}</div>
 							${detailsBoxMarkupHTML}
 							<div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap;">
 								<a href="${googleCalTemplateUrl}" target="_blank" style="background:#000; color:#fff !important; font-weight:bold; padding:8px 14px; border-radius:4px; text-transform:uppercase; font-size:11px; text-decoration:none; border:1px solid #222;">Google Calendar</a>
@@ -436,6 +389,20 @@
 
 					list.appendChild(div);
 				});
+
+				// Programmatically calculate exactly 5 elements height ceiling layout and apply smooth scroll constraints
+				const allRenderedItems = list.querySelectorAll('.event-item');
+				if (allRenderedItems.length > 5) {
+					let calculatedCeilingHeight = 0;
+					for (let idx = 0; idx < 5; idx++) {
+						calculatedCeilingHeight += allRenderedItems[idx].offsetHeight;
+					}
+					calculatedCeilingHeight += 15; 
+					
+					list.style.maxHeight = `${calculatedCeilingHeight}px`;
+					list.style.overflowY = 'auto';
+					list.style.display = 'block';
+				}
 
 				bindInlineMapRouterNodeClicks();
 			} else {
@@ -456,13 +423,12 @@
 	function handleMapLinkClickAction(e) {
 		e.stopPropagation();
 		const targetedAddressString = this.getAttribute('data-address');
-		// FIXED: Enforce wrapped global invocation checking parameters safely to completely sidestep early setup loops
 		if(targetedAddressString && typeof window.triggerSmartMapRouter === 'function') { 
 			window.triggerSmartMapRouter(targetedAddressString); 
 		}
 	}
 
-	/* INTELLIGENT COMPREHENSIVE COUNTY BOUNDARY FILTERING MOTOR */
+	/* INTELLIGENT COMPREHENSIVE COUNTY BOUNDARY FILTERING MOTOR WITH 5-ARTICLE VIEWPORT SCROLL */
 	async function parseSMLCNewsroomFeed() {
 		const newsNode = document.getElementById('json-news-container');
 		if(!newsNode) return;
@@ -481,7 +447,6 @@
 					const story = (art.full_story || "").toLowerCase();
 					const haystack = `${title} ${story}`;
 
-					// Phase 1: Scan for explicit state-level or county-wide safety networks/infrastructure programs
 					const isStateOrGlobalCounty = haystack.includes("state") || 
 												  haystack.includes("idph") || 
 												  haystack.includes("snap") || 
@@ -491,12 +456,10 @@
 												  haystack.includes("secretary of state") ||
 												  (haystack.includes("clay county") && !CLAY_COUNTY_TOWNS.some(t => t !== CURRENT_SITE_TOWN && haystack.includes(t)));
 
-					// Phase 2: Check for current town tags or athletic co-op definitions
 					const isCurrentTownTarget = haystack.includes(CURRENT_SITE_TOWN) || 
 												haystack.includes("nc ") || 
 												haystack.includes("north clay");
 
-					// Phase 3: Identify if the story mentions any other neighboring town inside Clay County
 					const targetedNeighborTown = CLAY_COUNTY_TOWNS.find(town => town !== CURRENT_SITE_TOWN && haystack.includes(town));
 
 					if (isCurrentTownTarget) return true;
@@ -537,6 +500,22 @@
 
 					newsNode.appendChild(card);
 				});
+
+				// Calculate exactly 5 news item layout parameters to append scroll boundary attributes
+				const allNewsCards = newsNode.querySelectorAll('.clipping-card-container');
+				if (allNewsCards.length > 5) {
+					let calculatedNewsCeilingHeight = 0;
+					for (let i = 0; i < 5; i++) {
+						calculatedNewsCeilingHeight += allNewsCards[i].offsetHeight;
+					}
+					// Dynamic padding compensation wrapper logic mapping
+					calculatedNewsCeilingHeight += 20;
+
+					newsNode.style.maxHeight = `${calculatedNewsCeilingHeight}px`;
+					newsNode.style.overflowY = 'auto';
+					newsNode.style.display = 'block';
+				}
+
 				bindGlobalLightboxClickHandlers();
 			}
 		} catch(e){}
@@ -785,7 +764,6 @@
 		processSection4TownMatrixEngine();
 		dispatchHistoricalLedgerStream();
 		renderSystemPartnersDistributed();
-		renderSection8TownShowcaseStrip();
 		loadBulletinCalendarFeed();
 		parseSMLCNewsroomFeed();
 		initFirebaseGasIndexEngine();
