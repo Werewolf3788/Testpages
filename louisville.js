@@ -2,7 +2,7 @@
    MASTER DEVELOPMENT PROTOCOL - HIGHLY LOCALIZED CENTRAL OPERATIONS MOTOR
    ========================================================================== */
 /* NO STRIPPING, NO COMPRESSING, DON'T CHANGE SPECIFIC DATA ARRAY MAPPINGS */
-/* NYT Timestamp: 2026-06-28 23:15:00 */
+/* NYT Timestamp: 2026-06-29 14:35:00 */
 (function() {
 	const CURRENT_SITE_TOWN = "louisville";
 
@@ -94,12 +94,13 @@
 			try {
 				const parsedDateObj = new Date(rawTimeStr);
 				if (!isNaN(parsedDateObj.getTime())) {
-					let hours = parsedDateObj.getUTCHours();
-					const minutes = parsedDateObj.getUTCMinutes().toString().padStart(2, '0');
-					const ampm = hours >= 12 ? 'pm' : 'am';
-					hours = hours % 12;
-					hours = hours ? hours : 12;
-					return `${hours}:${minutes}${ampm}`;
+					const formatter = new Intl.DateTimeFormat('en-US', {
+						timeZone: 'America/Chicago',
+						hour: 'numeric',
+						minute: 'numeric',
+						hour12: true
+					});
+					return formatter.format(parsedDateObj).toLowerCase().replace(' ', '');
 				}
 			} catch (e) {}
 		}
@@ -320,7 +321,6 @@
 					if (isNaN(evDate.getTime())) evDate = new Date(String(item.date).replace(/-/g, "/"));
 					if (isNaN(evDate.getTime())) return;
 
-					// Exact 30-day loop logic filter preserved perfectly
 					if (evDate >= currentDayFloor && evDate <= boundaryForwardCST) {
 						parsedValidEntries.push({ ...item, computedDateObj: evDate });
 					}
@@ -338,10 +338,11 @@
 					const cleanHumanDateStr = item.computedDateObj.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: '2-digit' });
 					const isoDateString = item.computedDateObj.toISOString().replace(/-|:|\.\d\d\d/g, "").split("T")[0];
 					
-					// Aligned directly with your explicit Google Script objects contract keys
 					const locationString = String(item.location || "Clay County Area Region");
 					const rawLongDescriptionText = String(item.details || "Join us for this local area community gathering.");
 					const shortenedBriefSnippetText = rawLongDescriptionText.length > 85 ? rawLongDescriptionText.substring(0, 85) + "..." : rawLongDescriptionText;
+					
+					const formattedTimeLayout = formatSystemTimeStringToCleanLayout(item.time);
 
 					const googleCalTemplateUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(targetCleanNameString)}&dates=${isoDateString}/${isoDateString}&details=${encodeURIComponent(rawLongDescriptionText)}&location=${encodeURIComponent(locationString)}&sf=true&output=xml`;
 					const base64AppleCalendarHrefString = "data:text/calendar;charset=utf8," + encodeURIComponent(`BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:${targetCleanNameString}\nLOCATION:${locationString}\nDTSTART:${isoDateString}\nDTEND:${isoDateString}\nDESCRIPTION:${rawLongDescriptionText}\nEND:VEVENT\nEND:VCALENDAR`);
@@ -353,7 +354,7 @@
 						<div class="event-title">${targetCleanNameString}</div>
 						<div style="font-size: 14px; line-height: 1.4;">
 							<strong>Where:</strong> <span class="map-link-router-node custom-event-blue-link" style="cursor:pointer; text-decoration:underline; font-weight:bold;" data-address="${locationString}">${locationString}</span> <br> 
-							<strong>Time:</strong> ${item.time || "Scheduled Hours"}
+							<strong>Time:</strong> ${formattedTimeLayout}
 						</div>
 						<div class="event-brief-desc">"${shortenedBriefSnippetText}"</div>
 						<div><span class="read-more-trigger">READ MORE</span></div>
@@ -376,7 +377,7 @@
 						const modularLightboxBodyHTML = `
 							<div class="lightbox-meta-prose-row"><strong>Scheduled Date:</strong> ${cleanHumanDateStr}</div>
 							<div class="lightbox-meta-prose-row"><strong>Target Location:</strong> <span class="map-link-router-node" style="cursor:pointer; text-decoration:underline; font-weight:bold; color:#cc0000;" data-address="${locationString}">${locationString}</span></div>
-							<div class="lightbox-meta-prose-row"><strong>Time Window:</strong> ${item.time || "Scheduled Hours"}</div>
+							<div class="lightbox-meta-prose-row"><strong>Time Window:</strong> ${formattedTimeLayout}</div>
 							${detailsBoxMarkupHTML}
 							<div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap;">
 								<a href="${googleCalTemplateUrl}" target="_blank" style="background:#000; color:#fff !important; font-weight:bold; padding:8px 14px; border-radius:4px; text-transform:uppercase; font-size:11px; text-decoration:none; border:1px solid #222;">Google Calendar</a>
@@ -390,7 +391,6 @@
 					list.appendChild(div);
 				});
 
-				// Programmatically calculate exactly 5 elements height ceiling layout and apply smooth scroll constraints
 				const allRenderedItems = list.querySelectorAll('.event-item');
 				if (allRenderedItems.length > 5) {
 					let calculatedCeilingHeight = 0;
@@ -501,14 +501,12 @@
 					newsNode.appendChild(card);
 				});
 
-				// Calculate exactly 5 news item layout parameters to append scroll boundary attributes
 				const allNewsCards = newsNode.querySelectorAll('.clipping-card-container');
 				if (allNewsCards.length > 5) {
 					let calculatedNewsCeilingHeight = 0;
 					for (let i = 0; i < 5; i++) {
 						calculatedNewsCeilingHeight += allNewsCards[i].offsetHeight;
 					}
-					// Dynamic padding compensation wrapper logic mapping
 					calculatedNewsCeilingHeight += 20;
 
 					newsNode.style.maxHeight = `${calculatedNewsCeilingHeight}px`;
@@ -640,18 +638,18 @@
 		if (mask) mask.classList.remove('active-show');
 	};
 
+	/* INTELLIGENT NATIVE PLATFORM MAP ROUTER - REMOVES THE MENU SEEN IN IMAGE_DB82D5.PNG */
 	window.triggerSmartMapRouter = function(addressStr) {
-		const overlay = document.getElementById('app-routing-overlay');
-		const grid = document.getElementById('routing-options-grid');
-		if (!overlay || !grid) return;
-
+		if (!addressStr) return;
 		const encodedAddress = encodeURIComponent(addressStr);
-		grid.innerHTML = `
-			<a href="https://maps.google.com/?q=${encodedAddress}" target="_blank" class="routing-app-btn">Google Maps App</a>
-			<a href="maps://?daddr=${encodedAddress}" target="_blank" class="routing-app-btn">Apple Maps App</a>
-			<a href="https://waze.com/ul?q=${encodedAddress}&navigate=yes" target="_blank" class="routing-app-btn">Waze App System Link</a>
-		`;
-		overlay.classList.add('active-show');
+		const userAgentString = navigator.userAgent || navigator.vendor || window.opera;
+		
+		// Run deterministic platform check to open native default channels instantly
+		if (/iPad|iPhone|iPod|Macintosh/.test(userAgentString) && !window.MSStream) {
+			window.open(`maps://?daddr=${encodedAddress}`, '_blank');
+		} else {
+			window.open(`https://maps.google.com/?q=${encodedAddress}`, '_blank');
+		}
 	};
 
 	window.closeRoutingOverlay = function() {
